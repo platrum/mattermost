@@ -32,9 +32,7 @@ export default function ChannelMentionBadge({unreadMentions, hasUrgent, isUnread
 const style = {
     unread: {
         borderRadius: '20px',
-        padding: '2px',
         minWidth: '12px',
         minHeight: '12px',
-        marginTop: '4px',
     },
 };
