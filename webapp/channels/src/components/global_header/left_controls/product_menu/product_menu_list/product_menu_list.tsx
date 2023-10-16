@@ -8,12 +8,11 @@ import {
     AccountMultipleOutlineIcon,
     ApplicationCogIcon,
     DownloadOutlineIcon,
-    InformationOutlineIcon,
     ViewGridPlusOutlineIcon,
     WebhookIncomingIcon,
 } from '@mattermost/compass-icons/components';
+import type {UserProfile} from '@mattermost/types/users';
 
-import {UserProfile} from '@mattermost/types/users';
 import {Permissions} from 'mattermost-redux/constants';
 
 import {VisitSystemConsoleTour} from 'components/onboarding_tasks';
@@ -28,6 +27,7 @@ import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils';
 import {LicenseSkus, ModalIdentifiers, MattermostFeatures} from 'utils/constants';
 import {makeUrlSafe} from 'utils/url';
 import * as UserAgent from 'utils/user_agent';
+
 import type {ModalData} from 'types/actions';
 
 import './product_menu_list.scss';
