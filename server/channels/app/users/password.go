@@ -10,10 +10,19 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/mattermost/mattermost/server/public/model"
+	"github.com/mattermost/mattermost/server/v8/platrum"
 )
 
 func CheckUserPassword(user *model.User, password string) error {
-	if err := ComparePassword(user.Password, password); err != nil {
+	if strings.Contains(user.Roles, model.SystemAdminRoleId) || user.IsBot {
+		if err := ComparePassword(user.Password, password); err != nil {
+			return NewErrInvalidPassword("")
+		}
+
+		return nil
+	}
+
+	if res := platrum.CheckUserPassword(user.Email, password); !res {
 		return NewErrInvalidPassword("")
 	}
 
