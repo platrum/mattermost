@@ -600,61 +600,6 @@ class ProfilePopover extends React.PureComponent<ProfilePopoverProps, ProfilePop
                 </div>,
             );
         }
-        const sendMessageTooltip = (
-            <Tooltip id='sendMessageTooltip'>
-                <FormattedMessage
-                    id='user_profile.send.dm.yourself'
-                    defaultMessage='Send yourself a message'
-                />
-            </Tooltip>
-        );
-        if (this.props.user.id === this.props.currentUserId && !haveOverrideProp) {
-            dataContent.push(
-                <div
-                    data-toggle='tooltip'
-                    key='user-popover-settings'
-                    className='popover__row first'
-                >
-                    <button
-                        id='editProfileButton'
-                        type='button'
-                        className='btn'
-                        onClick={this.handleEditAccountSettings}
-                    >
-                        <AccountOutlineIcon
-                            size={16}
-                            aria-label={formatMessage({
-                                id: t('generic_icons.edit'),
-                                defaultMessage: 'Edit Icon',
-                            })}
-                        />
-                        <FormattedMessage
-                            id='user_profile.account.editProfile'
-                            defaultMessage='Edit Profile'
-                        />
-                    </button>
-                    <OverlayTrigger
-                        delayShow={Constants.OVERLAY_TIME_DELAY}
-                        placement='top'
-                        overlay={sendMessageTooltip}
-                    >
-                        <button
-                            type='button'
-                            className='btn icon-btn'
-                            onClick={this.handleShowDirectChannel}
-                        >
-                            <SendIcon
-                                size={18}
-                                aria-label={formatMessage({
-                                    id: t('user_profile.send.dm.icon'),
-                                    defaultMessage: 'Send Message Icon',
-                                })}
-                            />
-                        </button>
-                    </OverlayTrigger>
-                </div>,
-            );
-        }
         if (haveOverrideProp) {
             dataContent.push(
                 <div
