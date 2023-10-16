@@ -260,6 +260,7 @@ export default class SidebarChannelLink extends React.PureComponent<Props, State
                 <ChannelMentionBadge
                     unreadMentions={unreadMentions}
                     hasUrgent={hasUrgent}
+                    isUnread={isUnread}
                 />
                 <div
                     className={classNames(
