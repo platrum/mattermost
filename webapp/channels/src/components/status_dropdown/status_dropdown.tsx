@@ -482,7 +482,7 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
                     listId={'status-drop-down-menu-list'}
                 >
                     {currentUser && (
-                        <Menu.Header onClick={this.openProfileModal}>
+                        <Menu.Header>
                             {this.renderProfilePicture('lg')}
                             <div className={'username-wrapper'}>
                                 <Text
@@ -565,26 +565,6 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
                             rightDecorator={status === 'offline' && selectedIndicator}
                             id={'status-menu-offline'}
                         />
-                    </Menu.Group>
-                    <Menu.Group>
-                        <Menu.ItemToggleModalRedux
-                            id='accountSettings'
-                            ariaLabel='Profile'
-                            modalId={ModalIdentifiers.USER_SETTINGS}
-                            dialogType={UserSettingsModal}
-                            dialogProps={{isContentProductSettings: false}}
-                            text={localizeMessage('navbar_dropdown.profileSettings', 'Profile')}
-                            icon={<AccountOutlineIcon size={16}/>}
-                        >
-                            {this.props.showCompleteYourProfileTour && (
-                                <div
-                                    onClick={this.handleCompleteYourProfileTask}
-                                    className={'account-settings-complete'}
-                                >
-                                    <CompleteYourProfileTour/>
-                                </div>
-                            )}
-                        </Menu.ItemToggleModalRedux>
                     </Menu.Group>
                     <Menu.Group>
                         <Menu.ItemAction

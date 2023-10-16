@@ -34,6 +34,8 @@ const InviteMembersButton = (props: Props): JSX.Element | null => {
         return null;
     }
 
+    return null;
+
     return (
         <TeamPermissionGate
             teamId={currentTeamId}
