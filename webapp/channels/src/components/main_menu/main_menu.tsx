@@ -12,17 +12,14 @@ import {Permissions} from 'mattermost-redux/constants';
 import * as GlobalActions from 'actions/global_actions';
 import {trackEvent} from 'actions/telemetry_actions';
 
-import AboutBuildModal from 'components/about_build_modal';
 import AddGroupsToTeamModal from 'components/add_groups_to_team_modal';
 import InvitationModal from 'components/invitation_modal';
-import LeaveTeamModal from 'components/leave_team_modal';
 import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
 import TeamPermissionGate from 'components/permissions_gates/team_permission_gate';
 import TeamGroupsManageModal from 'components/team_groups_manage_modal';
 import TeamMembersModal from 'components/team_members_modal';
 import TeamSettingsModal from 'components/team_settings_modal';
 import UserSettingsModal from 'components/user_settings/modal';
-import LeaveTeamIcon from 'components/widgets/icons/leave_team_icon';
 import Menu from 'components/widgets/menu/menu';
 import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
 
