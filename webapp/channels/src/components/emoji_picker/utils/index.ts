@@ -144,6 +144,8 @@ export function getUpdatedCategoriesAndAllEmojis(
             }
         }
 
+        categoryEmojis = categoryEmojis.filter(e => e)
+
         // populate each category with emojiIds
         categories[categoryName as EmojiCategory].emojiIds = categoryEmojis.
             map((emoji: Emoji) => (isSystemEmoji(emoji) ? emoji.unified.toLowerCase() : emoji.id));
