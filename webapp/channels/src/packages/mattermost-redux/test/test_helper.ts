@@ -12,16 +12,17 @@ import type {FileInfo} from '@mattermost/types/files';
 import type {Group} from '@mattermost/types/groups';
 import type {Command, DialogElement, OAuthApp} from '@mattermost/types/integrations';
 import type {Post, PostMetadata} from '@mattermost/types/posts';
+import type {Reaction} from '@mattermost/types/reactions';
 import type {Role} from '@mattermost/types/roles';
 import type {Scheme} from '@mattermost/types/schemes';
 import type {Team, TeamMembership} from '@mattermost/types/teams';
 import type {UserProfile, UserNotifyProps} from '@mattermost/types/users';
 
-import General from 'mattermost-redux/constants/general';
-import {generateId} from 'mattermost-redux/utils/helpers';
-
 export const DEFAULT_SERVER = 'http://localhost:8065';
 const PASSWORD = 'password1';
+
+import General from 'mattermost-redux/constants/general';
+import {generateId} from 'mattermost-redux/utils/helpers';
 
 const {DEFAULT_LOCALE} = General;
 
@@ -102,6 +103,7 @@ class TestHelper {
                 email: 'false',
                 first_name: 'false',
                 mark_unread: 'mention',
+                highlight_keys: '',
                 mention_keys: '',
                 push: 'none',
                 push_status: 'offline',
@@ -144,6 +146,7 @@ class TestHelper {
                 first_name: 'false',
                 mark_unread: 'mention',
                 mention_keys: '',
+                highlight_keys: '',
                 push: 'none',
                 push_status: 'offline',
             },
@@ -450,6 +453,8 @@ class TestHelper {
         return {
             desktop: 'default',
             desktop_sound: 'off',
+            desktop_threads: 'default',
+            push_threads: 'default',
             email: 'default',
             mark_unread: 'mention',
             push: 'default',
@@ -472,6 +477,7 @@ class TestHelper {
             first_name: 'true',
             channel: 'true',
             mention_keys: '',
+            highlight_keys: '',
             ...override,
         };
     };
@@ -714,6 +720,16 @@ class TestHelper {
             permissions: [],
             scheme_managed: false,
             built_in: false,
+            ...override,
+        };
+    }
+
+    getReactionMock(override: Partial<Reaction> = {}): Reaction {
+        return {
+            user_id: '',
+            post_id: '',
+            emoji_name: '',
+            create_at: 0,
             ...override,
         };
     }
