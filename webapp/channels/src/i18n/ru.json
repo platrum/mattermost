@@ -3825,7 +3825,7 @@
   "intro_messages.noCreator": "Канал: {name}, созданный {date}.",
   "intro_messages.noCreatorPrivate": "Это начало частного канала {name}, созданного {date}.",
   "intro_messages.notificationPreferences": "Настройки уведомлений",
-  "intro_messages.offTopic": "Это начало {display_name}, канала для не связанных с работой разговоров.",
+  "intro_messages.offTopic": "Это начало {display_name}, канала для не связанных с работой разговоров.!!!!!!",
   "intro_messages.onlyInvited": " Только приглашенные пользователи могут видеть этот частный канал.",
   "intro_messages.purpose": " Назначение канала: {purpose}",
   "intro_messages.purposePrivate": " Назначение приватного канала: {purpose}",
