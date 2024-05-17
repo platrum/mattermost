@@ -16,6 +16,7 @@ import (
 const (
 	connectionIDParam   = "connection_id"
 	sequenceNumberParam = "sequence_number"
+	postedAckParam      = "posted_ack"
 )
 
 func (api *API) InitWebSocket() {
@@ -32,7 +33,10 @@ func connectWebSocket(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		c.Err = model.NewAppError("connect", "api.web_socket.connect.upgrade.app_error", nil, err.Error(), http.StatusBadRequest)
+		params := map[string]any{
+			"BlockedOrigin": r.Header.Get("Origin"),
+		}
+		c.Err = model.NewAppError("connect", "api.web_socket.connect.upgrade.app_error", params, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -44,6 +48,7 @@ func connectWebSocket(c *Context, w http.ResponseWriter, r *http.Request) {
 		TFunc:     c.AppContext.T,
 		Locale:    "",
 		Active:    true,
+		PostedAck: r.URL.Query().Get(postedAckParam) == "true",
 	}
 
 	cfg.ConnectionID = r.URL.Query().Get(connectionIDParam)
@@ -55,7 +60,7 @@ func connectWebSocket(c *Context, w http.ResponseWriter, r *http.Request) {
 	} else {
 		cfg, err = c.App.Srv().Platform().PopulateWebConnConfig(c.AppContext.Session(), cfg, r.URL.Query().Get(sequenceNumberParam))
 		if err != nil {
-			mlog.Warn("Error while populating webconn config", mlog.String("id", r.URL.Query().Get(connectionIDParam)), mlog.Err(err))
+			c.Logger.Warn("Error while populating webconn config", mlog.String("id", r.URL.Query().Get(connectionIDParam)), mlog.Err(err))
 			ws.Close()
 			return
 		}

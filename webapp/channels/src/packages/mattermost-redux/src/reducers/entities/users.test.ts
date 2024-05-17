@@ -1,12 +1,11 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {UserProfile} from '@mattermost/types/users';
+import type {UserProfile, UsersState} from '@mattermost/types/users';
 import type {IDMappedObjects} from '@mattermost/types/utilities';
 
 import {UserTypes, ChannelTypes} from 'mattermost-redux/action_types';
 import reducer from 'mattermost-redux/reducers/entities/users';
-import type {GenericAction} from 'mattermost-redux/types/actions';
 import deepFreezeAndThrowOnMutation from 'mattermost-redux/utils/deep_freeze';
 
 import {TestHelper} from 'utils/test_helper';
@@ -17,12 +16,12 @@ describe('Reducers.users', () => {
     describe('profilesInChannel', () => {
         it('initial state', () => {
             const state = undefined;
-            const action = {};
+            const action = {type: undefined};
             const expectedState = {
                 profilesInChannel: {},
             };
 
-            const newState = reducer(state, action as GenericAction);
+            const newState = reducer(state, action);
             expect(newState.profilesInChannel).toEqual(expectedState.profilesInChannel);
         });
 
@@ -296,12 +295,12 @@ describe('Reducers.users', () => {
     describe('profilesNotInChannel', () => {
         it('initial state', () => {
             const state = undefined;
-            const action = {};
+            const action = {type: undefined};
             const expectedState = {
                 profilesNotInChannel: {},
             };
 
-            const newState = reducer(state, action as GenericAction);
+            const newState = reducer(state, action);
             expect(newState.profilesNotInChannel).toEqual(expectedState.profilesNotInChannel);
         });
 
@@ -588,12 +587,12 @@ describe('Reducers.users', () => {
     describe('profilesNotInGroup', () => {
         it('initial state', () => {
             const state = undefined;
-            const action = {};
+            const action = {type: undefined};
             const expectedState = {
                 profilesNotInGroup: {},
             };
 
-            const newState = reducer(state, action as GenericAction);
+            const newState = reducer(state, action);
             expect(newState.profilesNotInGroup).toEqual(expectedState.profilesNotInGroup);
         });
 
@@ -744,6 +743,26 @@ describe('Reducers.users', () => {
                         ...user1,
                         username: 'a different username',
                     },
+                });
+            });
+
+            test(`should remove remote_id when not set anymore (${actionType})`, () => {
+                const user1 = TestHelper.getUserMock({id: 'user_id1', remote_id: 'abcdef'});
+                const user1WithoutRemoteId = TestHelper.getUserMock({id: 'user_id1'});
+
+                const state = deepFreezeAndThrowOnMutation({
+                    profiles: {
+                        [user1.id]: user1,
+                    },
+                });
+
+                const nextState = reducer(state, {
+                    type: actionType,
+                    data: user1WithoutRemoteId,
+                });
+
+                expect(nextState.profiles).toEqual({
+                    [user1.id]: user1WithoutRemoteId,
                 });
             });
 
@@ -1005,6 +1024,94 @@ describe('Reducers.users', () => {
             expect(newProfiles.first_user_id).toEqual({...firstUser, ...partialUpdatedFirstUser});
             expect(newProfiles.second_user_id).toEqual(secondUser);
             expect(newProfiles.third_user_id).toEqual(thirdUser);
+        });
+    });
+
+    test('PROFILE_NO_LONGER_VISIBLE should remove references to users from state', () => {
+        const user = TestHelper.getUserMock({id: 'user'});
+
+        let state: UsersState = {
+            currentUserId: '',
+            dndEndTimes: {},
+            mySessions: [],
+            myAudits: [],
+            myUserAccessTokens: {},
+            profiles: {
+                user,
+            },
+            profilesInTeam: {
+                team1: new Set([user.id]),
+            },
+            profilesNotInTeam: {
+                team2: new Set([user.id]),
+            },
+            profilesWithoutTeam: new Set([user.id]),
+            profilesInChannel: {
+                channel1: new Set([user.id]),
+            },
+            profilesNotInChannel: {
+                channel2: new Set([user.id]),
+            },
+            profilesInGroup: {
+                group1: new Set([user.id]),
+            },
+            profilesNotInGroup: {
+                group2: new Set([user.id]),
+            },
+            statuses: {
+                [user.id]: 'online',
+            },
+            isManualStatus: {
+                [user.id]: true,
+            },
+            stats: {},
+            filteredStats: {
+                total_users_count: 0,
+            },
+            lastActivity: {},
+        };
+        state = deepFreezeAndThrowOnMutation(state);
+
+        const nextState = reducer(state, {
+            type: UserTypes.PROFILE_NO_LONGER_VISIBLE,
+            data: {
+                user_id: user.id,
+            },
+        });
+
+        expect(nextState).toEqual({
+            currentUserId: '',
+            dndEndTimes: {},
+            mySessions: [],
+            myAudits: [],
+            myUserAccessTokens: {},
+            profiles: {},
+            profilesInTeam: {
+                team1: new Set(),
+            },
+            profilesNotInTeam: {
+                team2: new Set(),
+            },
+            profilesWithoutTeam: new Set(),
+            profilesInChannel: {
+                channel1: new Set(),
+            },
+            profilesNotInChannel: {
+                channel2: new Set(),
+            },
+            profilesInGroup: {
+                group1: new Set(),
+            },
+            profilesNotInGroup: {
+                group2: new Set(),
+            },
+            statuses: {},
+            isManualStatus: {},
+            stats: {},
+            filteredStats: {
+                total_users_count: 0,
+            },
+            lastActivity: {},
         });
     });
 });

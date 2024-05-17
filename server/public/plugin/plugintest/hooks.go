@@ -105,6 +105,32 @@ func (_m *Hooks) FileWillBeUploaded(c *plugin.Context, info *model.FileInfo, fil
 	return r0, r1
 }
 
+// GenerateSupportData provides a mock function with given fields: c
+func (_m *Hooks) GenerateSupportData(c *plugin.Context) ([]*model.FileData, error) {
+	ret := _m.Called(c)
+
+	var r0 []*model.FileData
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*plugin.Context) ([]*model.FileData, error)); ok {
+		return rf(c)
+	}
+	if rf, ok := ret.Get(0).(func(*plugin.Context) []*model.FileData); ok {
+		r0 = rf(c)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*model.FileData)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*plugin.Context) error); ok {
+		r1 = rf(c)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Implemented provides a mock function with given fields:
 func (_m *Hooks) Implemented() ([]string, error) {
 	ret := _m.Called()
@@ -196,6 +222,22 @@ func (_m *Hooks) MessageWillBeUpdated(c *plugin.Context, newPost *model.Post, ol
 	}
 
 	return r0, r1
+}
+
+// MessagesWillBeConsumed provides a mock function with given fields: posts
+func (_m *Hooks) MessagesWillBeConsumed(posts []*model.Post) []*model.Post {
+	ret := _m.Called(posts)
+
+	var r0 []*model.Post
+	if rf, ok := ret.Get(0).(func([]*model.Post) []*model.Post); ok {
+		r0 = rf(posts)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*model.Post)
+		}
+	}
+
+	return r0
 }
 
 // NotificationWillBePushed provides a mock function with given fields: pushNotification, userID
@@ -295,6 +337,72 @@ func (_m *Hooks) OnSendDailyTelemetry() {
 	_m.Called()
 }
 
+// OnSharedChannelsAttachmentSyncMsg provides a mock function with given fields: fi, post, rc
+func (_m *Hooks) OnSharedChannelsAttachmentSyncMsg(fi *model.FileInfo, post *model.Post, rc *model.RemoteCluster) error {
+	ret := _m.Called(fi, post, rc)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*model.FileInfo, *model.Post, *model.RemoteCluster) error); ok {
+		r0 = rf(fi, post, rc)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// OnSharedChannelsPing provides a mock function with given fields: rc
+func (_m *Hooks) OnSharedChannelsPing(rc *model.RemoteCluster) bool {
+	ret := _m.Called(rc)
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func(*model.RemoteCluster) bool); ok {
+		r0 = rf(rc)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
+}
+
+// OnSharedChannelsProfileImageSyncMsg provides a mock function with given fields: user, rc
+func (_m *Hooks) OnSharedChannelsProfileImageSyncMsg(user *model.User, rc *model.RemoteCluster) error {
+	ret := _m.Called(user, rc)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*model.User, *model.RemoteCluster) error); ok {
+		r0 = rf(user, rc)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// OnSharedChannelsSyncMsg provides a mock function with given fields: msg, rc
+func (_m *Hooks) OnSharedChannelsSyncMsg(msg *model.SyncMsg, rc *model.RemoteCluster) (model.SyncResponse, error) {
+	ret := _m.Called(msg, rc)
+
+	var r0 model.SyncResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*model.SyncMsg, *model.RemoteCluster) (model.SyncResponse, error)); ok {
+		return rf(msg, rc)
+	}
+	if rf, ok := ret.Get(0).(func(*model.SyncMsg, *model.RemoteCluster) model.SyncResponse); ok {
+		r0 = rf(msg, rc)
+	} else {
+		r0 = ret.Get(0).(model.SyncResponse)
+	}
+
+	if rf, ok := ret.Get(1).(func(*model.SyncMsg, *model.RemoteCluster) error); ok {
+		r1 = rf(msg, rc)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // OnWebSocketConnect provides a mock function with given fields: webConnID, userID
 func (_m *Hooks) OnWebSocketConnect(webConnID string, userID string) {
 	_m.Called(webConnID, userID)
@@ -303,6 +411,11 @@ func (_m *Hooks) OnWebSocketConnect(webConnID string, userID string) {
 // OnWebSocketDisconnect provides a mock function with given fields: webConnID, userID
 func (_m *Hooks) OnWebSocketDisconnect(webConnID string, userID string) {
 	_m.Called(webConnID, userID)
+}
+
+// PreferencesHaveChanged provides a mock function with given fields: c, preferences
+func (_m *Hooks) PreferencesHaveChanged(c *plugin.Context, preferences []model.Preference) {
+	_m.Called(c, preferences)
 }
 
 // ReactionHasBeenAdded provides a mock function with given fields: c, reaction
@@ -341,6 +454,11 @@ func (_m *Hooks) RunDataRetention(nowTime int64, batchSize int64) (int64, error)
 
 // ServeHTTP provides a mock function with given fields: c, w, r
 func (_m *Hooks) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Request) {
+	_m.Called(c, w, r)
+}
+
+// ServeMetrics provides a mock function with given fields: c, w, r
+func (_m *Hooks) ServeMetrics(c *plugin.Context, w http.ResponseWriter, r *http.Request) {
 	_m.Called(c, w, r)
 }
 
