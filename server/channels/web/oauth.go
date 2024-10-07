@@ -159,7 +159,7 @@ func authorizeOAuthPage(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	isAuthorized := false
 
-	if _, err := c.App.GetPreferenceByCategoryAndNameForUser(c.AppContext.Session().UserId, model.PreferenceCategoryAuthorizedOAuthApp, authRequest.ClientId); err == nil {
+	if _, err := c.App.GetPreferenceByCategoryAndNameForUser(c.AppContext, c.AppContext.Session().UserId, model.PreferenceCategoryAuthorizedOAuthApp, authRequest.ClientId); err == nil {
 		// when we support scopes we should check if the scopes match
 		isAuthorized = true
 	}
@@ -321,13 +321,14 @@ func completeOAuth(c *Context, w http.ResponseWriter, r *http.Request) {
 	} else if action == model.OAuthActionSSOToEmail {
 		redirectURL = app.GetProtocol(r) + "://" + r.Host + "/claim?email=" + url.QueryEscape(props["email"])
 	} else {
-		err = c.App.DoLogin(c.AppContext, w, r, user, "", isMobile, false, false)
+		session, err := c.App.DoLogin(c.AppContext, w, r, user, "", isMobile, false, false)
 		if err != nil {
 			err.Translate(c.AppContext.T)
 			mlog.Error(err.Error())
 			renderError(err)
 			return
 		}
+		c.AppContext = c.AppContext.WithSession(session)
 
 		// Old mobile version
 		if isMobile && !hasRedirectURL {
@@ -342,9 +343,9 @@ func completeOAuth(c *Context, w http.ResponseWriter, r *http.Request) {
 			})
 			utils.RenderMobileAuthComplete(w, redirectURL)
 			return
-		} else { // For web
-			c.App.AttachSessionCookies(c.AppContext, w, r)
 		}
+		// For web
+		c.App.AttachSessionCookies(c.AppContext, w, r)
 
 		desktopToken := ""
 		if val, ok := props["desktop_token"]; ok {

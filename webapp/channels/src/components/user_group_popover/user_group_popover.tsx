@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import {debounce} from 'lodash';
+import debounce from 'lodash/debounce';
 import React, {useEffect, useCallback, useState, useRef} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
@@ -12,7 +12,6 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
-import LocalizedIcon from 'components/localized_icon';
 import {QuickInput} from 'components/quick_input/quick_input';
 import GroupMemberList from 'components/user_group_popover/group_member_list';
 import UserGroupsModal from 'components/user_groups_modal';
@@ -21,7 +20,6 @@ import Popover from 'components/widgets/popover';
 
 import Constants, {A11yClassNames, A11yCustomEventTypes, ModalIdentifiers} from 'utils/constants';
 import type {A11yFocusEventDetail} from 'utils/constants';
-import {t} from 'utils/i18n';
 import * as Keyboard from 'utils/keyboard';
 import {shouldFocusMainTextbox} from 'utils/post_utils';
 
@@ -66,16 +64,19 @@ export type Props = {
     };
 }
 
-const UserGroupPopover = (props: Props) => {
-    const {
-        group,
-        actions,
-        hide,
-        returnFocus,
-        searchTerm,
-        showUserOverlay,
-    } = props;
+const UserGroupPopover = ({
+    actions,
+    group,
+    hide,
+    returnFocus,
+    searchTerm,
+    showUserOverlay,
 
+    // These props are not passed explictly to this component, but
+    // they are added when this component is passed as a child to Overlay.
+    // They are not typed in the component because they will cause more confusion.
+    ...popoverProps
+}: Props) => {
     const {formatMessage} = useIntl();
 
     const closeRef = useRef<HTMLButtonElement>(null);
@@ -185,8 +186,8 @@ const UserGroupPopover = (props: Props) => {
 
     return (
         <Popover
-            {...props}
             id='user-group-popover'
+            {...popoverProps}
         >
             {tabCatcher}
             <Body
@@ -209,9 +210,8 @@ const UserGroupPopover = (props: Props) => {
                             onClick={handleClose}
                             ref={closeRef}
                         >
-                            <LocalizedIcon
+                            <i
                                 className='icon icon-close'
-                                ariaLabel={{id: t('user_group_popover.close'), defaultMessage: 'Close'}}
                             />
                         </CloseButton>
                     </Heading>
@@ -319,7 +319,7 @@ const Heading = styled.div`
 
 const Subtitle = styled.div`
     font-size: 12px;
-    color: rgba(var(--center-channel-color-rgb), 0.64);
+    color: rgba(var(--center-channel-color-rgb), 0.75);
     display: flex;
 `;
 
