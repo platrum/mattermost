@@ -11,7 +11,7 @@ import type {Channel} from '@mattermost/types/channels';
 import type {Post} from '@mattermost/types/posts';
 import type {UserProfile} from '@mattermost/types/users';
 
-import {isDateLine, isStartOfNewMessages, isCreateComment} from 'mattermost-redux/utils/post_list';
+import {getNewMessagesIndex, isDateLine, isStartOfNewMessages, isCreateComment} from 'mattermost-redux/utils/post_list';
 
 import NewRepliesBanner from 'components/new_replies_banner';
 import FloatingTimestamp from 'components/post_view/floating_timestamp';
@@ -19,7 +19,7 @@ import {THREADING_TIME as BASE_THREADING_TIME} from 'components/threading/common
 
 import Constants from 'utils/constants';
 import DelayedAction from 'utils/delayed_action';
-import {getNewMessageIndex, getPreviousPostId, getLatestPostId} from 'utils/post_utils';
+import {getPreviousPostId, getLatestPostId} from 'utils/post_utils';
 import * as Utils from 'utils/utils';
 
 import type {PluginComponent} from 'types/store/plugins';
@@ -41,8 +41,9 @@ type Props = {
     useRelativeTimestamp: boolean;
     isMobileView: boolean;
     isThreadView: boolean;
-    lastViewedAt: number;
     newMessagesSeparatorActions: PluginComponent[];
+    inputPlaceholder?: string;
+    fromSuppressed?: boolean;
 }
 
 type State = {
@@ -166,7 +167,7 @@ class ThreadViewerVirtualized extends PureComponent<Props, State> {
             };
         }
 
-        const newMessagesSeparatorIndex = getNewMessageIndex(replyListIds);
+        const newMessagesSeparatorIndex = getNewMessagesIndex(replyListIds);
         if (newMessagesSeparatorIndex > 0) {
             return {
                 index: newMessagesSeparatorIndex,
@@ -248,7 +249,7 @@ class ThreadViewerVirtualized extends PureComponent<Props, State> {
         if (this.props.highlightedPostId) {
             postIndex = this.props.replyListIds.findIndex((postId) => postId === this.props.highlightedPostId);
         } else {
-            postIndex = getNewMessageIndex(this.props.replyListIds);
+            postIndex = getNewMessagesIndex(this.props.replyListIds);
         }
 
         return postIndex === -1 ? 0 : postIndex;
@@ -301,7 +302,7 @@ class ThreadViewerVirtualized extends PureComponent<Props, State> {
     };
 
     handleToastClick = () => {
-        const index = getNewMessageIndex(this.props.replyListIds);
+        const index = getNewMessagesIndex(this.props.replyListIds);
         if (index >= 0) {
             this.scrollToItem(index, 'start', OFFSET_TO_SHOW_TOAST);
         } else {
@@ -355,7 +356,8 @@ class ThreadViewerVirtualized extends PureComponent<Props, State> {
         if (isCreateComment(itemId)) {
             return (
                 <CreateComment
-                    focusOnMount={!this.props.isThreadView && (this.state.userScrolledToBottom || (!this.state.userScrolled && this.getInitialPostIndex() === 0))}
+                    placeholder={this.props.inputPlaceholder}
+                    focusOnMount={!this.props.fromSuppressed && !this.props.isThreadView && (this.state.userScrolledToBottom || (!this.state.userScrolled && this.getInitialPostIndex() === 0))}
                     isThreadView={this.props.isThreadView}
                     latestPostId={this.props.lastPost.id}
                     ref={this.postCreateContainerRef}
@@ -379,7 +381,6 @@ class ThreadViewerVirtualized extends PureComponent<Props, State> {
                     onCardClick={this.props.onCardClick}
                     previousPostId={getPreviousPostId(data, index)}
                     timestampProps={this.props.useRelativeTimestamp ? THREADING_TIME : undefined}
-                    lastViewedAt={this.props.lastViewedAt}
                     threadId={this.props.selected.id}
                     newMessagesSeparatorActions={this.props.newMessagesSeparatorActions}
                 />
@@ -397,7 +398,7 @@ class ThreadViewerVirtualized extends PureComponent<Props, State> {
 
     isNewMessagesVisible = (): boolean => {
         const {visibleStopIndex} = this.state;
-        const newMessagesSeparatorIndex = getNewMessageIndex(this.props.replyListIds);
+        const newMessagesSeparatorIndex = getNewMessagesIndex(this.props.replyListIds);
         if (visibleStopIndex != null) {
             return visibleStopIndex < newMessagesSeparatorIndex;
         }
