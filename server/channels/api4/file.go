@@ -75,6 +75,7 @@ func multipartReader(req *http.Request, stream io.Reader) (*multipart.Reader, er
 }
 
 func uploadFileStream(c *Context, w http.ResponseWriter, r *http.Request) {
+	c.Logger.Debug("file_upload_debug", mlog.String("action", "start_upload"), mlog.String("Filename", c.Params.Filename))
 	if !*c.App.Config().FileSettings.EnableFileAttachments {
 		c.Err = model.NewAppError("uploadFileStream",
 			"api.file.attachments.disabled.app_error",
@@ -108,12 +109,15 @@ func uploadFileStream(c *Context, w http.ResponseWriter, r *http.Request) {
 	_, err := parseMultipartRequestHeader(r)
 	switch err {
 	case nil:
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "start uploadFileMultipart"), mlog.String("Filename", c.Params.Filename))
 		fileUploadResponse = uploadFileMultipart(c, r, nil, timestamp)
 
 	case http.ErrNotMultipart:
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "start uploadFileSimple"), mlog.String("Filename", c.Params.Filename))
 		fileUploadResponse = uploadFileSimple(c, r, timestamp)
 
 	default:
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileStream"), mlog.Err(err), mlog.String("Filename", c.Params.Filename))
 		c.Err = model.NewAppError("uploadFileStream",
 			"api.file.upload_file.read_request.app_error",
 			nil, err.Error(), http.StatusBadRequest)
@@ -125,12 +129,14 @@ func uploadFileStream(c *Context, w http.ResponseWriter, r *http.Request) {
 	// Write the response values to the output upon return
 	w.WriteHeader(http.StatusCreated)
 	if err := json.NewEncoder(w).Encode(fileUploadResponse); err != nil {
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileStream"), mlog.Err(err), mlog.String("Filename", c.Params.Filename))
 		c.Logger.Warn("Error while writing response", mlog.Err(err))
 	}
 }
 
 // uploadFileSimple uploads a file from a simple POST with the file in the request body
 func uploadFileSimple(c *Context, r *http.Request, timestamp time.Time) *model.FileUploadResponse {
+	c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileSimple"), mlog.String("Filename", c.Params.Filename))
 	// Simple POST with the file in the body and all metadata in the args.
 	c.RequireChannelId()
 	c.RequireFilename()
@@ -155,7 +161,7 @@ func uploadFileSimple(c *Context, r *http.Request, timestamp time.Time) *model.F
 		creatorId = model.BookmarkFileOwner
 		audit.AddEventParameter(auditRec, model.BookmarkFileOwner, true)
 	}
-
+	c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileSimple > UploadFileX"), mlog.String("Filename", c.Params.Filename))
 	info, appErr := c.App.UploadFileX(c.AppContext, c.Params.ChannelId, c.Params.Filename, r.Body,
 		app.UploadFileSetTeamId(FileTeamId),
 		app.UploadFileSetUserId(creatorId),
@@ -163,6 +169,7 @@ func uploadFileSimple(c *Context, r *http.Request, timestamp time.Time) *model.F
 		app.UploadFileSetContentLength(r.ContentLength),
 		app.UploadFileSetClientId(clientId))
 	if appErr != nil {
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileSimple > UploadFileX > nill"), mlog.String("Filename", c.Params.Filename))
 		c.Err = appErr
 		return nil
 	}
@@ -174,6 +181,7 @@ func uploadFileSimple(c *Context, r *http.Request, timestamp time.Time) *model.F
 	if clientId != "" {
 		fileUploadResponse.ClientIds = []string{clientId}
 	}
+	c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileSimple > Success"))
 	auditRec.Success()
 	return fileUploadResponse
 }
@@ -184,6 +192,7 @@ func uploadFileSimple(c *Context, r *http.Request, timestamp time.Time) *model.F
 // entire message recursively calling itself in stream mode. In case of (b) it
 // calls to uploadFileMultipartLegacy for legacy support
 func uploadFileMultipart(c *Context, r *http.Request, asStream io.Reader, timestamp time.Time) *model.FileUploadResponse {
+	c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileMultipart start preparing file"))
 	expectClientIds := true
 	var clientIds []string
 	resp := model.FileUploadResponse{
@@ -228,6 +237,7 @@ NextPart:
 			continue
 		}
 		filename := part.FileName()
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileMultipart > NextPart"), mlog.String("filename", filename))
 		if filename == "" {
 			var b bytes.Buffer
 			_, err = io.CopyN(&b, part, maxMultipartFormDataBytes)
@@ -284,6 +294,7 @@ NextPart:
 			// Got file before channel_id, fall back to legacy buffered mode
 			mr, err = multipartReader(r, io.MultiReader(buf, r.Body))
 			if err != nil {
+				c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileMultipart"), mlog.Err(err), mlog.String("Filename", filename))
 				c.Err = model.NewAppError("uploadFileMultipart",
 					"api.file.upload_file.read_request.app_error",
 					nil, err.Error(), http.StatusBadRequest)
@@ -328,7 +339,7 @@ NextPart:
 			creatorId = model.BookmarkFileOwner
 			audit.AddEventParameter(auditRec, model.BookmarkFileOwner, true)
 		}
-
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileMultipart > UploadFileX"), mlog.String("filename", filename))
 		info, appErr := c.App.UploadFileX(c.AppContext, c.Params.ChannelId, filename, part,
 			app.UploadFileSetTeamId(FileTeamId),
 			app.UploadFileSetUserId(creatorId),
@@ -338,10 +349,11 @@ NextPart:
 		if appErr != nil {
 			c.Err = appErr
 			c.LogAuditRec(auditRec)
+			c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileMultipart > UploadFileX > nill"), mlog.String("filename", filename))
 			return nil
 		}
 		audit.AddEventParameterAuditable(auditRec, "file", info)
-
+		c.Logger.Debug("file_upload_debug", mlog.String("action", "uploadFileMultipart > Success"), mlog.String("filename", filename))
 		auditRec.Success()
 		c.LogAuditRec(auditRec)
 
