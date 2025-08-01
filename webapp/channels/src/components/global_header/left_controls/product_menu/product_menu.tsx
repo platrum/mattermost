@@ -139,8 +139,6 @@ const ProductMenu = (): JSX.Element => {
                         aria-label={formatMessage({id: 'global_header.productSwitchMenu', defaultMessage: 'Product switch menu'})}
                         aria-controls='product-switcher-menu'
                     />
-                    {license.IsLicensed === 'false' && <ProductBrandingTeamEdition/>}
-                    {license.IsLicensed === 'true' && <ProductBranding/>}
                 </ProductMenuContainer>
                 <Menu
                     listId={'product-switcher-menu-dropdown'}
@@ -161,11 +159,6 @@ const ProductMenu = (): JSX.Element => {
                         onClick={handleClick}
                         handleVisitConsoleClick={handleVisitConsoleClick}
                     />
-                    <Menu.Group>
-                        <Menu.StartTrial
-                            id='startTrial'
-                        />
-                    </Menu.Group>
                 </Menu>
             </MenuWrapper>
         </div>
