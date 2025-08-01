@@ -124,7 +124,7 @@ func (a *App) CreateBot(rctx request.CTX, bot *model.Bot) (*model.Bot, *model.Ap
 
 	savedBot, nErr := a.Srv().Store().Bot().Save(bot)
 	if nErr != nil {
-		a.Srv().Store().User().PermanentDelete(bot.UserId)
+		a.Srv().Store().User().PermanentDelete(rctx, bot.UserId)
 		var appErr *model.AppError
 		switch {
 		case errors.As(nErr, &appErr): // in case we haven't converted to plain error.
@@ -227,7 +227,7 @@ func (a *App) getOrCreateBot(rctx request.CTX, botDef *model.Bot) (*model.Bot, *
 		//save the bot
 		savedBot, nErr := a.Srv().Store().Bot().Save(botDef)
 		if nErr != nil {
-			a.Srv().Store().User().PermanentDelete(savedBot.UserId)
+			a.Srv().Store().User().PermanentDelete(rctx, savedBot.UserId)
 			var nAppErr *model.AppError
 			switch {
 			case errors.As(nErr, &nAppErr): // in case we haven't converted to plain error.
@@ -414,7 +414,7 @@ func (a *App) PermanentDeleteBot(rctx request.CTX, botUserId string) *model.AppE
 		}
 	}
 
-	if err := a.Srv().Store().User().PermanentDelete(botUserId); err != nil {
+	if err := a.Srv().Store().User().PermanentDelete(rctx, botUserId); err != nil {
 		return model.NewAppError("PermanentDeleteBot", "app.user.permanent_delete.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
@@ -600,6 +600,27 @@ func (a *App) getDisableBotSysadminMessage(user *model.User, userBots model.BotL
 
 // ConvertUserToBot converts a user to bot.
 func (a *App) ConvertUserToBot(rctx request.CTX, user *model.User) (*model.Bot, *model.AppError) {
+	// Clear OAuth credentials before converting to bot
+	if user.AuthService != "" {
+		emptyString := ""
+		userAuth := &model.UserAuth{
+			AuthService: "",
+			AuthData:    &emptyString,
+		}
+
+		_, err := a.UpdateUserAuth(rctx, user.Id, userAuth)
+		if err != nil {
+			return nil, err
+		}
+
+		// Refresh user data
+		updatedUser, err := a.GetUser(user.Id)
+		if err != nil {
+			return nil, err
+		}
+		user = updatedUser
+	}
+
 	bot, err := a.Srv().Store().Bot().Save(model.BotFromUser(user))
 	if err != nil {
 		var appErr *model.AppError
@@ -610,5 +631,10 @@ func (a *App) ConvertUserToBot(rctx request.CTX, user *model.User) (*model.Bot, 
 			return nil, model.NewAppError("CreateBot", "app.bot.createbot.internal_error", nil, "", http.StatusInternalServerError).Wrap(err)
 		}
 	}
+	if err := a.RevokeAllSessions(rctx, user.Id); err != nil {
+		return nil, err
+	}
+	a.InvalidateCacheForUser(user.Id)
+
 	return bot, nil
 }

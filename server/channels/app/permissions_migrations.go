@@ -1181,6 +1181,87 @@ func (a *App) getAddChannelBookmarksPermissionsMigration() (permissionsMap, erro
 	return transformations, nil
 }
 
+func (a *App) getAddManageJobAncillaryPermissionsMigration() (permissionsMap, error) {
+	transformations := []permissionTransformation{}
+
+	transformations = append(transformations, permissionTransformation{
+		On:  permissionExists(model.PermissionSysconsoleWriteAuthenticationLdap.Id),
+		Add: []string{model.PermissionManageLdapSyncJob.Id},
+	})
+
+	transformations = append(transformations, permissionTransformation{
+		On:  permissionExists(model.PermissionSysconsoleWriteComplianceDataRetentionPolicy.Id),
+		Add: []string{model.PermissionManageDataRetentionJob.Id},
+	})
+
+	transformations = append(transformations, permissionTransformation{
+		On:  permissionExists(model.PermissionSysconsoleWriteExperimentalBleve.Id),
+		Add: []string{model.PermissionManagePostBleveIndexesJob.Id},
+	})
+
+	transformations = append(transformations, permissionTransformation{
+		On:  permissionExists(model.PermissionSysconsoleWriteComplianceComplianceExport.Id),
+		Add: []string{model.PermissionManageComplianceExportJob.Id},
+	})
+
+	transformations = append(transformations, permissionTransformation{
+		On: permissionExists(model.PermissionSysconsoleWriteEnvironmentElasticsearch.Id),
+		Add: []string{
+			model.PermissionManageElasticsearchPostIndexingJob.Id,
+			model.PermissionManageElasticsearchPostAggregationJob.Id,
+		},
+	})
+
+	return transformations, nil
+}
+
+func (a *App) getFixReadAuditsPermissionMigration() (permissionsMap, error) {
+	transformations := []permissionTransformation{}
+
+	transformations = append(transformations, permissionTransformation{
+		On:     permissionExists(model.PermissionSysconsoleReadComplianceCustomTermsOfService.Id),
+		Remove: []string{model.PermissionReadAudits.Id},
+	})
+
+	transformations = append(transformations, permissionTransformation{
+		On:  permissionExists(model.PermissionSysconsoleReadComplianceComplianceMonitoring.Id),
+		Add: []string{model.PermissionReadAudits.Id},
+	})
+	return transformations, nil
+}
+
+func (a *App) removeGetAnalyticsPermissionMigration() (permissionsMap, error) {
+	transformations := []permissionTransformation{}
+
+	transformations = append(transformations, permissionTransformation{
+		On:     permissionExists(model.PermissionSysconsoleReadUserManagementUsers.Id),
+		Remove: []string{model.PermissionGetAnalytics.Id},
+	})
+
+	transformations = append(transformations, permissionTransformation{
+		On:  permissionExists(model.PermissionSysconsoleReadReportingTeamStatistics.Id),
+		Add: []string{model.PermissionGetAnalytics.Id},
+	})
+	return transformations, nil
+}
+
+// Only sysadmins, team admins, and users with channels and groups managements have access to "convert channel to public"
+func (a *App) getRestrictAcessToChannelConversionToPublic() (permissionsMap, error) {
+	return []permissionTransformation{
+		{
+			On: permissionAnd(
+				isNotRole(model.SystemAdminRoleId),
+				isNotRole(model.TeamAdminRoleId),
+				permissionOr(
+					permissionNotExists(model.PermissionSysconsoleWriteUserManagementChannels.Id),
+					permissionNotExists(model.PermissionSysconsoleWriteUserManagementGroups.Id),
+				),
+			),
+			Remove: []string{PermissionConvertPrivateChannelToPublic},
+		},
+	}, nil
+}
+
 // DoPermissionsMigrations execute all the permissions migrations need by the current version.
 func (a *App) DoPermissionsMigrations() error {
 	return a.Srv().doPermissionsMigrations()
@@ -1228,6 +1309,10 @@ func (s *Server) doPermissionsMigrations() error {
 		{Key: model.MigrationKeyAddIPFilteringPermissions, Migration: a.getAddIPFilterPermissionsMigration},
 		{Key: model.MigrationKeyAddOutgoingOAuthConnectionsPermissions, Migration: a.getAddOutgoingOAuthConnectionsPermissions},
 		{Key: model.MigrationKeyAddChannelBookmarksPermissions, Migration: a.getAddChannelBookmarksPermissionsMigration},
+		{Key: model.MigrationKeyAddManageJobAncillaryPermissions, Migration: a.getAddManageJobAncillaryPermissionsMigration},
+		{Key: model.RestrictAccessToChannelConversionToPublic, Migration: a.getRestrictAcessToChannelConversionToPublic},
+		{Key: model.MigrationKeyFixReadAuditsPermission, Migration: a.getFixReadAuditsPermissionMigration},
+		{Key: model.MigrationRemoveGetAnalyticsPermission, Migration: a.removeGetAnalyticsPermissionMigration},
 	}
 
 	roles, err := s.Store().Role().GetAll()

@@ -113,16 +113,26 @@ func updatePreferences(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	var sanitizedPreferences model.Preferences
+	channelMap := make(map[string]*model.Channel)
 
 	for _, pref := range preferences {
 		if pref.Category == model.PreferenceCategoryFlaggedPost {
-			post, err := c.App.GetSinglePost(pref.Name, false)
+			post, err := c.App.GetSinglePost(c.AppContext, pref.Name, false)
 			if err != nil {
 				c.SetInvalidParam("preference.name")
 				return
 			}
 
-			if !c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), post.ChannelId, model.PermissionReadChannelContent) {
+			channel, ok := channelMap[post.ChannelId]
+			if !ok {
+				channel, err = c.App.GetChannel(c.AppContext, post.ChannelId)
+				if err != nil {
+					c.Err = err
+					return
+				}
+			}
+
+			if !c.App.SessionHasPermissionToReadChannel(c.AppContext, *c.AppContext.Session(), channel) {
 				c.SetPermissionError(model.PermissionReadChannelContent)
 				return
 			}

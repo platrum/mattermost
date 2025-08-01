@@ -43,7 +43,7 @@ const (
 	MinioSecretKey = "miniosecretkey"
 	MinioBucket    = "mattermost-test"
 
-	PasswordMaximumLength = 64
+	PasswordMaximumLength = 72
 	PasswordMinimumLength = 5
 
 	ServiceGitlab    = "gitlab"
@@ -153,6 +153,7 @@ const (
 	LdapSettingsDefaultGroupDisplayNameAttribute = ""
 	LdapSettingsDefaultGroupIdAttribute          = ""
 	LdapSettingsDefaultPictureAttribute          = ""
+	LdapSettingsDefaultMaximumLoginAttempts      = 10
 
 	SamlSettingsDefaultIdAttribute        = ""
 	SamlSettingsDefaultGuestAttribute     = ""
@@ -178,7 +179,8 @@ const (
 	NativeappSettingsDefaultAndroidAppDownloadLink = "https://mattermost.com/pl/android-app/"
 	NativeappSettingsDefaultIosAppDownloadLink     = "https://mattermost.com/pl/ios-app/"
 
-	ExperimentalSettingsDefaultLinkMetadataTimeoutMilliseconds = 5000
+	ExperimentalSettingsDefaultLinkMetadataTimeoutMilliseconds                       = 5000
+	ExperimentalSettingsDefaultUsersStatusAndProfileFetchingPollIntervalMilliseconds = 3000
 
 	AnalyticsSettingsDefaultMaxUsersForStatistics = 2500
 
@@ -204,6 +206,8 @@ const (
 	ElasticsearchSettingsDefaultLiveIndexingBatchSize       = 1
 	ElasticsearchSettingsDefaultRequestTimeoutSeconds       = 30
 	ElasticsearchSettingsDefaultBatchSize                   = 10000
+	ElasticsearchSettingsESBackend                          = "elasticsearch"
+	ElasticsearchSettingsOSBackend                          = "opensearch"
 
 	BleveSettingsDefaultIndexDir  = ""
 	BleveSettingsDefaultBatchSize = 10000
@@ -340,6 +344,7 @@ type ServiceSettings struct {
 	CorsDebug                           *bool    `access:"integrations_cors,write_restrictable,cloud_restrictable"`
 	AllowCookiesForSubdomains           *bool    `access:"write_restrictable,cloud_restrictable"`
 	ExtendSessionLengthWithActivity     *bool    `access:"environment_session_lengths,write_restrictable,cloud_restrictable"`
+	TerminateSessionsOnPasswordChange   *bool    `access:"environment_session_lengths,write_restrictable,cloud_restrictable"`
 
 	// Deprecated
 	SessionLengthWebInDays  *int `access:"environment_session_lengths,write_restrictable,cloud_restrictable"` // telemetry: none
@@ -403,7 +408,6 @@ type ServiceSettings struct {
 	CollapsedThreads                                  *string `access:"experimental_features"`
 	ManagedResourcePaths                              *string `access:"environment_web_server,write_restrictable,cloud_restrictable"`
 	EnableCustomGroups                                *bool   `access:"site_users_and_teams"`
-	SelfHostedPurchase                                *bool   `access:"write_restrictable,cloud_restrictable"`
 	AllowSyncedDrafts                                 *bool   `access:"site_posts"`
 	UniqueEmojiReactionLimitPerPost                   *int    `access:"site_posts"`
 	RefreshPostStatsRunTime                           *string `access:"site_users_and_teams"`
@@ -629,6 +633,11 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 	// Must be manually enabled for existing installations.
 	if s.ExtendSessionLengthWithActivity == nil {
 		s.ExtendSessionLengthWithActivity = NewBool(!isUpdate)
+	}
+
+	// Must be manually enabled for existing installations.
+	if s.TerminateSessionsOnPasswordChange == nil {
+		s.TerminateSessionsOnPasswordChange = NewBool(!isUpdate)
 	}
 
 	if s.SessionLengthWebInDays == nil {
@@ -903,10 +912,6 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 		s.AllowSyncedDrafts = NewBool(true)
 	}
 
-	if s.SelfHostedPurchase == nil {
-		s.SelfHostedPurchase = NewBool(true)
-	}
-
 	if s.UniqueEmojiReactionLimitPerPost == nil {
 		s.UniqueEmojiReactionLimitPerPost = NewInt(ServiceSettingsDefaultUniqueReactionsPerPost)
 	}
@@ -985,9 +990,11 @@ func (s *ClusterSettings) SetDefaults() {
 }
 
 type MetricsSettings struct {
-	Enable           *bool   `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"`
-	BlockProfileRate *int    `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"`
-	ListenAddress    *string `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"` // telemetry: none
+	Enable                    *bool   `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"`
+	BlockProfileRate          *int    `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"`
+	ListenAddress             *string `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"` // telemetry: none
+	EnableClientMetrics       *bool   `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"`
+	EnableNotificationMetrics *bool   `access:"environment_performance_monitoring,write_restrictable,cloud_restrictable"`
 }
 
 func (s *MetricsSettings) SetDefaults() {
@@ -1002,18 +1009,28 @@ func (s *MetricsSettings) SetDefaults() {
 	if s.BlockProfileRate == nil {
 		s.BlockProfileRate = NewInt(0)
 	}
+
+	if s.EnableClientMetrics == nil {
+		s.EnableClientMetrics = NewBool(true)
+	}
+
+	if s.EnableNotificationMetrics == nil {
+		s.EnableNotificationMetrics = NewBool(true)
+	}
 }
 
 type ExperimentalSettings struct {
-	ClientSideCertEnable            *bool   `access:"experimental_features,cloud_restrictable"`
-	ClientSideCertCheck             *string `access:"experimental_features,cloud_restrictable"`
-	LinkMetadataTimeoutMilliseconds *int64  `access:"experimental_features,write_restrictable,cloud_restrictable"`
-	RestrictSystemAdmin             *bool   `access:"experimental_features,write_restrictable"`
-	EnableSharedChannels            *bool   `access:"experimental_features"`
-	EnableRemoteClusterService      *bool   `access:"experimental_features"`
-	DisableAppBar                   *bool   `access:"experimental_features"`
-	DisableRefetchingOnBrowserFocus *bool   `access:"experimental_features"`
-	DelayChannelAutocomplete        *bool   `access:"experimental_features"`
+	ClientSideCertEnable                                  *bool   `access:"experimental_features,cloud_restrictable"`
+	ClientSideCertCheck                                   *string `access:"experimental_features,cloud_restrictable"`
+	LinkMetadataTimeoutMilliseconds                       *int64  `access:"experimental_features,write_restrictable,cloud_restrictable"`
+	RestrictSystemAdmin                                   *bool   `access:"experimental_features,write_restrictable"`
+	EnableSharedChannels                                  *bool   `access:"experimental_features"`
+	EnableRemoteClusterService                            *bool   `access:"experimental_features"`
+	DisableAppBar                                         *bool   `access:"experimental_features"`
+	DisableRefetchingOnBrowserFocus                       *bool   `access:"experimental_features"`
+	DelayChannelAutocomplete                              *bool   `access:"experimental_features"`
+	DisableWakeUpReconnectHandler                         *bool   `access:"experimental_features"`
+	UsersStatusAndProfileFetchingPollIntervalMilliseconds *int64  `access:"experimental_features"`
 }
 
 func (s *ExperimentalSettings) SetDefaults() {
@@ -1051,6 +1068,14 @@ func (s *ExperimentalSettings) SetDefaults() {
 
 	if s.DelayChannelAutocomplete == nil {
 		s.DelayChannelAutocomplete = NewBool(false)
+	}
+
+	if s.DisableWakeUpReconnectHandler == nil {
+		s.DisableWakeUpReconnectHandler = NewBool(false)
+	}
+
+	if s.UsersStatusAndProfileFetchingPollIntervalMilliseconds == nil {
+		s.UsersStatusAndProfileFetchingPollIntervalMilliseconds = NewInt64(ExperimentalSettingsDefaultUsersStatusAndProfileFetchingPollIntervalMilliseconds)
 	}
 }
 
@@ -1395,7 +1420,7 @@ type ExperimentalAuditSettings struct {
 	FileMaxBackups        *int            `access:"experimental_features,write_restrictable,cloud_restrictable"`
 	FileCompress          *bool           `access:"experimental_features,write_restrictable,cloud_restrictable"`
 	FileMaxQueueSize      *int            `access:"experimental_features,write_restrictable,cloud_restrictable"`
-	AdvancedLoggingJSON   json.RawMessage `access:"experimental_features,write_restrictable,cloud_restrictable"`
+	AdvancedLoggingJSON   json.RawMessage `access:"experimental_features,write_restrictable"`
 	AdvancedLoggingConfig *string         `access:"experimental_features,write_restrictable,cloud_restrictable"` // Deprecated: use `AdvancedLoggingJSON`
 }
 
@@ -2285,14 +2310,15 @@ type ClientRequirements struct {
 
 type LdapSettings struct {
 	// Basic
-	Enable             *bool   `access:"authentication_ldap"`
-	EnableSync         *bool   `access:"authentication_ldap"`
-	LdapServer         *string `access:"authentication_ldap"` // telemetry: none
-	LdapPort           *int    `access:"authentication_ldap"` // telemetry: none
-	ConnectionSecurity *string `access:"authentication_ldap"`
-	BaseDN             *string `access:"authentication_ldap"` // telemetry: none
-	BindUsername       *string `access:"authentication_ldap"` // telemetry: none
-	BindPassword       *string `access:"authentication_ldap"` // telemetry: none
+	Enable               *bool   `access:"authentication_ldap"`
+	EnableSync           *bool   `access:"authentication_ldap"`
+	LdapServer           *string `access:"authentication_ldap"` // telemetry: none
+	LdapPort             *int    `access:"authentication_ldap"` // telemetry: none
+	ConnectionSecurity   *string `access:"authentication_ldap"`
+	BaseDN               *string `access:"authentication_ldap"` // telemetry: none
+	BindUsername         *string `access:"authentication_ldap"` // telemetry: none
+	BindPassword         *string `access:"authentication_ldap"` // telemetry: none
+	MaximumLoginAttempts *int    `access:"authentication_ldap"` // telemetry: none
 
 	// Filtering
 	UserFilter        *string `access:"authentication_ldap"` // telemetry: none
@@ -2381,6 +2407,10 @@ func (s *LdapSettings) SetDefaults() {
 
 	if s.BindPassword == nil {
 		s.BindPassword = NewString("")
+	}
+
+	if s.MaximumLoginAttempts == nil {
+		s.MaximumLoginAttempts = NewPointer(LdapSettingsDefaultMaximumLoginAttempts)
 	}
 
 	if s.UserFilter == nil {
@@ -2719,6 +2749,7 @@ type NativeAppSettings struct {
 	AppDownloadLink        *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
 	AndroidAppDownloadLink *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
 	IosAppDownloadLink     *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
+	MobileExternalBrowser  *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
 }
 
 func (s *NativeAppSettings) SetDefaults() {
@@ -2737,10 +2768,15 @@ func (s *NativeAppSettings) SetDefaults() {
 	if s.AppCustomURLSchemes == nil {
 		s.AppCustomURLSchemes = GetDefaultAppCustomURLSchemes()
 	}
+
+	if s.MobileExternalBrowser == nil {
+		s.MobileExternalBrowser = NewPointer(false)
+	}
 }
 
 type ElasticsearchSettings struct {
 	ConnectionURL                 *string `access:"environment_elasticsearch,write_restrictable,cloud_restrictable"`
+	Backend                       *string `access:"environment_elasticsearch,write_restrictable,cloud_restrictable"`
 	Username                      *string `access:"environment_elasticsearch,write_restrictable,cloud_restrictable"`
 	Password                      *string `access:"environment_elasticsearch,write_restrictable,cloud_restrictable"`
 	EnableIndexing                *bool   `access:"environment_elasticsearch,write_restrictable,cloud_restrictable"`
@@ -2771,6 +2807,10 @@ type ElasticsearchSettings struct {
 func (s *ElasticsearchSettings) SetDefaults() {
 	if s.ConnectionURL == nil {
 		s.ConnectionURL = NewString(ElasticsearchSettingsDefaultConnectionURL)
+	}
+
+	if s.Backend == nil {
+		s.Backend = NewString(ElasticsearchSettingsESBackend)
 	}
 
 	if s.Username == nil {
@@ -3870,6 +3910,10 @@ func (s *LdapSettings) isValid() *AppError {
 			return NewAppError("Config.IsValid", "model.config.is_valid.ldap_server", nil, "", http.StatusBadRequest)
 		}
 
+		if *s.MaximumLoginAttempts <= 0 {
+			return NewAppError("Config.IsValid", "model.config.is_valid.ldap_max_login_attempts.app_error", nil, "", http.StatusBadRequest)
+		}
+
 		if *s.BaseDN == "" {
 			return NewAppError("Config.IsValid", "model.config.is_valid.ldap_basedn", nil, "", http.StatusBadRequest)
 		}
@@ -4149,6 +4193,10 @@ func (s *ElasticsearchSettings) isValid() *AppError {
 				return NewAppError("Config.IsValid", "model.config.is_valid.elastic_search.ignored_indexes_dash_prefix.app_error", nil, "", http.StatusBadRequest)
 			}
 		}
+	}
+
+	if *s.Backend != ElasticsearchSettingsOSBackend && *s.Backend != ElasticsearchSettingsESBackend {
+		return NewAppError("Config.IsValid", "model.config.is_valid.elastic_search.invalid_backend.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	return nil

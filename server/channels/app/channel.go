@@ -497,13 +497,14 @@ func (a *App) CreateGroupChannel(c request.CTX, userIDs []string, creatorId stri
 		return nil, err
 	}
 
+	jsonIDs := model.ArrayToJSON(userIDs)
 	for _, userID := range userIDs {
 		a.InvalidateCacheForUser(userID)
-	}
 
-	message := model.NewWebSocketEvent(model.WebsocketEventGroupAdded, "", channel.Id, "", nil, "")
-	message.Add("teammate_ids", model.ArrayToJSON(userIDs))
-	a.Publish(message)
+		message := model.NewWebSocketEvent(model.WebsocketEventGroupAdded, "", channel.Id, userID, nil, "")
+		message.Add("teammate_ids", jsonIDs)
+		a.Publish(message)
+	}
 
 	return channel, nil
 }
@@ -622,12 +623,12 @@ func (a *App) UpdateChannel(c request.CTX, channel *model.Channel) (*model.Chann
 	_, err := a.Srv().Store().Channel().Update(c, channel)
 	if err != nil {
 		var appErr *model.AppError
+		var uniqueConstraintErr *store.ErrUniqueConstraint
 		var invErr *store.ErrInvalidInput
 		switch {
+		case errors.As(err, &uniqueConstraintErr):
+			return nil, model.NewAppError("UpdateChannel", store.ChannelExistsError, nil, "", http.StatusBadRequest).Wrap(err)
 		case errors.As(err, &invErr):
-			if invErr.Entity == "Channel" && invErr.Field == "Name" {
-				return nil, model.NewAppError("UpdateChannel", store.ChannelExistsError, nil, "", http.StatusBadRequest).Wrap(err)
-			}
 			return nil, model.NewAppError("UpdateChannel", "app.channel.update.bad_id", nil, "", http.StatusBadRequest).Wrap(err)
 		case errors.As(err, &appErr):
 			return nil, appErr
@@ -764,7 +765,12 @@ func (a *App) RestoreChannel(c request.CTX, channel *model.Channel, userID strin
 	channel.DeleteAt = 0
 	a.Srv().Platform().InvalidateCacheForChannel(channel)
 
-	message := model.NewWebSocketEvent(model.WebsocketEventChannelRestored, channel.TeamId, "", "", nil, "")
+	var message *model.WebSocketEvent
+	if channel.Type == model.ChannelTypeOpen {
+		message = model.NewWebSocketEvent(model.WebsocketEventChannelRestored, channel.TeamId, "", "", nil, "")
+	} else {
+		message = model.NewWebSocketEvent(model.WebsocketEventChannelRestored, "", channel.Id, "", nil, "")
+	}
 	message.Add("channel_id", channel.Id)
 	a.Publish(message)
 
@@ -1215,6 +1221,10 @@ func (a *App) UpdateChannelMemberSchemeRoles(c request.CTX, channelID string, us
 		return nil, model.NewAppError("UpdateChannelMemberSchemeRoles", "api.channel.update_channel_member_roles.user_and_guest.app_error", nil, "", http.StatusBadRequest)
 	}
 
+	if !isSchemeUser {
+		return nil, model.NewAppError("UpdateChannelMemberSchemeRoles", "api.channel.update_channel_member_roles.unset_user_scheme.app_error", nil, "", http.StatusBadRequest)
+	}
+
 	member.SchemeAdmin = isSchemeAdmin
 	member.SchemeUser = isSchemeUser
 	member.SchemeGuest = isSchemeGuest
@@ -1292,7 +1302,7 @@ func (a *App) UpdateChannelMemberNotifyProps(c request.CTX, data map[string]stri
 	a.invalidateCacheForChannelMembersNotifyProps(member.ChannelId)
 
 	// Notify the clients that the member notify props changed
-	err = a.sendUpdateChannelMemberNotifyPropsEvent(member)
+	err = a.sendUpdateChannelMemberEvent(member)
 	if err != nil {
 		return nil, model.NewAppError("UpdateChannelMemberNotifyProps", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
@@ -1333,7 +1343,7 @@ func (a *App) PatchChannelMembersNotifyProps(c request.CTX, members []*model.Cha
 
 	// Notify clients that their notify props have changed
 	for _, member := range updated {
-		err := a.sendUpdateChannelMemberNotifyPropsEvent(member)
+		err := a.sendUpdateChannelMemberEvent(member)
 		if err != nil {
 			c.Logger().Warn("Failed to send WebSocket event for updated channel member notify props", mlog.Err(err))
 		}
@@ -1342,7 +1352,7 @@ func (a *App) PatchChannelMembersNotifyProps(c request.CTX, members []*model.Cha
 	return updated, nil
 }
 
-func (a *App) sendUpdateChannelMemberNotifyPropsEvent(member *model.ChannelMember) error {
+func (a *App) sendUpdateChannelMemberEvent(member *model.ChannelMember) error {
 	evt := model.NewWebSocketEvent(model.WebsocketEventChannelMemberUpdated, "", "", member.UserId, nil, "")
 	memberJSON, jsonErr := json.Marshal(member)
 	if jsonErr != nil {
@@ -1497,7 +1507,12 @@ func (a *App) DeleteChannel(c request.CTX, channel *model.Channel, userID string
 
 	a.Srv().Platform().InvalidateCacheForChannel(channel)
 
-	message := model.NewWebSocketEvent(model.WebsocketEventChannelDeleted, channel.TeamId, "", "", nil, "")
+	var message *model.WebSocketEvent
+	if channel.Type == model.ChannelTypeOpen {
+		message = model.NewWebSocketEvent(model.WebsocketEventChannelDeleted, channel.TeamId, "", "", nil, "")
+	} else {
+		message = model.NewWebSocketEvent(model.WebsocketEventChannelDeleted, "", channel.Id, "", nil, "")
+	}
 	message.Add("channel_id", channel.Id)
 	message.Add("delete_at", deleteAt)
 	a.Publish(message)
@@ -1587,10 +1602,17 @@ func (a *App) AddUserToChannel(c request.CTX, user *model.User, channel *model.C
 		return nil, err
 	}
 
-	message := model.NewWebSocketEvent(model.WebsocketEventUserAdded, "", channel.Id, "", nil, "")
+	// We are sending separate websocket events to the user added and to the channel
+	// This is to get around potential cluster syncing issues where other nodes may not receive the most up to date channel members
+	message := model.NewWebSocketEvent(model.WebsocketEventUserAdded, "", channel.Id, "", map[string]bool{user.Id: true}, "")
 	message.Add("user_id", user.Id)
 	message.Add("team_id", channel.TeamId)
 	a.Publish(message)
+
+	userMessage := model.NewWebSocketEvent(model.WebsocketEventUserAdded, "", channel.Id, user.Id, nil, "")
+	userMessage.Add("user_id", user.Id)
+	userMessage.Add("team_id", channel.TeamId)
+	a.Publish(userMessage)
 
 	return newMember, nil
 }
@@ -1944,9 +1966,11 @@ func (a *App) GetAllChannels(c request.CTX, page, perPage int, opts model.Channe
 		opts.ExcludeChannelNames = a.DefaultChannelNames(c)
 	}
 	storeOpts := store.ChannelSearchOpts{
-		ExcludeChannelNames:      opts.ExcludeChannelNames,
 		NotAssociatedToGroup:     opts.NotAssociatedToGroup,
 		IncludeDeleted:           opts.IncludeDeleted,
+		ExcludeChannelNames:      opts.ExcludeChannelNames,
+		GroupConstrained:         opts.GroupConstrained,
+		ExcludeGroupConstrained:  opts.ExcludeGroupConstrained,
 		ExcludePolicyConstrained: opts.ExcludePolicyConstrained,
 		IncludePolicyID:          opts.IncludePolicyID,
 	}
@@ -1963,9 +1987,13 @@ func (a *App) GetAllChannelsCount(c request.CTX, opts model.ChannelSearchOpts) (
 		opts.ExcludeChannelNames = a.DefaultChannelNames(c)
 	}
 	storeOpts := store.ChannelSearchOpts{
-		ExcludeChannelNames:  opts.ExcludeChannelNames,
-		NotAssociatedToGroup: opts.NotAssociatedToGroup,
-		IncludeDeleted:       opts.IncludeDeleted,
+		NotAssociatedToGroup:     opts.NotAssociatedToGroup,
+		IncludeDeleted:           opts.IncludeDeleted,
+		ExcludeChannelNames:      opts.ExcludeChannelNames,
+		GroupConstrained:         opts.GroupConstrained,
+		ExcludeGroupConstrained:  opts.ExcludeGroupConstrained,
+		ExcludePolicyConstrained: opts.ExcludePolicyConstrained,
+		IncludePolicyID:          opts.IncludePolicyID,
 	}
 	count, err := a.Srv().Store().Channel().GetAllChannelsCount(storeOpts)
 	if err != nil {
@@ -2682,7 +2710,7 @@ func (a *App) MarkChannelAsUnreadFromPost(c request.CTX, postID string, userID s
 	if !collapsedThreadsSupported || !a.IsCRTEnabledForUser(c, userID) {
 		return a.markChannelAsUnreadFromPostCRTUnsupported(c, postID, userID)
 	}
-	post, err := a.GetSinglePost(postID, false)
+	post, err := a.GetSinglePost(c, postID, false)
 	if err != nil {
 		return nil, err
 	}
@@ -2709,7 +2737,7 @@ func (a *App) MarkChannelAsUnreadFromPost(c request.CTX, postID string, userID s
 }
 
 func (a *App) markChannelAsUnreadFromPostCRTUnsupported(c request.CTX, postID string, userID string) (*model.ChannelUnreadAt, *model.AppError) {
-	post, appErr := a.GetSinglePost(postID, false)
+	post, appErr := a.GetSinglePost(c, postID, false)
 	if appErr != nil {
 		return nil, appErr
 	}
@@ -2748,7 +2776,7 @@ func (a *App) markChannelAsUnreadFromPostCRTUnsupported(c request.CTX, postID st
 	//                          If there are replies with mentions below the marked reply in the thread, then sum the mentions for the threads mention badge.
 	// In CRT Unsupported Client: Channel is marked as unread and new messages line inserted above the marked post.
 	//                            Badge on channel sums mentions in all posts (root & replies) including and below the post that was marked unread.
-	rootPost, appErr := a.GetSinglePost(post.RootId, false)
+	rootPost, appErr := a.GetSinglePost(c, post.RootId, false)
 	if appErr != nil {
 		return nil, appErr
 	}
@@ -3078,8 +3106,13 @@ func (a *App) PermanentDeleteChannel(c request.CTX, channel *model.Channel) *mod
 	}
 
 	a.Srv().Platform().InvalidateCacheForChannel(channel)
-	message := model.NewWebSocketEvent(model.WebsocketEventChannelDeleted, channel.TeamId, "", "", nil, "")
 
+	var message *model.WebSocketEvent
+	if channel.Type == model.ChannelTypeOpen {
+		message = model.NewWebSocketEvent(model.WebsocketEventChannelDeleted, channel.TeamId, "", "", nil, "")
+	} else {
+		message = model.NewWebSocketEvent(model.WebsocketEventChannelDeleted, "", channel.Id, "", nil, "")
+	}
 	message.Add("channel_id", channel.Id)
 	message.Add("delete_at", deleteAt)
 	a.Publish(message)
@@ -3149,10 +3182,13 @@ func (a *App) MoveChannel(c request.CTX, team *model.Team, channel *model.Channe
 	channel.TeamId = team.Id
 	if _, err := a.Srv().Store().Channel().Update(c, channel); err != nil {
 		var appErr *model.AppError
+		var uniqueConstraintErr *store.ErrUniqueConstraint
 		var invErr *store.ErrInvalidInput
 		switch {
 		case errors.As(err, &invErr):
 			return model.NewAppError("MoveChannel", "app.channel.update.bad_id", nil, "", http.StatusBadRequest).Wrap(err)
+		case errors.As(err, &uniqueConstraintErr):
+			return model.NewAppError("MoveChannel", store.ChannelExistsError, nil, "", http.StatusBadRequest).Wrap(err)
 		case errors.As(err, &appErr):
 			return appErr
 		default:

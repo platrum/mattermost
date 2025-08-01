@@ -28,9 +28,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/mattermost/mattermost/server/public/model"
+	"github.com/mattermost/mattermost/server/public/shared/httpservice"
 	"github.com/mattermost/mattermost/server/v8/channels/app/platform"
 	"github.com/mattermost/mattermost/server/v8/channels/utils/testutils"
-	"github.com/mattermost/mattermost/server/v8/platform/services/httpservice"
 	"github.com/mattermost/mattermost/server/v8/platform/services/imageproxy"
 )
 
@@ -1715,7 +1715,7 @@ func TestGetFirstLinkAndImages(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			firstLink, images := th.App.getFirstLinkAndImages(testCase.Input)
+			firstLink, images := th.App.getFirstLinkAndImages(th.Context, testCase.Input)
 
 			assert.Equal(t, firstLink, testCase.ExpectedFirstLink)
 			assert.Equal(t, images, testCase.ExpectedImages)
@@ -1800,7 +1800,7 @@ func TestGetFirstLinkAndImages(t *testing.T) {
 		})
 
 		t.Run(name, func(t *testing.T) {
-			firstLink, images := th.App.getFirstLinkAndImages(testCase.Input)
+			firstLink, images := th.App.getFirstLinkAndImages(th.Context, testCase.Input)
 
 			assert.Equal(t, firstLink, testCase.ExpectedFirstLink)
 			assert.Equal(t, images, testCase.ExpectedImages)
@@ -2016,7 +2016,7 @@ func TestGetImagesInMessageAttachments(t *testing.T) {
 		},
 	} {
 		t.Run(test.Name, func(t *testing.T) {
-			images := th.App.getImagesInMessageAttachments(test.Post)
+			images := th.App.getImagesInMessageAttachments(th.Context, test.Post)
 
 			assert.ElementsMatch(t, images, test.Expected)
 		})
@@ -2831,7 +2831,7 @@ func TestContainsPermalink(t *testing.T) {
 	for _, testCase := range testCases {
 		testCase := testCase
 		t.Run(testCase.Description, func(t *testing.T) {
-			actual := th.App.containsPermalink(testCase.Post)
+			actual := th.App.containsPermalink(th.Context, testCase.Post)
 			assert.Equal(t, testCase.Expected, actual)
 		})
 	}
@@ -3152,5 +3152,101 @@ func TestSanitizePostMetadataForUser(t *testing.T) {
 
 		require.Equal(t, 1, len(sanitizedPost.Metadata.Embeds))
 		require.Equal(t, model.PostEmbedLink, sanitizedPost.Metadata.Embeds[0].Type)
+	})
+}
+
+func TestGetLinkMetadataFromCache(t *testing.T) {
+	testURL := "https://example.com/test"
+	testTimestamp := int64(1640995200000) // 2022-01-01 00:00:00 UTC
+
+	setup := func(t *testing.T) {
+		platform.PurgeLinkCache()
+	}
+
+	assertCached := func(t *testing.T, url string, expectedOG *opengraph.OpenGraph, expectedImage *model.PostImage, expectedPermalink *model.Permalink) {
+		og, image, permalink, found := getLinkMetadataFromCache(url, testTimestamp)
+		assert.True(t, found)
+		assert.Equal(t, expectedOG, og)
+		assert.Equal(t, expectedImage, image)
+		assert.Equal(t, expectedPermalink, permalink)
+	}
+
+	assertNotCached := func(t *testing.T, url string) {
+		og, image, permalink, found := getLinkMetadataFromCache(url, testTimestamp)
+		assert.False(t, found)
+		assert.Nil(t, og)
+		assert.Nil(t, image)
+		assert.Nil(t, permalink)
+	}
+
+	t.Run("should return false when cache is empty", func(t *testing.T) {
+		setup(t)
+		assertNotCached(t, testURL)
+	})
+
+	t.Run("should return cached data when URL matches", func(t *testing.T) {
+		setup(t)
+		expectedOG := &opengraph.OpenGraph{
+			Title: "Test Title",
+			URL:   testURL,
+		}
+		expectedImage := &model.PostImage{
+			Width:  100,
+			Height: 200,
+		}
+		expectedPermalink := &model.Permalink{
+			PreviewPost: &model.PreviewPost{
+				PostID: "test-post-id",
+			},
+		}
+
+		cacheLinkMetadata(testURL, testTimestamp, expectedOG, expectedImage, expectedPermalink)
+
+		assertCached(t, testURL, expectedOG, expectedImage, expectedPermalink)
+	})
+
+	t.Run("should return false when different url not cached", func(t *testing.T) {
+		setup(t)
+
+		cachedURL := "https://example.com/cached"
+		requestedURL := "https://example.com/different"
+
+		expectedOG := &opengraph.OpenGraph{
+			Title: "Cached Title",
+			URL:   cachedURL,
+		}
+		cacheLinkMetadata(cachedURL, testTimestamp, expectedOG, nil, nil)
+
+		assertNotCached(t, requestedURL)
+	})
+
+	t.Run("should return false when different url not cached, even if hash collides with a cached url", func(t *testing.T) {
+		setup(t)
+
+		url1 := "http://test.com/w4xg6hpvomau9j5iz371"
+		url2 := "http://collision.comupio5zw28x1m36c"
+
+		hash1 := model.GenerateLinkMetadataHash(url1, testTimestamp)
+		hash2 := model.GenerateLinkMetadataHash(url2, testTimestamp)
+		assert.Equal(t, hash1, hash2, "URLs should have colliding hashes")
+
+		og1 := &opengraph.OpenGraph{
+			Title: "First URL Title",
+			URL:   url1,
+		}
+		cacheLinkMetadata(url1, testTimestamp, og1, nil, nil)
+
+		assertCached(t, url1, og1, nil, nil)
+		assertNotCached(t, url2)
+	})
+
+	t.Run("should handle cached nil values correctly", func(t *testing.T) {
+		setup(t)
+
+		nilURL := "https://example.com/nil-test"
+
+		cacheLinkMetadata(nilURL, testTimestamp, nil, nil, nil)
+
+		assertCached(t, nilURL, nil, nil, nil)
 	})
 }

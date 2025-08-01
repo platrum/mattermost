@@ -85,7 +85,7 @@
   },
   {
     "id": "api.admin.test_email.body",
-    "translation": "Кажется, ваша электронная почта Platrum установлена верно!"
+    "translation": "Кажется, ваша электронная почта Mattermost установлена верно!"
   },
   {
     "id": "api.admin.test_email.missing_server",
@@ -97,7 +97,7 @@
   },
   {
     "id": "api.admin.test_email.subject",
-    "translation": "Platrum - Тестирование настроек электронной почты"
+    "translation": "Mattermost - Тестирование настроек электронной почты"
   },
   {
     "id": "api.admin.test_s3.missing_s3_bucket",
@@ -345,7 +345,7 @@
   },
   {
     "id": "api.command.invite_people.desc",
-    "translation": "Отправить письмо с приглашением в вашу команду Platrum"
+    "translation": "Отправить письмо с приглашением в вашу команду Mattermost"
   },
   {
     "id": "api.command.invite_people.email_invitations_off",
@@ -621,7 +621,7 @@
   },
   {
     "id": "api.command_help.desc",
-    "translation": "Показать справку Platrum"
+    "translation": "Показать справку Mattermost"
   },
   {
     "id": "api.command_help.name",
@@ -729,7 +729,7 @@
   },
   {
     "id": "api.command_logout.desc",
-    "translation": "Выход из Platrum"
+    "translation": "Выход из Mattermost"
   },
   {
     "id": "api.command_logout.name",
@@ -1521,7 +1521,7 @@
   },
   {
     "id": "api.slackimport.slack_add_channels.merge",
-    "translation": "Slack канал {{.DisplayName}} уже существует в виде канала Platrum. Произведено слияние.\r\n"
+    "translation": "Slack канал {{.DisplayName}} уже существует в виде канала Mattermost. Произведено слияние.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.created",
@@ -1533,11 +1533,11 @@
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing",
-    "translation": "Slack пользователь слился с существующим пользователем Platrum с соответствующим адресом электронной почты {{.Email}} и именем пользователя {{.Username}}.\r\n"
+    "translation": "Slack пользователь слился с существующим пользователем Mattermost с соответствующим адресом электронной почты {{.Email}} и именем пользователя {{.Username}}.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing_failed",
-    "translation": "Пользователь Slack объединен с существующим пользователем Platrum по совпадению email {{.Email}} и имени пользователя {{.Username}}, но было невозможно добавить пользователя в его команду.\r\n"
+    "translation": "Пользователь Slack объединен с существующим пользователем Mattermost по совпадению email {{.Email}} и имени пользователя {{.Username}}, но было невозможно добавить пользователя в его команду.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.missing_email_address",
@@ -1549,7 +1549,7 @@
   },
   {
     "id": "api.slackimport.slack_import.log",
-    "translation": "Лог импорта Platrum Slack\r\n"
+    "translation": "Лог импорта Mattermost Slack\r\n"
   },
   {
     "id": "api.slackimport.slack_import.note1",
@@ -1857,7 +1857,7 @@
   },
   {
     "id": "api.templates.post_body.button",
-    "translation": "Ответить в Platrum"
+    "translation": "Ответить в Mattermost"
   },
   {
     "id": "api.templates.reset_body.button",
@@ -1917,7 +1917,7 @@
   },
   {
     "id": "api.templates.verify_body.info",
-    "translation": "Этот адрес электронной почты был использован для создания учётной записи Platrum."
+    "translation": "Этот адрес электронной почты был использован для создания учётной записи Mattermost."
   },
   {
     "id": "api.templates.verify_body.title",
@@ -1937,7 +1937,7 @@
   },
   {
     "id": "api.templates.welcome_body.info",
-    "translation": "Этот email-адрес был использован для создания учётной записи Platrum."
+    "translation": "Этот email-адрес был использован для создания учётной записи Mattermost."
   },
   {
     "id": "api.templates.welcome_body.title",
@@ -2265,7 +2265,7 @@
   },
   {
     "id": "api.web_socket.connect.upgrade.app_error",
-    "translation": "Не удалось обновить соединение с web-сокетом."
+    "translation": "URL заблокирован из-за CORS. Url: {{.BlockedOrigin}}"
   },
   {
     "id": "api.web_socket_router.bad_action.app_error",
@@ -3157,7 +3157,7 @@
   },
   {
     "id": "ent.elasticsearch.test_config.license.error",
-    "translation": "Ваша версия сервера Platrum не поддерживает Elasticsearch."
+    "translation": "Ваша версия сервера Mattermost не поддерживает Elasticsearch."
   },
   {
     "id": "ent.elasticsearch.test_config.reenter_password",
@@ -3201,7 +3201,7 @@
   },
   {
     "id": "ent.ldap.do_login.user_filtered.app_error",
-    "translation": "Ваша учетная запись AD/LDAP не имеет разрешения на использование этого сервера Platrum. Пожалуйста, обратитесь к системному администратору, чтобы проверить фильтр пользователей AD/LDAP."
+    "translation": "Ваша учетная запись AD/LDAP не имеет разрешения на использование этого сервера Mattermost. Пожалуйста, обратитесь к системному администратору, чтобы проверить фильтр пользователей AD/LDAP."
   },
   {
     "id": "ent.ldap.do_login.user_not_registered.app_error",
@@ -3221,7 +3221,7 @@
   },
   {
     "id": "ent.ldap.syncronize.search_failure.app_error",
-    "translation": "Не удалось найти пользователей в AD/LDAP. Проверьте, может ли сервер Platrum подключиться к вашему серверу AD/LDAP, и попробуйте снова."
+    "translation": "Не удалось найти пользователей в AD/LDAP. Проверьте, может ли сервер Mattermost подключиться к вашему серверу AD/LDAP, и попробуйте снова."
   },
   {
     "id": "ent.ldap.validate_filter.app_error",
@@ -3317,7 +3317,7 @@
   },
   {
     "id": "ent.migration.migratetosaml.username_already_used_by_other_user",
-    "translation": "Имя пользователя уже используется другим пользователем Platrum."
+    "translation": "Имя пользователя уже используется другим пользователем Mattermost."
   },
   {
     "id": "ent.saml.attribute.app_error",
@@ -3401,7 +3401,7 @@
   },
   {
     "id": "mattermost.bulletin.subject",
-    "translation": "Бюллетень безопасности Platrum"
+    "translation": "Бюллетень безопасности Mattermost"
   },
   {
     "id": "mfa.activate.bad_token.app_error",
@@ -4456,10 +4456,6 @@
     "translation": "Недопустимый адрес эл.почты."
   },
   {
-    "id": "model.user.is_valid.pwd.app_error",
-    "translation": "Ваш пароль должен содержать по крайней мере {{.Min}} символов."
-  },
-  {
     "id": "model.user.is_valid.pwd_lowercase.app_error",
     "translation": "Ваш пароль должен содержать по крайней мере {{.Min}} символов, а так же одну букву в нижнем регистре."
   },
@@ -4549,7 +4545,7 @@
   },
   {
     "id": "oauth.gitlab.tos.error",
-    "translation": "Условия предоставления услуг GitLab обновлены. Пожалуйста, зайдите на {{.URL}}, чтобы принять их, а затем попробуйте снова войти в Platrum."
+    "translation": "Условия предоставления услуг GitLab обновлены. Пожалуйста, зайдите на {{.URL}}, чтобы принять их, а затем попробуйте снова войти в Mattermost."
   },
   {
     "id": "plugin.api.update_user_status.bad_status",
@@ -4697,7 +4693,7 @@
   },
   {
     "id": "api.bot.teams_channels.add_message_mobile",
-    "translation": "Пожалуйста, добавьте меня в команды и каналы, c которыми мне нужно взаимодействовать. Это можно сделать в браузере или в приложении Platrum для ПК."
+    "translation": "Пожалуйста, добавьте меня в команды и каналы, c которыми мне нужно взаимодействовать. Это можно сделать в браузере или в приложении Mattermost для ПК."
   },
   {
     "id": "api.channel.get_channel_moderations.license.error",
@@ -5056,10 +5052,6 @@
     "translation": "Не удалось проанализировать версию сервера Elasticsearch."
   },
   {
-    "id": "ent.ldap.syncronize.delete_group_constained_memberships",
-    "translation": "ошибка при удалении участия в команде или канале"
-  },
-  {
     "id": "ent.ldap.validate_admin_filter.app_error",
     "translation": "Неверный фильтр админа AD/LDAP."
   },
@@ -5218,10 +5210,6 @@
   {
     "id": "api.team.update_team_member_roles.guest_and_user.app_error",
     "translation": "Недопустимое обновление участника команды: пользователь должен быть гостем или пользователем, но не обоими."
-  },
-  {
-    "id": "api.templates.remove_expired_license.body.renew_button",
-    "translation": "Продлить лицензию прямо сейчас"
   },
   {
     "id": "api.templates.remove_expired_license.body.title",
@@ -5545,11 +5533,11 @@
   },
   {
     "id": "web.error.unsupported_browser.min_os_version.mac",
-    "translation": "macOS 11+"
+    "translation": "macOS 12+"
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support_version",
-    "translation": "Эта версия вашего браузера больше не поддерживается Platrum"
+    "translation": "Эта версия вашего браузера больше не поддерживается Mattermost"
   },
   {
     "id": "ent.get_users_in_channel_during",
@@ -5657,7 +5645,7 @@
   },
   {
     "id": "api.templates.remove_expired_license.subject",
-    "translation": "Корпоративная лицензия Platrum была отключена."
+    "translation": "Корпоративная лицензия Mattermost была отключена."
   },
   {
     "id": "api.user.create_user.invalid_invitation_type.app_error",
@@ -5793,7 +5781,7 @@
   },
   {
     "id": "web.error.unsupported_browser.download_app_or_upgrade_browser",
-    "translation": "Загрузите приложение Platrum или используйте поддерживаемый браузер для лучшей работы."
+    "translation": "Загрузите приложение Mattermost или используйте поддерживаемый браузер для лучшей работы."
   },
   {
     "id": "web.error.unsupported_browser.download_the_app",
@@ -5813,11 +5801,11 @@
   },
   {
     "id": "web.error.unsupported_browser.min_browser_version.chrome",
-    "translation": "Версия 118+"
+    "translation": "Версия 122+"
   },
   {
     "id": "web.error.unsupported_browser.min_browser_version.edge",
-    "translation": "Версия 118+"
+    "translation": "Версия 122+"
   },
   {
     "id": "web.error.unsupported_browser.min_browser_version.firefox",
@@ -5825,7 +5813,7 @@
   },
   {
     "id": "web.error.unsupported_browser.min_browser_version.safari",
-    "translation": "Версия 16.2+"
+    "translation": "Версия 17.0+"
   },
   {
     "id": "web.error.unsupported_browser.min_os_version.windows",
@@ -5833,7 +5821,7 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support",
-    "translation": "Этот браузер больше не поддерживается Platrum"
+    "translation": "Этот браузер больше не поддерживается Mattermost"
   },
   {
     "id": "web.error.unsupported_browser.open_system_browser.edge",
@@ -5933,7 +5921,7 @@
   },
   {
     "id": "api.license.request-trial.bad-request.terms-not-accepted",
-    "translation": "Вы должны принять Соглашение об оценке программного обеспечения Platrum и Политику конфиденциальности, чтобы запросить лицензию."
+    "translation": "Вы должны принять Соглашение об оценке программного обеспечения Mattermost и Политику конфиденциальности, чтобы запросить лицензию."
   },
   {
     "id": "app.recover.save.app_error",
@@ -6476,10 +6464,6 @@
     "translation": "Достигнут тайм-аут задания синхронизации AD/LDAP."
   },
   {
-    "id": "ent.cluster.404.app_error",
-    "translation": "Не найдена конечная точка API кластера."
-  },
-  {
     "id": "ent.api.post.send_notifications_and_forget.push_image_only",
     "translation": " прикрепил файл."
   },
@@ -6493,43 +6477,43 @@
   },
   {
     "id": "api.upgrade_to_enterprise_status.signature.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции. Не удалось проверить цифровую подпись загруженного двоичного файла."
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Не удалось проверить цифровую подпись загруженного двоичного файла."
   },
   {
     "id": "api.upgrade_to_enterprise_status.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции."
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции."
   },
   {
     "id": "api.upgrade_to_enterprise.system_not_supported.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции. Эта функция будет работать только в системах Linux с архитектурой x86-64."
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Эта функция будет работать только в системах Linux с архитектурой x86-64."
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции. Системный пользователь Platrum {{.PlatrumUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Platrum:\n\n```\nchown {{.PlatrumUsername}} \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Platrum. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Системный пользователь Mattermost {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Mattermost:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Mattermost. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user-and-permission.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции. Системный пользователь Platrum {{.PlatrumUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Platrum:\n\n```\nchown {{.PlatrumUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Platrum. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Системный пользователь Mattermost {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Mattermost:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Mattermost. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-permission.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции. Системный пользователь Platrum {{.PlatrumUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Platrum:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Platrum. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Системный пользователь Mattermost {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Mattermost:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Mattermost. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.generic_error.app_error",
-    "translation": "Platrum не удалось обновить до Корпоративной редакции."
+    "translation": "Mattermost не удалось обновить до Корпоративной редакции."
   },
   {
     "id": "api.upgrade_to_enterprise.app_error",
-    "translation": "Обновление до Platrum Корпоративная редакция уже выполняется."
+    "translation": "Обновление до Mattermost Корпоративная редакция уже выполняется."
   },
   {
     "id": "api.upgrade_to_enterprise.already-enterprise.app_error",
-    "translation": "Вы не можете выполнить обновление, потому что вы уже используете Platrum Корпоративная редакция."
+    "translation": "Вы не можете выполнить обновление, потому что вы уже используете Mattermost Корпоративная редакция."
   },
   {
     "id": "api.upgrade_to_enterprise.already-done.app_error",
-    "translation": "Вы уже перешли на Platrum Корпоративная редакция. Пожалуйста, перезапустите сервер, чтобы завершить обновление."
+    "translation": "Вы уже перешли на Mattermost Корпоративная редакция. Пожалуйста, перезапустите сервер, чтобы завершить обновление."
   },
   {
     "id": "app.job.update.app_error",
@@ -7028,10 +7012,6 @@
     "translation": "Авторизация завершена"
   },
   {
-    "id": "api.license.request_renewal_link.app_error",
-    "translation": "Ошибка получения ссылки обновления лицензии"
-  },
-  {
     "id": "api.getThreadsForUser.bad_params",
     "translation": "Параметры Before и After запроса getThreadsForUser являются взаимоисключающими"
   },
@@ -7356,10 +7336,6 @@
     "translation": "Не удалось найти действующую учетную запись для обновления."
   },
   {
-    "id": "app.user.send_emails.app_error",
-    "translation": "Ни одно email-сообщение не было успешно отправлено"
-  },
-  {
     "id": "app.user.search.app_error",
     "translation": "Невозможно найти пользователя, соответствующего критериям поиска."
   },
@@ -7520,24 +7496,8 @@
     "translation": "Не удалось получить пакет файлов для индексации."
   },
   {
-    "id": "app.license.generate_renewal_token.no_license",
-    "translation": "Лицензия отсутствует"
-  },
-  {
-    "id": "app.license.generate_renewal_token.bad_license",
-    "translation": "Этот тип лицензии не поддерживает генерацию токенов обновления"
-  },
-  {
-    "id": "app.license.generate_renewal_token.app_error",
-    "translation": "Не удалось сгенерировать новый токен обновления."
-  },
-  {
     "id": "app.insert_error",
     "translation": "ошибка insert"
-  },
-  {
-    "id": "app.import.attachment.read_file_data.error",
-    "translation": "Не удалось прочитать аттачмент при импорте."
   },
   {
     "id": "app.group.uniqueness_error",
@@ -7672,52 +7632,12 @@
     "translation": "Нужна помощь или есть вопросы? Пишите нам на e-mail адрес "
   },
   {
-    "id": "api.templates.payment_failed_no_card.title",
-    "translation": "Ваш счёт за Platrum Cloud к оплате"
-  },
-  {
-    "id": "api.templates.payment_failed_no_card.subject",
-    "translation": "Оплата производится за подписку на Platrum Cloud"
-  },
-  {
-    "id": "api.templates.payment_failed_no_card.info3",
-    "translation": "Чтобы просмотреть счёт и добавить способ оплаты, выберите Оплатить сейчас."
-  },
-  {
-    "id": "api.templates.payment_failed_no_card.info1",
-    "translation": "Ваш счёт Platrum Cloud за последний расчётный период был обработан. Однако у нас нет ваших платёжных реквизитов."
-  },
-  {
-    "id": "api.templates.payment_failed_no_card.button",
-    "translation": "Оплатить сейчас"
-  },
-  {
-    "id": "api.templates.payment_failed.title",
-    "translation": "Платёж не прошёл"
-  },
-  {
-    "id": "api.templates.payment_failed.subject",
-    "translation": "Требуется действие: Оплата за Platrum {{.Plan}} не произведена"
-  },
-  {
-    "id": "api.templates.payment_failed.info3",
-    "translation": "Чтобы обеспечить бесперебойный доступ к Platrum {{.Plan}}, свяжитесь с вашим финансовым учреждением для устранения основной проблемы или обновите платёжную информацию. После обновления платёжных данных Platrum предпримет попытку погасить остаток задолженности."
-  },
-  {
-    "id": "api.templates.payment_failed.info2",
-    "translation": "Они привели следующую причину:"
-  },
-  {
-    "id": "api.templates.payment_failed.info1",
-    "translation": "Ваше финансовое учреждение отклонило платёж вашей карты {{.CardBrand}}. ****{{.LastFour}}, связанный с вашим рабочим пространством Platrum Cloud."
-  },
-  {
     "id": "api.templates.invite_body_guest.subTitle",
     "translation": "Вы были приглашены в качестве гостя в команду"
   },
   {
     "id": "api.templates.invite_body_footer.title",
-    "translation": "Что такое Platrum?"
+    "translation": "Что такое Mattermost?"
   },
   {
     "id": "api.templates.invite_body_footer.learn_more",
@@ -7725,11 +7645,11 @@
   },
   {
     "id": "api.templates.invite_body_footer.info",
-    "translation": "Platrum - это гибкая платформа обмена сообщениями с открытым исходным кодом, обеспечивающая безопасную совместную работу в команде."
+    "translation": "Mattermost - это гибкая платформа обмена сообщениями с открытым исходным кодом, обеспечивающая безопасную совместную работу в команде."
   },
   {
     "id": "api.templates.invite_body.subTitle",
-    "translation": "Начните работу с вашей командой на Platrum"
+    "translation": "Начните работу с вашей командой на Mattermost"
   },
   {
     "id": "api.templates.email_us_anytime_at",
@@ -7737,11 +7657,7 @@
   },
   {
     "id": "api.templates.email_footer_v2",
-    "translation": "© 2022 Platrum, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
-  },
-  {
-    "id": "api.templates.copyright",
-    "translation": "© 2021 Platrum, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
+    "translation": "© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
   },
   {
     "id": "api.templates.cloud_welcome_email.title",
@@ -7793,11 +7709,11 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.download_mm_info",
-    "translation": "Скачать Platrum App"
+    "translation": "Скачать Mattermost App"
   },
   {
     "id": "api.templates.cloud_welcome_email.button",
-    "translation": "Открыть Platrum"
+    "translation": "Открыть Mattermost"
   },
   {
     "id": "api.templates.cloud_welcome_email.app_market_place",
@@ -7933,7 +7849,7 @@
   },
   {
     "id": "api.command_share.desc",
-    "translation": "Разделяет текущий канал с удалённым экземпляром Platrum."
+    "translation": "Разделяет текущий канал с удалённым экземпляром Mattermost."
   },
   {
     "id": "api.command_share.could_not_uninvite.error",
@@ -8068,10 +7984,6 @@
     "translation": "Приглашение от защищенного соединения"
   },
   {
-    "id": "api.command_remote.incorrect_password.error",
-    "translation": "Не удалось расшифровать приглашение. Неправильный пароль или испорченное приглашение: {{.Error}}"
-  },
-  {
     "id": "api.command_remote.hint",
     "translation": "[действие]"
   },
@@ -8085,7 +7997,7 @@
   },
   {
     "id": "api.command_remote.desc",
-    "translation": "Создайте безопасные соединения для связи между экземплярами Platrum."
+    "translation": "Создайте безопасные соединения для связи между экземплярами Mattermost."
   },
   {
     "id": "api.command_remote.decode_invitation.error",
@@ -8109,7 +8021,7 @@
   },
   {
     "id": "api.command_remote.accept.help",
-    "translation": "Принять приглашение от внешнего кластера Platrum"
+    "translation": "Принять приглашение от внешнего кластера Mattermost"
   },
   {
     "id": "api.command_share.share_read_only.hint",
@@ -8134,10 +8046,6 @@
   {
     "id": "sharedchannel.cannot_deliver_post",
     "translation": "Одно или несколько сообщений не могут быть доставлены на удалённый сайт {{.Remote}}, так как он в оффлайне. Сообщения будут доставлены, когда сайт будет онлайн."
-  },
-  {
-    "id": "app.sharedchannel.dm_channel_creation.internal_error",
-    "translation": "Возникла ошибка при создании прямого общего канала."
   },
   {
     "id": "api.remote_cluster.update_not_unique.app_error",
@@ -8381,7 +8289,7 @@
   },
   {
     "id": "api.email_batching.send_batched_email_notification.button",
-    "translation": "Открыть Platrum"
+    "translation": "Открыть Mattermost"
   },
   {
     "id": "api.custom_status.set_custom_statuses.update.app_error",
@@ -8401,7 +8309,7 @@
   },
   {
     "id": "api.license.request-trial.can-start-trial.not-allowed",
-    "translation": "Не удалось применить новую пробную лицензию. Вы уже применяли пробную лицензию к этому экземпляру Platrum. Если вы хотите продлить пробный период, пожалуйста, [свяжитесь с нашим отделом продаж] (https://mattermost.com/contact-us/)."
+    "translation": "Не удалось применить новую пробную лицензию. Вы уже применяли пробную лицензию к этому экземпляру Mattermost. Если вы хотите продлить пробный период, пожалуйста, [свяжитесь с нашим отделом продаж] (https://mattermost.com/contact-us/)."
   },
   {
     "id": "api.license.request-trial.can-start-trial.error",
@@ -8449,7 +8357,7 @@
   },
   {
     "id": "app.notification.footer.infoLogin",
-    "translation": "Войти в Platrum"
+    "translation": "Войти в Mattermost"
   },
   {
     "id": "app.notification.footer.info",
@@ -8537,23 +8445,15 @@
   },
   {
     "id": "api.templates.license_up_for_renewal_title",
-    "translation": "Ваша подписка Platrum подлежит продлению"
-  },
-  {
-    "id": "api.templates.license_up_for_renewal_subtitle_two",
-    "translation": "Войдите в свою учетную запись клиента, чтобы продлить"
+    "translation": "Ваша подписка Mattermost подлежит продлению"
   },
   {
     "id": "api.templates.license_up_for_renewal_subtitle",
-    "translation": "{{.UserName}}, срок действия Вашей подписки истекает через {{.Days}} дней. Мы надеемся, что Вам нравится гибкое и безопасное командное сотрудничество, которое обеспечивает Platrum. Продлите подписку в ближайшее время, чтобы Ваша команда могла продолжать пользоваться этими преимуществами."
+    "translation": "{{.UserName}}, срок действия Вашей подписки истекает через {{.Days}} дней. Мы надеемся, что Вам нравится гибкое и безопасное командное сотрудничество, которое обеспечивает Mattermost. Продлите подписку в ближайшее время, чтобы Ваша команда могла продолжать пользоваться этими преимуществами."
   },
   {
     "id": "api.templates.license_up_for_renewal_subject",
     "translation": "Ваша лицензия подлежит продлению"
-  },
-  {
-    "id": "api.templates.license_up_for_renewal_renew_now",
-    "translation": "Обнови сейчас"
   },
   {
     "id": "api.templates.invite_body.title.reminder",
@@ -8568,10 +8468,6 @@
     "translation": "Не удалось отправить лицензию для обновлений по электронной почте"
   },
   {
-    "id": "api.server.license_up_for_renewal.error_generating_link",
-    "translation": "Не удалось сгенерировать ссылку для продления лицензии"
-  },
-  {
     "id": "api.push_notification.title.collapsed_threads_dm",
     "translation": "Ответить в личном сообщении"
   },
@@ -8582,10 +8478,6 @@
   {
     "id": "api.post.send_notification_and_forget.push_comment_on_crt_thread_dm",
     "translation": " ответил в обсуждении."
-  },
-  {
-    "id": "api.license.request_renewal_link.cannot_renew_on_cws",
-    "translation": "Продление этой лицензии на портале невозможно"
   },
   {
     "id": "model.user.is_valid.roles_limit.app_error",
@@ -8725,7 +8617,7 @@
   },
   {
     "id": "model.oauth.is_valid.mattermost_app_id.app_error",
-    "translation": "Максимальная длина PlatrumAppID — 32 символа."
+    "translation": "Максимальная длина MattermostAppID — 32 символа."
   },
   {
     "id": "app.channel.get_file_count.app_error",
@@ -8792,34 +8684,6 @@
     "translation": "В настройки электронной почты есть не заданные значения."
   },
   {
-    "id": "api.templates.cloud_upgrade_confirmation.title",
-    "translation": "Обновление прошло успешно!"
-  },
-  {
-    "id": "api.templates.cloud_upgrade_confirmation.subject",
-    "translation": "Подтверждение обновления Platrum"
-  },
-  {
-    "id": "api.templates.delinquency_14.title",
-    "translation": "Платеж не получен"
-  },
-  {
-    "id": "api.templates.delinquency_14.subtitle2",
-    "translation": "Пожалуйста, свяжитесь с вашим финансовым учреждением для решения возникших вопросов. Затем обновите свои платёжные реквизиты при необходимости."
-  },
-  {
-    "id": "api.templates.delinquency_14.subtitle1",
-    "translation": "Мы не смогли снять деньги с имеющейся у нас кредитной карты. Это означает, что ваше рабочее пространство может быть переведено в категорию Cloud Free."
-  },
-  {
-    "id": "api.templates.delinquency_14.subject",
-    "translation": "Просрочена оплата вашего Platrum {{.Plan}}"
-  },
-  {
-    "id": "api.templates.delinquency_14.button",
-    "translation": "Обновить платёж"
-  },
-  {
     "id": "api.team.invite_guests_to_channels.license.error",
     "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
   },
@@ -8849,7 +8713,7 @@
   },
   {
     "id": "api.command_help.success",
-    "translation": "Platrum - это платформа с открытым исходным кодом для безопасного общения, сотрудничества и организации работы между командами с использованием различных инструментов.\nPlatrum состоит из двух ключевых инструментов:\n\n**Channels** - Каналы - оставайтесь всегда на связи со своей командой посредством 1:1 и групповых чатов.\n**[Playbooks](/playbooks)** - Сценарии - создавайте и настраивайте повторяющиеся процессы для достижения конкретных и предсказуемых результатов.\n\n[Посмотреть документацию и руководства]({{.HelpLink}})"
+    "translation": "Mattermost - это платформа с открытым исходным кодом для безопасного общения, сотрудничества и организации работы между командами с использованием различных инструментов.\nMattermost состоит из двух ключевых инструментов:\n\n**Channels** - Каналы - оставайтесь всегда на связи со своей командой посредством 1:1 и групповых чатов.\n**[Playbooks](/playbooks)** - Сценарии - создавайте и настраивайте повторяющиеся процессы для достижения конкретных и предсказуемых результатов.\n\n[Посмотреть документацию и руководства]({{.HelpLink}})"
   },
   {
     "id": "api.cloud.teams_limit_reached.restore",
@@ -8862,10 +8726,6 @@
   {
     "id": "api.cloud.notify_admin_to_upgrade_error.already_notified",
     "translation": "Администратор уже уведомлен"
-  },
-  {
-    "id": "api.cloud.delinquency_email.missing_email_to_trigger",
-    "translation": "Отсутствуют обязательные поля для отправки электронного письма о просрочке."
   },
   {
     "id": "model.group.name.reserved_name.app_error",
@@ -8958,174 +8818,6 @@
   {
     "id": "app.cloud.trial_plan_bot_message_single",
     "translation": "{{.UsersNum}} пользователя(ей) рабочего пространства {{.WorkspaceName}} запросили включение пробной версии Enterprise для доступа к: "
-  },
-  {
-    "id": "app.cloud.get_subscription_delinquency_date.app_error",
-    "translation": "Подписка не просрочена"
-  },
-  {
-    "id": "app.cloud.get_subscription.app_error",
-    "translation": "Не удалось получить подписку на облако"
-  },
-  {
-    "id": "app.cloud.get_current_plan_name.app_error",
-    "translation": "Невозможно получить имя текущего тарифного плана"
-  },
-  {
-    "id": "app.cloud.get_cloud_products.app_error",
-    "translation": "Не удалось получить облачные продукты"
-  },
-  {
-    "id": "api.templates.delinquency_90.title",
-    "translation": "Ваше рабочее пространство Platrum было понижено в статусе"
-  },
-  {
-    "id": "api.templates.delinquency_90.subtitle3",
-    "translation": "Чтобы снять архивацию данных и сохранить оплаченные функции, обновите информацию об оплате."
-  },
-  {
-    "id": "api.templates.delinquency_90.subtitle2",
-    "translation": "Кроме того, ваши данные могут быть заархивированы из-за ограничений Cloud Free."
-  },
-  {
-    "id": "api.templates.delinquency_90.subtitle1",
-    "translation": "Если вы используете функции Cloud Professional или Enterprise для важных бизнес-операций, они больше не будут доступны, и вы столкнетесь с ухудшением производительности."
-  },
-  {
-    "id": "api.templates.delinquency_90.subject",
-    "translation": "Ваше рабочее пространство Platrum Cloud было понижено"
-  },
-  {
-    "id": "api.templates.delinquency_90.secondary_action_button",
-    "translation": "Посмотреть тарифные планы и цены"
-  },
-  {
-    "id": "api.templates.delinquency_90.button",
-    "translation": "Обновить платёж"
-  },
-  {
-    "id": "api.templates.delinquency_75.title",
-    "translation": "Ваше рабочее пространство будет понижено через 15 дней"
-  },
-  {
-    "id": "api.templates.delinquency_75.subtitle3",
-    "translation": "Обновите свою платёжную информацию сейчас или перейдите на Cloud Free."
-  },
-  {
-    "id": "api.templates.delinquency_75.subtitle2",
-    "translation": "Ваше рабочее пространство будет понижено до уровня Cloud Free. Ваши функции {{.Plan}} будут заблокированы, а некоторые данные рабочего пространства могут быть заархивированы до полного погашения задолженности."
-  },
-  {
-    "id": "api.templates.delinquency_75.subtitle1",
-    "translation": "Это последнее напоминание о том, что мы не получили оплату за ваше рабочее пространство Platrum Cloud с {{.DelinquencyDate}}."
-  },
-  {
-    "id": "api.templates.delinquency_75.subject",
-    "translation": "Ваш Platrum {{.Plan}} будет понижен через 15 дней"
-  },
-  {
-    "id": "api.templates.delinquency_75.button",
-    "translation": "Обновить платёж"
-  },
-  {
-    "id": "api.templates.delinquency_7.title",
-    "translation": "Ваш платёж не был завершен"
-  },
-  {
-    "id": "api.templates.delinquency_7.subtitle2",
-    "translation": "Чтобы ваш план {{.Plan}} оставался активным, как можно скорее свяжитесь с вашим финансовым учреждением. Затем, при необходимости, обновите свои платежные реквизиты."
-  },
-  {
-    "id": "api.templates.delinquency_7.subtitle1",
-    "translation": "Мы не смогли обработать ваш последний платёж."
-  },
-  {
-    "id": "api.templates.delinquency_7.button",
-    "translation": "Обновить платёж"
-  },
-  {
-    "id": "api.templates.delinquency_60.title",
-    "translation": "Ваше рабочее пространство Platrum будет понижено в течение 30 дней"
-  },
-  {
-    "id": "api.templates.delinquency_60.subtitle3",
-    "translation": "Обновите свою платёжную информацию сейчас или перейдите на Cloud Free ниже."
-  },
-  {
-    "id": "api.templates.delinquency_60.subtitle2",
-    "translation": "Мы автоматически понизим уровень вашего рабочего пространства через 30 дней, если не сможем обработать ваш платёж."
-  },
-  {
-    "id": "api.templates.delinquency_60.subtitle1",
-    "translation": "Пожалуйста, обновите свою платёжную информацию в ближайшее время, чтобы обработать неоплаченные счета."
-  },
-  {
-    "id": "api.templates.delinquency_60.subject",
-    "translation": "Необходимые действия: Рабочее пространство будет понижено в течение 30 дней"
-  },
-  {
-    "id": "api.templates.delinquency_60.button",
-    "translation": "Обновить платёж"
-  },
-  {
-    "id": "api.templates.delinquency_45.title",
-    "translation": "Ваше рабочее пространство будет понижено по тарифной сетке в ближайшее время"
-  },
-  {
-    "id": "api.templates.delinquency_45.subtitle3",
-    "translation": "Обновите информацию о своей кредитной карте прямо сейчас."
-  },
-  {
-    "id": "api.templates.delinquency_45.subtitle1",
-    "translation": "Мы не смогли получить оплату по неоплаченным счетам от {{.DelinquencyDate}}. Ваше рабочее пространство находится под угрозой понижения."
-  },
-  {
-    "id": "api.templates.delinquency_45.subject",
-    "translation": "Уведомление: В ближайшее время ваш Platrum {{.Plan}} будет понижен"
-  },
-  {
-    "id": "api.templates.delinquency_45.button",
-    "translation": "Обновить платёж"
-  },
-  {
-    "id": "api.templates.delinquency_30.title",
-    "translation": "Ваше рабочее пространство будет понижено по тарифной сетке в ближайшее время"
-  },
-  {
-    "id": "api.templates.delinquency_30.subtitle2",
-    "translation": "Если не предпринять никаких действий, ваше рабочее пространство будет понижено по тарифной сетке, а следующие данные могут быть заархивированы:"
-  },
-  {
-    "id": "api.templates.delinquency_30.subtitle1",
-    "translation": "У вас есть время, чтобы сохранить ваш Platrum {{.Plan}} активным, но вам нужно решить проблемы с методом оплаты."
-  },
-  {
-    "id": "api.templates.delinquency_30.subject",
-    "translation": "Действуйте, чтобы сохранить функционал Platrum {{.Plan}}"
-  },
-  {
-    "id": "api.templates.delinquency_30.limits_documentation",
-    "translation": "Посмотреть всю документацию по ограничениям."
-  },
-  {
-    "id": "api.templates.delinquency_30.button",
-    "translation": "Обновить платёж"
-  },
-  {
-    "id": "api.templates.delinquency_30.bullet.message_history",
-    "translation": "История сообщений"
-  },
-  {
-    "id": "api.templates.delinquency_30.bullet.files",
-    "translation": "Файлы"
-  },
-  {
-    "id": "api.templates.delinquency_75.downgrade_to_free",
-    "translation": "Понижение статуса до Cloud Free"
-  },
-  {
-    "id": "api.templates.delinquency_60.downgrade_to_free",
-    "translation": "Понижение статуса до Cloud Free"
   },
   {
     "id": "api.user.add_user_to_group_syncables.not_ldap_user.app_error",
@@ -9256,18 +8948,6 @@
     "translation": "Неверный приоритет"
   },
   {
-    "id": "api.templates.cloud_welcome_email.yearly_plan_button",
-    "translation": "Просмотр счета-фактуры"
-  },
-  {
-    "id": "api.templates.cloud_upgrade_confirmation_yearly.subtitle",
-    "translation": "Ваше рабочее пространство {{.WorkspaceName}} теперь обновлено."
-  },
-  {
-    "id": "api.templates.cloud_upgrade_confirmation_monthly.subtitle",
-    "translation": "Ваше рабочее пространство {{.WorkspaceName}} обновлено. Вам будет выставлен счет с {{.Date}}"
-  },
-  {
     "id": "api.user.get_users.validation.app_error",
     "translation": "Ошибка при получении ролей во время проверки."
   },
@@ -9300,38 +8980,6 @@
     "translation": "Сервер CWS не доступен."
   },
   {
-    "id": "api.license.true_up_review.webhook_out_count_fail",
-    "translation": "Не удалось получить общее количество исходящих вебхуков"
-  },
-  {
-    "id": "api.license.true_up_review.webhook_in_count_fail",
-    "translation": "Не удалось получить общее количество входящих вебхуков"
-  },
-  {
-    "id": "api.license.true_up_review.user_count_fail",
-    "translation": "Не удалось получить общее количество активных пользователей"
-  },
-  {
-    "id": "api.license.true_up_review.not_allowed_for_cloud",
-    "translation": "Для облачных экземпляров не допускается пересмотр в сторону увеличения"
-  },
-  {
-    "id": "api.license.true_up_review.license_required",
-    "translation": "Для проверки достоверности требуется лицензия"
-  },
-  {
-    "id": "api.license.true_up_review.get_status_error",
-    "translation": "Не удалось получить запись истинного состояния"
-  },
-  {
-    "id": "api.license.true_up_review.create_error",
-    "translation": "Не удалось создать запись истинного состояния"
-  },
-  {
-    "id": "api.templates.delinquency_45.subtitle2",
-    "translation": "Пониженное рабочее пространство может негативно повлиять на критически важные рабочие процессы, интеграции и другие важные для бизнеса действия, выполняемые в вашем рабочем пространстве."
-  },
-  {
     "id": "app.group.username_conflict",
     "translation": "пользователь с таким именем \"{{.Username}}\" уже существует."
   },
@@ -9345,15 +8993,11 @@
   },
   {
     "id": "api.server.cws.needs_enterprise_edition",
-    "translation": "Услуга доступна только в редакции Platrum Enterprise"
+    "translation": "Услуга доступна только в редакции Mattermost Enterprise"
   },
   {
     "id": "api.system.logs.invalidFilter",
     "translation": "Неверный фильтр журнала"
-  },
-  {
-    "id": "api.server.cws.delete_workspace.app_error",
-    "translation": "Серверу CWS не удалось удалить рабочее пространство."
   },
   {
     "id": "api.templates.license_up_for_renewal_contact_sales",
@@ -9406,10 +9050,6 @@
   {
     "id": "api.post.post_priority.persistent_notification_validation_error.request_error",
     "translation": "Проверка постоянного уведомления не прошла."
-  },
-  {
-    "id": "api.license.true_up_review.failed_to_submit",
-    "translation": "Не удалось отправить точный профиль проверки в CWS."
   },
   {
     "id": "api.post.post_priority.priority_post_not_allowed_for_user.request_error",
@@ -9880,10 +9520,6 @@
     "translation": "Невозможно получить такое количество ролей по имени. Одновременно можно запросить только {{.MaxNames}} ролей."
   },
   {
-    "id": "app.limits.get_user_limits.user_count.store_error",
-    "translation": "Не удалось получить количество пользователей"
-  },
-  {
     "id": "ent.outgoing_oauth_connections.delete_connection.app_error",
     "translation": "Произошла ошибка при удалении исходящего oauth-соединения."
   },
@@ -9906,10 +9542,6 @@
   {
     "id": "ent.outgoing_oauth_connections.update_connection.app_error",
     "translation": "Произошла ошибка при обновлении исходящего oauth-соединения: {{ .Error }}"
-  },
-  {
-    "id": "api.templates.cloud_renewal_60.subject",
-    "translation": "Продление годовой подписки через 60 дней"
   },
   {
     "id": "app.report.date_range.last_6_months",
@@ -9950,18 +9582,6 @@
   {
     "id": "app.report.start_users_batch_export.job_exists",
     "translation": "Задание уже существует для этого пользователя и диапазона дат."
-  },
-  {
-    "id": "api.templates.cloud_renewal.button",
-    "translation": "Продлить сейчас"
-  },
-  {
-    "id": "api.templates.cloud_renewal_7.subject",
-    "translation": "Необходимые действия: Обновление годовой подписки через 7 дней"
-  },
-  {
-    "id": "api.templates.cloud_renewal_7.title",
-    "translation": "Вы потеряете доступ к своему рабочему пространству через 7 дней"
   },
   {
     "id": "api.user.get_profile_image_path.app_error",
@@ -10028,24 +9648,8 @@
     "translation": "Неверный максимальный размер полезной нагрузки для настроек сервиса. Должно быть целое число больше нуля."
   },
   {
-    "id": "api.templates.cloud_renewal_30.subject",
-    "translation": "Годовой счет к оплате через 30 дней"
-  },
-  {
-    "id": "api.templates.cloud_renewal_30.title",
-    "translation": "Ваш годовой счет будет выставлен через 30 дней"
-  },
-  {
     "id": "api.team.user.missing_account",
     "translation": "Пользователь не найден."
-  },
-  {
-    "id": "api.templates.cloud_renewal.subtitle",
-    "translation": "Пожалуйста, продлите, чтобы избежать перебоев в работе"
-  },
-  {
-    "id": "api.templates.cloud_renewal_60.title",
-    "translation": "Продление годовой подписки через 60 дней"
   },
   {
     "id": "app.compile_report_chunks.unsupported_format",
@@ -10153,7 +9757,7 @@
   },
   {
     "id": "api.server.cws.disabled",
-    "translation": "Взаимодействие с клиентским порталом Platrum было отключено системным администратором."
+    "translation": "Взаимодействие с клиентским порталом Mattermost было отключено системным администратором."
   },
   {
     "id": "model.user.is_valid.invalidProperty.app_error",
@@ -10306,5 +9910,161 @@
   {
     "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
     "translation": "Неверное обновление участника канала: Гость не может быть установлен для одиночного канала, Системный администратор должен повышать или понижать пользователей до/из гостей."
+  },
+  {
+    "id": "app.import.import_line.null_role.error",
+    "translation": "Строка импортируемых данных имеет тип \"роль\", но объект роли равен null."
+  },
+  {
+    "id": "app.scheme.get_all_page.app_error",
+    "translation": "Невозможно получить страницу со схемами."
+  },
+  {
+    "id": "ent.elasticsearch.purge_indexes.unknown_index",
+    "translation": "Не удалось удалить указанный неизвестный индекс"
+  },
+  {
+    "id": "api.user.auth_switch.not_available.email_signup_disabled.app_error",
+    "translation": "Передача аутентификации недоступна, так как регистрация по электронной почте отключена."
+  },
+  {
+    "id": "api4.plugin.reattachPlugin.invalid_request",
+    "translation": "Не удалось разобрать запрос"
+  },
+  {
+    "id": "app.plugin.reattach.app_error",
+    "translation": "Не удалось повторно подключить плагин"
+  },
+  {
+    "id": "app.session.get_lru_sessions.app_error",
+    "translation": "Невозможно получить последние наименее использованные сеансы."
+  },
+  {
+    "id": "app.user.update_active.user_limit.exceeded",
+    "translation": "Невозможно активировать пользователя. На сервере превышен лимит безопасных пользователей. Обратись к своему администратору с сообщением: ERROR_SAFETY_LIMITS_EXCEEDED."
+  },
+  {
+    "id": "bleveengine.purge_list.not_implemented",
+    "translation": "Функция очищения списка недоступна для Bleve."
+  },
+  {
+    "id": "model.scheme.is_valid.app_error",
+    "translation": "Неверная схема."
+  },
+  {
+    "id": "plugin_reattach_request.is_valid.manifest.app_error",
+    "translation": "Отсутствующий манифест"
+  },
+  {
+    "id": "api.user.create_user.user_limits.exceeded",
+    "translation": "Невозможно создать пользователя. На сервере превышен лимит безопасных пользователей. Обратись к своему администратору с сообщением: ERROR_SAFETY_LIMITS_EXCEEDED."
+  },
+  {
+    "id": "ent.elasticsearch.purge_index.delete_failed",
+    "translation": "Не удалось удалить индекс Elasticsearch"
+  },
+  {
+    "id": "model.user.is_valid.pwd_min_length.app_error",
+    "translation": "Ваш пароль должен содержать по крайней мере {{.Min}} символов."
+  },
+  {
+    "id": "plugin_reattach_request.is_valid.plugin_reattach_config.app_error",
+    "translation": "Отсутствует конфигурация повторного подключения плагина"
+  },
+  {
+    "id": "model.user.is_valid.pwd_max_length.app_error",
+    "translation": "Ваш пароль должен содержать не более 72 символов."
+  },
+  {
+    "id": "api.user.auth_switch.not_available.login_disabled.app_error",
+    "translation": "Передача аутентификации недоступна, так как не включен ни вход по электронной почте, ни вход по имени пользователя."
+  },
+  {
+    "id": "app.channel.elasticsearch_channel_index.notify_admin.message",
+    "translation": "Схема индекса Elasticsearch для вашего канала устарела. Рекомендуется перегенерировать индекс каналов.\nНажмите кнопку `Rebuild Channels Index` в разделе [Elasticsearch в Системной консоли]({{.ElasticsearchSection}}), чтобы исправить проблему.\nБолее подробную информацию смотрите в журнале изменений Mattermost."
+  },
+  {
+    "id": "api.post.check_for_out_of_team_mentions.message.multiple",
+    "translation": "@{{.Usernames}} и @{{.LastUsername}} не получили уведомлений об этом упоминании, потому что они не являются участниками этой команды."
+  },
+  {
+    "id": "api.post.check_for_out_of_team_mentions.message.one",
+    "translation": "@{{.Username}} не получил уведомления об этом упоминании, потому что он не является участником этой команды."
+  },
+  {
+    "id": "api.channel.create_channel.missing_display_name.error",
+    "translation": "Отсутствует display_name в теле запроса"
+  },
+  {
+    "id": "api.channel.create_channel.missing_team_id.error",
+    "translation": "Отсутствует team_id в теле запроса"
+  },
+  {
+    "id": "api.config.update.elasticsearch.autocomplete_cannot_be_enabled_error",
+    "translation": "Автозаполнение каналов не может быть включено, так как схема индекса каналов устарела. Рекомендуется перегенерировать индекс каналов. Более подробную информацию можно найти в журнале изменений Mattermost"
+  },
+  {
+    "id": "app.import.attachment.file_stat.error",
+    "translation": "Ошибка при чтении статуса файла: \"{{.FilePath}}\""
+  },
+  {
+    "id": "app.import.attachment.seek_file.error",
+    "translation": "Ошибка при поиске файла: \"{{.FilePath}}\""
+  },
+  {
+    "id": "app.limits.get_app_limits.user_count.store_error",
+    "translation": "Не удалось получить количество пользователей"
+  },
+  {
+    "id": "ent.compliance.csv.metadata.close.appError",
+    "translation": "Невозможно закрыть zip-файл"
+  },
+  {
+    "id": "ent.compliance.csv.seek.appError",
+    "translation": "Невозможно перейти к началу файла экспорта."
+  },
+  {
+    "id": "store.sql_team.save_team.existing.app_error",
+    "translation": "Команда с таким URL уже существует."
+  },
+  {
+    "id": "api.job.unable_to_manage_job.incorrect_job_type",
+    "translation": "У вас нет прав на управление этим типом задания"
+  },
+  {
+    "id": "app.job.update_status.app_error",
+    "translation": "Невозможно обновить статус задания. Установлен неверный статус"
+  },
+  {
+    "id": "app.user.update.countAdmins.app_error",
+    "translation": "Ошибка при определении количества учётных записей системного администратора."
+  },
+  {
+    "id": "app.user.update.lastAdmin.app_error",
+    "translation": "Невозможно понизить роль последнего системного администратора."
+  },
+  {
+    "id": "app.user.save.groupname.app_error",
+    "translation": "Невозможно определить, существует ли уже это имя пользователя"
+  },
+  {
+    "id": "api.job.status.invalid",
+    "translation": "Установлен неверный статус"
+  },
+  {
+    "id": "api.system.logs.download_bytes_buffer.app_error",
+    "translation": "Не удалось записать журналы в буфер"
+  },
+  {
+    "id": "model.user.pre_save.password_hash.app_error",
+    "translation": "Произошла внутренняя ошибка при сохранении пароля."
+  },
+  {
+    "id": "model.user.pre_save.password_too_long.app_error",
+    "translation": "Ваш пароль должен содержать не более 72 символов."
+  },
+  {
+    "id": "api.user.update_password.password_hash.app_error",
+    "translation": "Произошла внутренняя ошибка при сохранении пароля."
   }
 ]

@@ -104,7 +104,7 @@ func (a *App) UpdateOAuthApp(oldApp, updatedApp *model.OAuthApp) (*model.OAuthAp
 	return oauthApp, nil
 }
 
-func (a *App) DeleteOAuthApp(appID string) *model.AppError {
+func (a *App) DeleteOAuthApp(rctx request.CTX, appID string) *model.AppError {
 	if !*a.Config().ServiceSettings.EnableOAuthServiceProvider {
 		return model.NewAppError("DeleteOAuthApp", "api.oauth.allow_oauth.turn_off.app_error", nil, "", http.StatusNotImplemented)
 	}
@@ -114,7 +114,7 @@ func (a *App) DeleteOAuthApp(appID string) *model.AppError {
 	}
 
 	if err := a.Srv().InvalidateAllCaches(); err != nil {
-		mlog.Warn("error in invalidating cache", mlog.Err(err))
+		rctx.Logger().Warn("error in invalidating cache", mlog.Err(err))
 	}
 
 	return nil
@@ -956,7 +956,7 @@ func (a *App) SwitchEmailToOAuth(c request.CTX, w http.ResponseWriter, r *http.R
 		return "", err
 	}
 
-	if err = a.CheckPasswordAndAllCriteria(c, user, password, code); err != nil {
+	if err = a.CheckPasswordAndAllCriteria(c, user.Id, password, code); err != nil {
 		return "", err
 	}
 

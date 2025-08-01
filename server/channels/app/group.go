@@ -85,8 +85,8 @@ func (a *App) GetGroupsBySource(groupSource model.GroupSource) ([]*model.Group, 
 	return groups, nil
 }
 
-func (a *App) GetGroupsByUserId(userID string) ([]*model.Group, *model.AppError) {
-	groups, err := a.Srv().Store().Group().GetByUser(userID)
+func (a *App) GetGroupsByUserId(userID string, opts model.GroupSearchOpts) ([]*model.Group, *model.AppError) {
+	groups, err := a.Srv().Store().Group().GetByUser(userID, opts)
 	if err != nil {
 		return nil, model.NewAppError("GetGroupsByUserId", "app.select_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
@@ -249,9 +249,9 @@ func (a *App) RestoreGroup(groupID string) (*model.Group, *model.AppError) {
 		var nfErr *store.ErrNotFound
 		switch {
 		case errors.As(err, &nfErr):
-			return nil, model.NewAppError("RestoreGroup", "app.group.no_rows", nil, nfErr.Error(), http.StatusNotFound)
+			return nil, model.NewAppError("RestoreGroup", "app.group.no_rows", nil, "", http.StatusNotFound).Wrap(nfErr)
 		default:
-			return nil, model.NewAppError("RestoreGroup", "app.update_error", nil, err.Error(), http.StatusInternalServerError)
+			return nil, model.NewAppError("RestoreGroup", "app.update_error", nil, "", http.StatusInternalServerError).Wrap(err)
 		}
 	}
 

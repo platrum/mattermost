@@ -55,6 +55,7 @@ func (api *API) InitUser() {
 	api.BaseRoutes.User.Handle("/email/verify/member", api.APISessionRequired(verifyUserEmailWithoutToken)).Methods("POST")
 	api.BaseRoutes.User.Handle("/terms_of_service", api.APISessionRequired(saveUserTermsOfService)).Methods("POST")
 	api.BaseRoutes.User.Handle("/terms_of_service", api.APISessionRequired(getUserTermsOfService)).Methods("GET")
+	api.BaseRoutes.User.Handle("/reset_failed_attempts", api.APISessionRequired(resetPasswordFailedAttempts)).Methods(http.MethodPost)
 
 	api.BaseRoutes.User.Handle("/auth", api.APISessionRequiredTrustRequester(updateUserAuth)).Methods("PUT")
 
@@ -445,7 +446,7 @@ func setProfileImage(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := r.ParseMultipartForm(*c.App.Config().FileSettings.MaxFileSize); err != nil {
-		c.Err = model.NewAppError("uploadProfileImage", "api.user.upload_profile_user.parse.app_error", nil, err.Error(), http.StatusInternalServerError)
+		c.Err = model.NewAppError("uploadProfileImage", "api.user.upload_profile_user.parse.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 		return
 	}
 
@@ -1550,7 +1551,7 @@ func updateUserActive(c *Context, w http.ResponseWriter, r *http.Request) {
 	if isSelfDeactivate {
 		c.App.Srv().Go(func() {
 			if err := c.App.Srv().EmailService.SendDeactivateAccountEmail(user.Email, user.Locale, c.App.GetSiteURL()); err != nil {
-				c.LogErrorByCode(model.NewAppError("SendDeactivateEmail", "api.user.send_deactivate_email_and_forget.failed.error", nil, err.Error(), http.StatusInternalServerError))
+				c.LogErrorByCode(model.NewAppError("SendDeactivateEmail", "api.user.send_deactivate_email_and_forget.failed.error", nil, "", http.StatusInternalServerError).Wrap(err))
 			}
 		})
 	}
@@ -1628,7 +1629,12 @@ func updateUserMfa(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user, err := c.App.GetUser(c.Params.UserId); err == nil {
+	if appErr := c.App.MFARequired(c.AppContext); !c.AppContext.Session().Local && c.AppContext.Session().UserId != c.Params.UserId && appErr != nil {
+		c.Err = appErr
+		return
+	}
+
+	if user, appErr := c.App.GetUser(c.Params.UserId); appErr == nil {
 		audit.AddEventParameterAuditable(auditRec, "user", user)
 	}
 
@@ -1650,8 +1656,8 @@ func updateUserMfa(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	c.LogAudit("attempt")
 
-	if err := c.App.UpdateMfa(c.AppContext, activate, c.Params.UserId, code); err != nil {
-		c.Err = err
+	if appErr := c.App.UpdateMfa(c.AppContext, activate, c.Params.UserId, code); appErr != nil {
+		c.Err = appErr
 		return
 	}
 
@@ -1798,7 +1804,7 @@ func sendPasswordReset(c *Context, w http.ResponseWriter, r *http.Request) {
 	defer c.LogAuditRec(auditRec)
 	audit.AddEventParameter(auditRec, "email", email)
 
-	sent, err := c.App.SendPasswordReset(email, c.App.GetSiteURL())
+	sent, err := c.App.SendPasswordReset(c.AppContext, email, c.App.GetSiteURL())
 	if err != nil {
 		if *c.App.Config().ServiceSettings.ExperimentalEnableHardenedMode {
 			ReturnStatusOK(w)
@@ -1834,6 +1840,7 @@ func login(c *Context, w http.ResponseWriter, r *http.Request) {
 			"api.user.check_user_login_attempts.too_many.app_error",
 			"app.team.join_user_to_team.max_accounts.app_error",
 			"store.sql_user.save.max_accounts.app_error",
+			"api.user.check_user_login_attempts.too_many_ldap.app_error",
 		}
 
 		maskError := true
@@ -1979,7 +1986,15 @@ func loginWithDesktopToken(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, err := c.App.DoLogin(c.AppContext, w, r, user, deviceId, false, false, false)
+	isOAuthUser := user.IsOAuthUser()
+	isSamlUser := user.IsSAMLUser()
+
+	if !isOAuthUser && !isSamlUser {
+		c.Err = model.NewAppError("loginWithDesktopToken", "api.user.login_with_desktop_token.not_oauth_or_saml_user.app_error", nil, "", http.StatusUnauthorized)
+		return
+	}
+
+	session, err := c.App.DoLogin(c.AppContext, w, r, user, deviceId, false, isOAuthUser, isSamlUser)
 	if err != nil {
 		c.Err = err
 		return
@@ -2309,7 +2324,7 @@ func verifyUserEmail(c *Context, w http.ResponseWriter, r *http.Request) {
 	defer c.LogAuditRec(auditRec)
 
 	if err := c.App.VerifyEmailFromToken(c.AppContext, token); err != nil {
-		c.Err = model.NewAppError("verifyUserEmail", "api.user.verify_email.bad_link.app_error", nil, err.Error(), http.StatusBadRequest)
+		c.Err = model.NewAppError("verifyUserEmail", "api.user.verify_email.bad_link.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 		return
 	}
 
@@ -2415,6 +2430,12 @@ func createUserAccessToken(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	audit.AddEventParameterAuditable(auditRec, "user", user)
 
+	if user.IsRemote() {
+		// remote/synthetic users cannot have access tokens
+		c.SetPermissionError(model.PermissionCreateUserAccessToken)
+		return
+	}
+
 	if c.AppContext.Session().IsOAuth {
 		c.SetPermissionError(model.PermissionCreateUserAccessToken)
 		c.Err.DetailedError += ", attempted access by oauth app"
@@ -2452,7 +2473,7 @@ func createUserAccessToken(c *Context, w http.ResponseWriter, r *http.Request) {
 	accessToken.UserId = c.Params.UserId
 	accessToken.Token = ""
 
-	token, err := c.App.CreateUserAccessToken(&accessToken)
+	token, err := c.App.CreateUserAccessToken(c.AppContext, &accessToken)
 	if err != nil {
 		c.Err = err
 		return
@@ -3061,7 +3082,7 @@ func migrateAuthToLDAP(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	if migrate := c.App.AccountMigration(); migrate != nil {
 		if err := migrate.MigrateToLdap(c.AppContext, from, matchField, force, false); err != nil {
-			c.Err = model.NewAppError("api.migrateAuthToLdap", "api.migrate_to_saml.error", nil, err.Error(), http.StatusInternalServerError)
+			c.Err = model.NewAppError("api.migrateAuthToLdap", "api.migrate_to_saml.error", nil, "", http.StatusInternalServerError).Wrap(err)
 			return
 		}
 	} else {
@@ -3120,7 +3141,7 @@ func migrateAuthToSaml(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	if migrate := c.App.AccountMigration(); migrate != nil {
 		if err := migrate.MigrateToSaml(c.AppContext, from, usersMap, auto, false); err != nil {
-			c.Err = model.NewAppError("api.migrateAuthToSaml", "api.migrate_to_saml.error", nil, err.Error(), http.StatusInternalServerError)
+			c.Err = model.NewAppError("api.migrateAuthToSaml", "api.migrate_to_saml.error", nil, "", http.StatusInternalServerError).Wrap(err)
 			return
 		}
 	} else {
@@ -3425,4 +3446,47 @@ func getUsersWithInvalidEmails(c *Context, w http.ResponseWriter, r *http.Reques
 	if err != nil {
 		c.Logger.Warn("Error writing response", mlog.Err(err))
 	}
+}
+
+func resetPasswordFailedAttempts(c *Context, w http.ResponseWriter, r *http.Request) {
+	c.RequireUserId()
+	if c.Err != nil {
+		return
+	}
+	errParams := map[string]any{"userID": c.Params.UserId}
+
+	auditRec := c.MakeAuditRecord("resetPasswordFailedAttempts", audit.Fail)
+	defer c.LogAuditRec(auditRec)
+
+	if !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionSysconsoleWriteUserManagementUsers) {
+		c.Err = model.NewAppError("resetPasswordFailedAttempts", "api.user.reset_password_failed_attempts.permissions.app_error", errParams, "", http.StatusForbidden)
+		return
+	}
+
+	user, err := c.App.GetUser(c.Params.UserId)
+	if err != nil {
+		c.Err = err
+		return
+	}
+	auditRec.AddEventPriorState(user)
+	auditRec.AddEventObjectType("user")
+
+	if user.IsSystemAdmin() && !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionManageSystem) {
+		c.SetPermissionError(model.PermissionManageSystem)
+		return
+	}
+
+	if user.AuthService != model.UserAuthServiceLdap && user.AuthService != "" {
+		c.Err = model.NewAppError("resetPasswordFailedAttempts", "api.user.reset_password_failed_attempts.ldap_and_email_only.app_error", errParams, "", http.StatusBadRequest)
+		return
+	}
+
+	if err := c.App.ResetPasswordFailedAttempts(c.AppContext, user); err != nil {
+		c.Err = err
+		return
+	}
+
+	auditRec.Success()
+
+	ReturnStatusOK(w)
 }

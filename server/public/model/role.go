@@ -68,7 +68,6 @@ func init() {
 		},
 		PermissionSysconsoleReadUserManagementUsers.Id: {
 			PermissionReadOtherUsersTeams,
-			PermissionGetAnalytics,
 		},
 		PermissionSysconsoleReadUserManagementTeams.Id: {
 			PermissionListPrivateTeams,
@@ -90,7 +89,9 @@ func init() {
 		PermissionSysconsoleWriteEnvironmentElasticsearch.Id: {
 			PermissionTestElasticsearch,
 			PermissionCreateElasticsearchPostIndexingJob,
+			PermissionManageElasticsearchPostIndexingJob,
 			PermissionCreateElasticsearchPostAggregationJob,
+			PermissionManageElasticsearchPostAggregationJob,
 			PermissionPurgeElasticsearchIndexes,
 		},
 		PermissionSysconsoleWriteEnvironmentFileStorage.Id: {
@@ -106,7 +107,7 @@ func init() {
 			PermissionGetAnalytics,
 		},
 		PermissionSysconsoleReadReportingTeamStatistics.Id: {
-			PermissionViewTeam,
+			PermissionGetAnalytics,
 		},
 		PermissionSysconsoleWriteUserManagementUsers.Id: {
 			PermissionEditOtherUsers,
@@ -114,7 +115,6 @@ func init() {
 			PermissionPromoteGuest,
 		},
 		PermissionSysconsoleWriteUserManagementChannels.Id: {
-			PermissionManageTeam,
 			PermissionManagePublicChannelProperties,
 			PermissionManagePrivateChannelProperties,
 			PermissionManagePrivateChannelMembers,
@@ -134,7 +134,6 @@ func init() {
 			PermissionAddUserToTeam,
 		},
 		PermissionSysconsoleWriteUserManagementGroups.Id: {
-			PermissionManageTeam,
 			PermissionManagePrivateChannelMembers,
 			PermissionManagePublicChannelMembers,
 			PermissionConvertPublicChannelToPrivate,
@@ -145,27 +144,31 @@ func init() {
 		},
 		PermissionSysconsoleWriteComplianceDataRetentionPolicy.Id: {
 			PermissionCreateDataRetentionJob,
+			PermissionManageDataRetentionJob,
 		},
 		PermissionSysconsoleReadComplianceDataRetentionPolicy.Id: {
 			PermissionReadDataRetentionJob,
 		},
 		PermissionSysconsoleWriteComplianceComplianceExport.Id: {
 			PermissionCreateComplianceExportJob,
+			PermissionManageComplianceExportJob,
 			PermissionDownloadComplianceExportResult,
 		},
 		PermissionSysconsoleReadComplianceComplianceExport.Id: {
 			PermissionReadComplianceExportJob,
 			PermissionDownloadComplianceExportResult,
 		},
-		PermissionSysconsoleReadComplianceCustomTermsOfService.Id: {
+		PermissionSysconsoleReadComplianceComplianceMonitoring.Id: {
 			PermissionReadAudits,
 		},
 		PermissionSysconsoleWriteExperimentalBleve.Id: {
 			PermissionCreatePostBleveIndexesJob,
 			PermissionPurgeBleveIndexes,
+			PermissionManagePostBleveIndexesJob,
 		},
 		PermissionSysconsoleWriteAuthenticationLdap.Id: {
 			PermissionCreateLdapSyncJob,
+			PermissionManageLdapSyncJob,
 			PermissionAddLdapPublicCert,
 			PermissionRemoveLdapPublicCert,
 			PermissionAddLdapPrivateCert,

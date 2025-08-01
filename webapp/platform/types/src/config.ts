@@ -38,6 +38,7 @@ export type ClientConfig = {
     DiagnosticId: string;
     DiagnosticsEnabled: string;
     DisableRefetchingOnBrowserFocus: string;
+    DisableWakeUpReconnectHandler: string;
     EmailLoginButtonBorderColor: string;
     EmailLoginButtonColor: string;
     EmailLoginButtonTextColor: string;
@@ -46,6 +47,7 @@ export type ClientConfig = {
     EnableBanner: string;
     EnableBotAccountCreation: string;
     EnableChannelViewedMessages: string;
+    EnableClientMetrics: string;
     EnableClientPerformanceDebugging: string;
     EnableCluster: string;
     EnableCommands: string;
@@ -208,6 +210,7 @@ export type ClientConfig = {
     WranglerMoveThreadFromGroupMessageChannelEnable: string;
     ServiceEnvironment: string;
     UniqueEmojiReactionLimitPerPost: string;
+    UsersStatusAndProfileFetchingPollIntervalMilliseconds: string;
 };
 
 export type License = {
@@ -328,6 +331,7 @@ export type ServiceSettings = {
     CorsDebug: boolean;
     AllowCookiesForSubdomains: boolean;
     ExtendSessionLengthWithActivity: boolean;
+    TerminateSessionsOnPasswordChange: boolean;
     SessionLengthWebInDays: number;
     SessionLengthWebInHours: number;
     SessionLengthMobileInDays: number;
@@ -531,6 +535,7 @@ export type FileSettings = {
     AmazonS3SSE: boolean;
     AmazonS3Trace: boolean;
     AmazonS3RequestTimeoutMilliseconds: number;
+    AmazonS3UploadPartSizeBytes: number;
     DedicatedExportStore: boolean;
     ExportDriverName: string;
     ExportDirectory: string;
@@ -546,6 +551,7 @@ export type FileSettings = {
     ExportAmazonS3Trace: boolean;
     ExportAmazonS3RequestTimeoutMilliseconds: number;
     ExportAmazonS3PresignExpiresSeconds: number;
+    ExportAmazonS3UploadPartSizeBytes: number;
 };
 
 export type EmailSettings = {
@@ -692,6 +698,7 @@ export type LdapSettings = {
     LoginButtonBorderColor: string;
     LoginButtonTextColor: string;
     Trace: boolean;
+    MaximumLoginAttempts: number;
 };
 
 export type ComplianceSettings = {
@@ -789,6 +796,7 @@ export type AnalyticsSettings = {
 
 export type ElasticsearchSettings = {
     ConnectionURL: string;
+    Backend: string;
     Username: string;
     Password: string;
     EnableIndexing: boolean;
