@@ -1,8 +1,9 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {isMessageAttachmentArray} from '@mattermost/types/message_attachments';
+
 import {logError} from 'mattermost-redux/actions/errors';
-import {getProfilesByIds} from 'mattermost-redux/actions/users';
 import {getCurrentChannel, getMyChannelMember, makeGetChannel} from 'mattermost-redux/selectors/entities/channels';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {
@@ -12,7 +13,7 @@ import {
 import {getAllUserMentionKeys} from 'mattermost-redux/selectors/entities/search';
 import {getCurrentUserId, getCurrentUser, getStatusForUserId, getUser} from 'mattermost-redux/selectors/entities/users';
 import {isChannelMuted} from 'mattermost-redux/utils/channel_utils';
-import {isSystemMessage, isUserAddedInChannel} from 'mattermost-redux/utils/post_utils';
+import {ensureString, isSystemMessage, isUserAddedInChannel} from 'mattermost-redux/utils/post_utils';
 import {displayUsername} from 'mattermost-redux/utils/user_utils';
 
 import {getChannelURL, getPermalinkURL} from 'selectors/urls';
@@ -49,7 +50,7 @@ const getNotificationSoundFromChannelMemberAndUser = (member, user) => {
 };
 
 /**
- * @returns {import('mattermost-redux/types/actions').ThunkActionFunc<Promise<NotificationResult>, GlobalState>}
+ * @returns {import('mattermost-redux/types/actions').ThunkActionFunc<Promise<import('utils/notifications').NotificationResult>, GlobalState>}
  */
 export function sendDesktopNotification(post, msgProps) {
     return async (dispatch, getState) => {
@@ -62,14 +63,6 @@ export function sendDesktopNotification(post, msgProps) {
 
         if (isSystemMessage(post) && !isUserAddedInChannel(post, currentUserId)) {
             return {status: 'not_sent', reason: 'system_message'};
-        }
-
-        let userFromPost = getUser(state, post.user_id);
-        if (!userFromPost) {
-            const missingProfileResponse = await dispatch(getProfilesByIds([post.user_id]));
-            if (missingProfileResponse.data && missingProfileResponse.data.length) {
-                userFromPost = missingProfileResponse.data[0];
-            }
         }
 
         let mentions = [];
@@ -122,7 +115,7 @@ export function sendDesktopNotification(post, msgProps) {
 
             // We do this on a try catch block to avoid errors from malformed props
             try {
-                if (post.props && post.props.attachments) {
+                if (isMessageAttachmentArray(post.props.attachments)) {
                     const attachments = post.props.attachments;
                     function appendText(toAppend) {
                         if (toAppend) {
@@ -199,11 +192,16 @@ export function sendDesktopNotification(post, msgProps) {
         }
 
         const config = getConfig(state);
+        const userFromPost = getUser(state, post.user_id);
+
         let username = '';
-        if (post.props.override_username && config.EnablePostUsernameOverride === 'true') {
+        const overrideUsername = ensureString(post.props.override_username);
+        if (overrideUsername && config.EnablePostUsernameOverride === 'true') {
             username = post.props.override_username;
         } else if (userFromPost) {
             username = displayUsername(userFromPost, getTeammateNameDisplaySetting(state), false);
+        } else if (msgProps.sender_name) {
+            username = msgProps.sender_name;
         } else {
             username = Utils.localizeMessage('channel_loader.someone', 'Someone');
         }
@@ -236,15 +234,15 @@ export function sendDesktopNotification(post, msgProps) {
         let notifyText = post.message;
 
         const msgPropsPost = JSON.parse(msgProps.post);
-        const attachments = msgPropsPost && msgPropsPost.props && msgPropsPost.props.attachments ? msgPropsPost.props.attachments : [];
+        const attachments = isMessageAttachmentArray(msgPropsPost?.props?.attachments) ? msgPropsPost.props.attachments : [];
         let image = false;
         attachments.forEach((attachment) => {
             if (notifyText.length === 0) {
                 notifyText = attachment.fallback ||
                     attachment.pretext ||
-                    attachment.text;
+                    attachment.text || '';
             }
-            image |= attachment.image_url.length > 0;
+            image = Boolean(image || (attachment.image_url?.length));
         });
 
         const strippedMarkdownNotifyText = stripMarkdown(notifyText);
@@ -330,6 +328,9 @@ export function sendDesktopNotification(post, msgProps) {
     };
 }
 
+/**
+ * @returns {import('mattermost-redux/types/actions').ThunkActionFunc<Promise<import('utils/notifications').NotificationResult>, GlobalState>}
+ */
 export const notifyMe = (title, body, channel, teamId, silent, soundName, url) => async (dispatch) => {
     // handle notifications in desktop app
     if (isDesktopApp()) {
@@ -337,7 +338,7 @@ export const notifyMe = (title, body, channel, teamId, silent, soundName, url) =
     }
 
     try {
-        return await showNotification({
+        return await dispatch(showNotification({
             title,
             body,
             requireInteraction: false,
@@ -346,7 +347,7 @@ export const notifyMe = (title, body, channel, teamId, silent, soundName, url) =
                 window.focus();
                 getHistory().push(url);
             },
-        });
+        }));
     } catch (error) {
         dispatch(logError(error));
         return {status: 'error', reason: 'notification_api', data: String(error)};

@@ -10,7 +10,7 @@ import {getMissingProfilesByIds} from 'mattermost-redux/actions/users';
 import {Client4} from 'mattermost-redux/client';
 import {getCurrentChannel, getChannel as getChannelFromRedux} from 'mattermost-redux/selectors/entities/channels';
 import {isCollapsedThreadsEnabled} from 'mattermost-redux/selectors/entities/preferences';
-import {getCurrentTeam, getTeam} from 'mattermost-redux/selectors/entities/teams';
+import {getCurrentTeam, getTeam, getMyTeamMember} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import type {ActionFuncAsync, ThunkActionFunc} from 'mattermost-redux/types/actions';
 import {getUserIdFromChannelName} from 'mattermost-redux/utils/channel_utils';
@@ -63,7 +63,7 @@ function focusReplyPost(post: Post, channel: Channel, teamId: string, returnTo: 
         const team = getTeam(state, channel.team_id || teamId);
         const currentChannel = getCurrentChannel(state);
 
-        const sameTeam = currentChannel && currentChannel.team_id === team.id;
+        const sameTeam = currentChannel && currentChannel.team_id === team?.id;
 
         const {skipRedirectReplyPermalink} = option;
 
@@ -100,11 +100,21 @@ export function focusPost(postId: string, returnTo = '', currentUserId: string, 
 
         const state = getState();
         const currentTeam = getCurrentTeam(state);
+        if (!currentTeam) {
+            return;
+        }
 
         if (!postInfo.has_joined_channel) {
-            // Prompt system admin before joining the private channel
+            // Prompt system admins and team admins before joining the private channel
             const user = getCurrentUser(state);
+            let prompt = false;
             if (postInfo.channel_type === Constants.PRIVATE_CHANNEL && isSystemAdmin(user.roles)) {
+                prompt = true;
+            } else {
+                const teamMember = getMyTeamMember(state, currentTeam.id);
+                prompt = Boolean(teamMember && teamMember.scheme_admin);
+            }
+            if (prompt) {
                 privateChannelJoinPromptVisible = true;
                 const joinPromptResult = await dispatch(joinPrivateChannelPrompt(currentTeam, postInfo.channel_display_name));
                 privateChannelJoinPromptVisible = false;

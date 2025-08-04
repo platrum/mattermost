@@ -55,8 +55,7 @@ func createPost(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Strip away delete_at if passed
-	post.DeleteAt = 0
+	post.SanitizeInput()
 
 	post.UserId = c.AppContext.Session().UserId
 
@@ -258,15 +257,20 @@ func getPostsForChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), channelId, model.PermissionReadChannelContent) {
+	channel, err := c.App.GetChannel(c.AppContext, channelId)
+	if err != nil {
+		c.Err = err
+		return
+	}
+	if !c.App.SessionHasPermissionToReadChannel(c.AppContext, *c.AppContext.Session(), channel) {
 		c.SetPermissionError(model.PermissionReadChannelContent)
 		return
 	}
 
 	if !*c.App.Config().TeamSettings.ExperimentalViewArchivedChannels {
-		channel, err := c.App.GetChannel(c.AppContext, channelId)
-		if err != nil {
-			c.Err = err
+		channel, appErr := c.App.GetChannel(c.AppContext, channelId)
+		if appErr != nil {
+			c.Err = appErr
 			return
 		}
 		if channel.DeleteAt != 0 {
@@ -276,7 +280,6 @@ func getPostsForChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	var list *model.PostList
-	var err *model.AppError
 	etag := ""
 
 	if since > 0 {
@@ -342,7 +345,12 @@ func getPostsForChannelAroundLastUnread(c *Context, w http.ResponseWriter, r *ht
 	}
 
 	channelId := c.Params.ChannelId
-	if !c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), channelId, model.PermissionReadChannelContent) {
+	channel, err := c.App.GetChannel(c.AppContext, channelId)
+	if err != nil {
+		c.Err = err
+		return
+	}
+	if !c.App.SessionHasPermissionToReadChannel(c.AppContext, *c.AppContext.Session(), channel) {
 		c.SetPermissionError(model.PermissionReadChannelContent)
 		return
 	}
@@ -424,6 +432,20 @@ func getFlaggedPostsForUser(c *Context, w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	channelMap := make(map[string]*model.Channel)
+	channelIds := []string{}
+	for _, post := range posts.Posts {
+		channelIds = append(channelIds, post.ChannelId)
+	}
+	channels, err := c.App.GetChannels(c.AppContext, channelIds)
+	if err != nil {
+		c.Err = err
+		return
+	}
+	for _, channel := range channels {
+		channelMap[channel.Id] = channel
+	}
+
 	pl := model.NewPostList()
 	channelReadPermission := make(map[string]bool)
 
@@ -433,7 +455,11 @@ func getFlaggedPostsForUser(c *Context, w http.ResponseWriter, r *http.Request) 
 		if !ok {
 			allowed = false
 
-			if c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), post.ChannelId, model.PermissionReadChannelContent) {
+			channel, ok := channelMap[post.ChannelId]
+			if !ok {
+				continue
+			}
+			if c.App.SessionHasPermissionToReadChannel(c.AppContext, *c.AppContext.Session(), channel) {
 				allowed = true
 			}
 
@@ -524,26 +550,29 @@ func getPostsByIds(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var posts = []*model.Post{}
 	channelMap := make(map[string]*model.Channel)
-
+	channelIds := []string{}
 	for _, post := range postsList {
-		var channel *model.Channel
-		if val, ok := channelMap[post.ChannelId]; ok {
-			channel = val
-		} else {
-			channel, appErr = c.App.GetChannel(c.AppContext, post.ChannelId)
-			if appErr != nil {
-				c.Err = appErr
-				return
-			}
-			channelMap[channel.Id] = channel
+		channelIds = append(channelIds, post.ChannelId)
+	}
+	channels, appErr := c.App.GetChannels(c.AppContext, channelIds)
+	if appErr != nil {
+		c.Err = appErr
+		return
+	}
+	for _, channel := range channels {
+		channelMap[channel.Id] = channel
+	}
+
+	var posts = []*model.Post{}
+	for _, post := range postsList {
+		channel, ok := channelMap[post.ChannelId]
+		if !ok {
+			continue
 		}
 
-		if !c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), channel.Id, model.PermissionReadChannelContent) {
-			if channel.Type != model.ChannelTypeOpen || (channel.Type == model.ChannelTypeOpen && !c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), channel.TeamId, model.PermissionReadPublicChannel)) {
-				continue
-			}
+		if !c.App.SessionHasPermissionToReadChannel(c.AppContext, *c.AppContext.Session(), channel) {
+			continue
 		}
 
 		post = c.App.PreparePostForClient(c.AppContext, post, false, false, true)
@@ -564,7 +593,7 @@ func getEditHistoryForPost(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	originalPost, err := c.App.GetSinglePost(c.Params.PostId, false)
+	originalPost, err := c.App.GetSinglePost(c.AppContext, c.Params.PostId, false)
 	if err != nil {
 		c.SetPermissionError(model.PermissionEditPost)
 		return
@@ -601,7 +630,7 @@ func deletePost(c *Context, w http.ResponseWriter, _ *http.Request) {
 	defer c.LogAuditRecWithLevel(auditRec, app.LevelContent)
 	audit.AddEventParameter(auditRec, "post_id", c.Params.PostId)
 
-	post, err := c.App.GetSinglePost(c.Params.PostId, false)
+	post, err := c.App.GetSinglePost(c.AppContext, c.Params.PostId, false)
 	if err != nil {
 		c.SetPermissionError(model.PermissionDeletePost)
 		return
@@ -845,7 +874,7 @@ func updatePost(c *Context, w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	originalPost, err := c.App.GetSinglePost(c.Params.PostId, false)
+	originalPost, err := c.App.GetSinglePost(c.AppContext, c.Params.PostId, false)
 	if err != nil {
 		c.SetPermissionError(model.PermissionEditPost)
 		return
@@ -917,7 +946,7 @@ func patchPost(c *Context, w http.ResponseWriter, r *http.Request) {
 	// Updating the file_ids of a post is not a supported operation and will be ignored
 	post.FileIds = nil
 
-	originalPost, err := c.App.GetSinglePost(c.Params.PostId, false)
+	originalPost, err := c.App.GetSinglePost(c.AppContext, c.Params.PostId, false)
 	if err != nil {
 		c.SetPermissionError(model.PermissionEditPost)
 		return
@@ -1005,7 +1034,7 @@ func setPostReminder(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	appErr := c.App.SetPostReminder(c.Params.PostId, c.Params.UserId, reminder.TargetTime)
+	appErr := c.App.SetPostReminder(c.AppContext, c.Params.PostId, c.Params.UserId, reminder.TargetTime)
 	if appErr != nil {
 		c.Err = appErr
 		return
@@ -1024,7 +1053,7 @@ func saveIsPinnedPost(c *Context, w http.ResponseWriter, isPinned bool) {
 	audit.AddEventParameter(auditRec, "post_id", c.Params.PostId)
 	defer c.LogAuditRecWithLevel(auditRec, app.LevelContent)
 
-	post, err := c.App.GetSinglePost(c.Params.PostId, false)
+	post, err := c.App.GetSinglePost(c.AppContext, c.Params.PostId, false)
 	if err != nil {
 		c.SetPermissionError(model.PermissionReadChannelContent)
 		return
@@ -1032,7 +1061,12 @@ func saveIsPinnedPost(c *Context, w http.ResponseWriter, isPinned bool) {
 	auditRec.AddEventPriorState(post)
 	auditRec.AddEventObjectType("post")
 
-	if !c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), post.ChannelId, model.PermissionReadChannelContent) {
+	channel, err := c.App.GetChannel(c.AppContext, post.ChannelId)
+	if err != nil {
+		c.Err = err
+		return
+	}
+	if !c.App.SessionHasPermissionToReadChannel(c.AppContext, *c.AppContext.Session(), channel) {
 		c.SetPermissionError(model.PermissionReadChannelContent)
 		return
 	}
@@ -1118,7 +1152,7 @@ func unacknowledgePost(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := c.App.GetSinglePost(c.Params.PostId, false)
+	_, err := c.App.GetSinglePost(c.AppContext, c.Params.PostId, false)
 	if err != nil {
 		c.Err = err
 		return
@@ -1161,14 +1195,19 @@ func moveThread(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// If there are no configured PermittedWranglerRoles, skip the check
-	userHasRole := len(c.App.Config().WranglerSettings.PermittedWranglerRoles) == 0
-	for _, role := range c.App.Config().WranglerSettings.PermittedWranglerRoles {
-		if user.IsInRole(role) {
-			userHasRole = true
-			break
-		}
+	posts, _, err := c.App.GetPostsByIds([]string{c.Params.PostId})
+	if err != nil {
+		c.Err = err
+		return
 	}
+
+	channelMember, err := c.App.GetChannelMember(c.AppContext, posts[0].ChannelId, user.Id)
+	if err != nil {
+		c.Err = err
+		return
+	}
+
+	userHasRole := hasPermittedWranglerRole(c, user, channelMember)
 
 	// Sysadmins are always permitted
 	if !userHasRole && !user.IsSystemAdmin() {
@@ -1267,4 +1306,20 @@ func getPostInfo(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(js)
+}
+
+func hasPermittedWranglerRole(c *Context, user *model.User, channelMember *model.ChannelMember) bool {
+	// If there are no configured PermittedWranglerRoles, skip the check
+	if len(c.App.Config().WranglerSettings.PermittedWranglerRoles) == 0 {
+		return true
+	}
+
+	userRoles := user.Roles + " " + channelMember.Roles
+	for _, role := range c.App.Config().WranglerSettings.PermittedWranglerRoles {
+		if model.IsInRole(userRoles, role) {
+			return true
+		}
+	}
+
+	return false
 }

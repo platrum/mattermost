@@ -9,12 +9,9 @@ import isNil from 'lodash/isNil';
 import moment from 'moment';
 import React from 'react';
 import type {LinkHTMLAttributes} from 'react';
-import {FormattedMessage} from 'react-intl';
-import type {IntlShape} from 'react-intl';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {Address} from '@mattermost/types/cloud';
-import type {ClientConfig} from '@mattermost/types/config';
 import type {FileInfo} from '@mattermost/types/files';
 import type {Group} from '@mattermost/types/groups';
 import type {GlobalState} from '@mattermost/types/store';
@@ -31,6 +28,7 @@ import {getPost as getPostAction} from 'mattermost-redux/actions/posts';
 import {getTeamByName as getTeamByNameAction} from 'mattermost-redux/actions/teams';
 import {Client4} from 'mattermost-redux/client';
 import {Preferences, General} from 'mattermost-redux/constants';
+import {createSelector} from 'mattermost-redux/selectors/create_selector';
 import {
     getChannel,
     getChannelsNameMapInTeam,
@@ -59,7 +57,6 @@ import type {TextboxElement} from 'components/textbox';
 import {getHistory} from 'utils/browser_history';
 import Constants, {FileTypes, ValidationErrors, A11yCustomEventTypes} from 'utils/constants';
 import type {A11yFocusEventDetail} from 'utils/constants';
-import {t} from 'utils/i18n';
 import * as Keyboard from 'utils/keyboard';
 import * as UserAgent from 'utils/user_agent';
 
@@ -1224,91 +1221,6 @@ export function mod(a: number, b: number): number {
 
 export const REACTION_PATTERN = /^(\+|-):([^:\s]+):\s*$/;
 
-export function getPasswordConfig(config: Partial<ClientConfig>) {
-    return {
-        minimumLength: parseInt(config.PasswordMinimumLength!, 10),
-        requireLowercase: config.PasswordRequireLowercase === 'true',
-        requireUppercase: config.PasswordRequireUppercase === 'true',
-        requireNumber: config.PasswordRequireNumber === 'true',
-        requireSymbol: config.PasswordRequireSymbol === 'true',
-    };
-}
-
-export function isValidPassword(password: string, passwordConfig: ReturnType<typeof getPasswordConfig>, intl?: IntlShape) {
-    let errorId = t('user.settings.security.passwordError');
-    const telemetryErrorIds = [];
-    let valid = true;
-    const minimumLength = passwordConfig.minimumLength || Constants.MIN_PASSWORD_LENGTH;
-
-    if (password.length < minimumLength || password.length > Constants.MAX_PASSWORD_LENGTH) {
-        valid = false;
-        telemetryErrorIds.push({field: 'password', rule: 'error_length'});
-    }
-
-    if (passwordConfig.requireLowercase) {
-        if (!password.match(/[a-z]/)) {
-            valid = false;
-        }
-
-        errorId += 'Lowercase';
-        telemetryErrorIds.push({field: 'password', rule: 'lowercase'});
-    }
-
-    if (passwordConfig.requireUppercase) {
-        if (!password.match(/[A-Z]/)) {
-            valid = false;
-        }
-
-        errorId += 'Uppercase';
-        telemetryErrorIds.push({field: 'password', rule: 'uppercase'});
-    }
-
-    if (passwordConfig.requireNumber) {
-        if (!password.match(/[0-9]/)) {
-            valid = false;
-        }
-
-        errorId += 'Number';
-        telemetryErrorIds.push({field: 'password', rule: 'number'});
-    }
-
-    if (passwordConfig.requireSymbol) {
-        if (!password.match(/[ !"\\#$%&'()*+,-./:;<=>?@[\]^_`|~]/)) {
-            valid = false;
-        }
-
-        errorId += 'Symbol';
-        telemetryErrorIds.push({field: 'password', rule: 'symbol'});
-    }
-
-    let error;
-    if (!valid) {
-        error = intl ? (
-            intl.formatMessage(
-                {
-                    id: errorId,
-                    defaultMessage: 'Must be {min}-{max} characters long.',
-                },
-                {
-                    min: minimumLength,
-                    max: Constants.MAX_PASSWORD_LENGTH,
-                },
-            )
-        ) : (
-            <FormattedMessage
-                id={errorId}
-                defaultMessage='Must be {min}-{max} characters long.'
-                values={{
-                    min: minimumLength,
-                    max: Constants.MAX_PASSWORD_LENGTH,
-                }}
-            />
-        );
-    }
-
-    return {valid, error, telemetryErrorIds};
-}
-
 function isChannelOrPermalink(link: string) {
     let match = (/\/([a-z0-9\-_]+)\/channels\/([a-z0-9\-__][a-z0-9\-__.]+)/).exec(link);
     if (match) {
@@ -1630,8 +1542,7 @@ const TrackFlowRoles: Record<string, string> = {
     su: General.SYSTEM_USER_ROLE,
 };
 
-export function getTrackFlowRole() {
-    const state = store.getState();
+export function getTrackFlowRole(state: GlobalState) {
     let trackFlowRole = 'su';
 
     if (isFirstAdmin(state)) {
@@ -1643,11 +1554,15 @@ export function getTrackFlowRole() {
     return trackFlowRole;
 }
 
-export function getRoleForTrackFlow() {
-    const startedByRole = TrackFlowRoles[getTrackFlowRole()];
+export const getRoleForTrackFlow = createSelector(
+    'getRoleForTrackFlow',
+    getTrackFlowRole,
+    (trackFlowRole) => {
+        const startedByRole = TrackFlowRoles[trackFlowRole];
 
-    return {started_by_role: startedByRole};
-}
+        return {started_by_role: startedByRole};
+    },
+);
 
 export function getSbr() {
     const params = new URLSearchParams(window.location.search);

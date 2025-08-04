@@ -359,6 +359,25 @@ func SetupWithServerOptions(tb testing.TB, options []app.Option) *TestHelper {
 	return th
 }
 
+func SetupEnterpriseWithServerOptions(tb testing.TB, options []app.Option) *TestHelper {
+	if testing.Short() {
+		tb.SkipNow()
+	}
+
+	if mainHelper == nil {
+		tb.SkipNow()
+	}
+
+	dbStore := mainHelper.GetStore()
+	dbStore.DropAllTables()
+	dbStore.MarkSystemRanUnitTests()
+	mainHelper.PreloadMigrations()
+	searchEngine := mainHelper.GetSearchEngine()
+	th := setupTestHelper(dbStore, searchEngine, true, true, nil, options)
+	th.InitLogin()
+	return th
+}
+
 func (th *TestHelper) ShutdownApp() {
 	done := make(chan bool)
 	go func() {
@@ -562,6 +581,17 @@ func (th *TestHelper) CreateUser() *model.User {
 	return th.CreateUserWithClient(th.Client)
 }
 
+func (th *TestHelper) CreateGuestUser(tb testing.TB) *model.User {
+	tb.Helper()
+
+	guestUser := th.CreateUserWithClient(th.Client)
+
+	_, appErr := th.App.UpdateUserRoles(th.Context, guestUser.Id, model.SystemGuestRoleId, false)
+	require.Nil(tb, appErr)
+
+	return guestUser
+}
+
 func (th *TestHelper) CreateTeam() *model.Team {
 	return th.CreateTeamWithClient(th.Client)
 }
@@ -626,7 +656,8 @@ func (th *TestHelper) CreateUserWithAuth(authService string) *model.User {
 // CreateGuestAndClient creates a guest user, adds them to the basic
 // team, basic channel and basic private channel, and generates an API
 // client ready to use
-func (th *TestHelper) CreateGuestAndClient() (*model.User, *model.Client4) {
+func (th *TestHelper) CreateGuestAndClient(tb testing.TB) (*model.User, *model.Client4) {
+	tb.Helper()
 	id := model.NewId()
 
 	// create a guest user and add it to the basic team and public/private channels
@@ -637,23 +668,17 @@ func (th *TestHelper) CreateGuestAndClient() (*model.User, *model.Client4) {
 		Password:      "Password1",
 		EmailVerified: true,
 	})
-	if cgErr != nil {
-		panic(cgErr)
-	}
+	require.Nil(tb, cgErr)
 
-	_, _, tErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, th.SystemAdminUser.Id)
-	if tErr != nil {
-		panic(tErr)
-	}
+	_, _, appErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, th.SystemAdminUser.Id)
+	require.Nil(tb, appErr)
 	th.AddUserToChannel(guest, th.BasicChannel)
 	th.AddUserToChannel(guest, th.BasicPrivateChannel)
 
 	// create a client and login the guest
 	guestClient := th.CreateClient()
-	_, _, lErr := guestClient.Login(context.Background(), guest.Username, "Password1")
-	if lErr != nil {
-		panic(lErr)
-	}
+	_, _, err := guestClient.Login(context.Background(), guest.Email, "Password1")
+	require.NoError(tb, err)
 
 	return guest, guestClient
 }
@@ -1067,6 +1092,11 @@ func CheckCreatedStatus(tb testing.TB, resp *model.Response) {
 	checkHTTPStatus(tb, resp, http.StatusCreated)
 }
 
+func CheckNoContentStatus(tb testing.TB, resp *model.Response) {
+	tb.Helper()
+	checkHTTPStatus(tb, resp, http.StatusNoContent)
+}
+
 func CheckForbiddenStatus(tb testing.TB, resp *model.Response) {
 	tb.Helper()
 	checkHTTPStatus(tb, resp, http.StatusForbidden)
@@ -1085,6 +1115,11 @@ func CheckNotFoundStatus(tb testing.TB, resp *model.Response) {
 func CheckBadRequestStatus(tb testing.TB, resp *model.Response) {
 	tb.Helper()
 	checkHTTPStatus(tb, resp, http.StatusBadRequest)
+}
+
+func CheckUnprocessableEntityStatus(tb testing.TB, resp *model.Response) {
+	tb.Helper()
+	checkHTTPStatus(tb, resp, http.StatusUnprocessableEntity)
 }
 
 func CheckNotImplementedStatus(tb testing.TB, resp *model.Response) {
