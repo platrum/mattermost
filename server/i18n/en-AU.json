@@ -53,11 +53,11 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support_version",
-    "translation": "This version of your browser is no longer supported by Mattermost"
+    "translation": "This version of your browser is no longer supported by Platrum"
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support",
-    "translation": "This browser is no longer supported by Mattermost"
+    "translation": "This browser is no longer supported by Platrum"
   },
   {
     "id": "web.error.unsupported_browser.min_os_version.windows",
@@ -101,7 +101,7 @@
   },
   {
     "id": "web.error.unsupported_browser.download_app_or_upgrade_browser",
-    "translation": "Download the Mattermost app or use a supported browser for a better experience."
+    "translation": "Download the Platrum app or use a supported browser for a better experience."
   },
   {
     "id": "web.error.unsupported_browser.download",
@@ -253,7 +253,7 @@
   },
   {
     "id": "oauth.gitlab.tos.error",
-    "translation": "GitLab's Terms of Service have updated. Please go to {{.URL}} to accept them and then try logging into Mattermost again."
+    "translation": "GitLab's Terms of Service have updated. Please go to {{.URL}} to accept them and then try logging into Platrum again."
   },
   {
     "id": "model.websocket_client.connect_fail.app_error",
@@ -1997,7 +1997,7 @@
   },
   {
     "id": "app.notification.footer.infoLogin",
-    "translation": "Log in to Mattermost"
+    "translation": "Log in to Platrum"
   },
   {
     "id": "app.notification.footer.info",
@@ -2837,7 +2837,7 @@
   },
   {
     "id": "mattermost.bulletin.subject",
-    "translation": "Mattermost Security Bulletin"
+    "translation": "Platrum Security Bulletin"
   },
   {
     "id": "manaultesting.test_autolink.unable.app_error",
@@ -2973,7 +2973,7 @@
   },
   {
     "id": "ent.migration.migratetosaml.username_already_used_by_other_user",
-    "translation": "Username already used by another Mattermost user."
+    "translation": "Username already used by another Platrum user."
   },
   {
     "id": "ent.migration.migratetosaml.user_not_found_in_users_mapping_file",
@@ -3101,11 +3101,11 @@
   },
   {
     "id": "ent.ldap.syncronize.search_failure_size_exceeded.app_error",
-    "translation": "Size Limit Exceeded. Try increasing your Maximum page size setting. Check out https://docs.mattermost.com/onboard/ad-ldap.html#i-see-the-log-error-ldap-result-code-4-size-limit-exceeded for more details."
+    "translation": "Size Limit Exceeded. Try increasing your Maximum page size setting. Check out https://docs.platrum.com/onboard/ad-ldap.html#i-see-the-log-error-ldap-result-code-4-size-limit-exceeded for more details."
   },
   {
     "id": "ent.ldap.syncronize.search_failure.app_error",
-    "translation": "Failed to search users in AD/LDAP. Test if the Mattermost server can connect to your AD/LDAP server and try again."
+    "translation": "Failed to search users in AD/LDAP. Test if the Platrum server can connect to your AD/LDAP server and try again."
   },
   {
     "id": "ent.ldap.syncronize.populate_syncables",
@@ -3141,7 +3141,7 @@
   },
   {
     "id": "ent.ldap.do_login.user_filtered.app_error",
-    "translation": "Your AD/LDAP account does not have permission to use this Mattermost server. Please ask your System Administrator to check the AD/LDAP user filter."
+    "translation": "Your AD/LDAP account does not have permission to use this Platrum server. Please ask your System Administrator to check the AD/LDAP user filter."
   },
   {
     "id": "ent.ldap.do_login.unable_to_connect.app_error",
@@ -4561,7 +4561,7 @@
   },
   {
     "id": "app.bot.get_disable_bot_sysadmin_message",
-    "translation": "{{if .disableBotsSetting}}{{if .printAllBots}}{{.UserName}} was deactivated. They managed the following bot accounts which have now been disabled.\n\n{{.BotNames}}{{else}}{{.UserName}} was deactivated. They managed {{.NumBots}} bot accounts which have now been disabled, including the following:\n\n{{.BotNames}}{{end}}You can take ownership of each bot by enabling it at **Integrations > Bot Accounts** and creating new tokens for the bot.\n\nFor more information, see our [documentation](https://docs.mattermost.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).{{else}}{{if .printAllBots}}{{.UserName}} was deactivated. They managed the following bot accounts which are still enabled.\n\n{{.BotNames}}\n{{else}}{{.UserName}} was deactivated. They managed {{.NumBots}} bot accounts which are still enabled, including the following:\n\n{{.BotNames}}{{end}}We strongly recommend you to take ownership of each bot by re-enabling it at **Integrations > Bot Accounts** and creating new tokens for the bot.\n\nFor more information, see our [documentation](https://docs.mattermost.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).\n\nIf you want bot accounts to disable automatically after owner deactivation, set 'Disable bot accounts when owner is deactivated' in **System Console > Integrations > Bot Accounts** to true.{{end}}"
+    "translation": "{{if .disableBotsSetting}}{{if .printAllBots}}{{.UserName}} was deactivated. They managed the following bot accounts which have now been disabled.\n\n{{.BotNames}}{{else}}{{.UserName}} was deactivated. They managed {{.NumBots}} bot accounts which have now been disabled, including the following:\n\n{{.BotNames}}{{end}}You can take ownership of each bot by enabling it at **Integrations > Bot Accounts** and creating new tokens for the bot.\n\nFor more information, see our [documentation](https://docs.platrum.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).{{else}}{{if .printAllBots}}{{.UserName}} was deactivated. They managed the following bot accounts which are still enabled.\n\n{{.BotNames}}\n{{else}}{{.UserName}} was deactivated. They managed {{.NumBots}} bot accounts which are still enabled, including the following:\n\n{{.BotNames}}{{end}}We strongly recommend you to take ownership of each bot by re-enabling it at **Integrations > Bot Accounts** and creating new tokens for the bot.\n\nFor more information, see our [documentation](https://docs.platrum.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).\n\nIf you want bot accounts to disable automatically after owner deactivation, set 'Disable bot accounts when owner is deactivated' in **System Console > Integrations > Bot Accounts** to true.{{end}}"
   },
   {
     "id": "app.bot.createbot.internal_error",
@@ -4669,23 +4669,23 @@
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-permission.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition. The Mattermost system user {{.MattermostUsername}} does not have write access to the necessary binary file. A system administrator can update the file permissions by executing the following command on the server where Mattermost is installed:\n\n```\nchmod +w '{{.Path}}'\n```\n\nAfter changing the file permissions, try to upgrade Mattermost again. When you have upgraded and restarted, remember to restore the original binary file permissions:\n\n```\nchmod -w '{{.Path}}'\n```"
+    "translation": "Platrum was unable to upgrade to Enterprise Edition. The Platrum system user {{.PlatrumUsername}} does not have write access to the necessary binary file. A system administrator can update the file permissions by executing the following command on the server where Platrum is installed:\n\n```\nchmod +w '{{.Path}}'\n```\n\nAfter changing the file permissions, try to upgrade Platrum again. When you have upgraded and restarted, remember to restore the original binary file permissions:\n\n```\nchmod -w '{{.Path}}'\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.generic_error.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition."
+    "translation": "Platrum was unable to upgrade to Enterprise Edition."
   },
   {
     "id": "api.upgrade_to_enterprise.app_error",
-    "translation": "An upgrade to Mattermost Enterprise Edition is already running."
+    "translation": "An upgrade to Platrum Enterprise Edition is already running."
   },
   {
     "id": "api.upgrade_to_enterprise.already-enterprise.app_error",
-    "translation": "You cannot upgrade because you are already running Mattermost Enterprise Edition."
+    "translation": "You cannot upgrade because you are already running Platrum Enterprise Edition."
   },
   {
     "id": "api.upgrade_to_enterprise.already-done.app_error",
-    "translation": "You have already upgraded to Mattermost Enterprise Edition. Please restart the server to finish the upgrade."
+    "translation": "You have already upgraded to Platrum Enterprise Edition. Please restart the server to finish the upgrade."
   },
   {
     "id": "api.unable_to_read_file_from_backend",
@@ -4721,7 +4721,7 @@
   },
   {
     "id": "api.templates.welcome_body.info",
-    "translation": "This email address was used to create an account with Mattermost."
+    "translation": "This email address was used to create an account with Platrum."
   },
   {
     "id": "api.templates.welcome_body.button",
@@ -4765,7 +4765,7 @@
   },
   {
     "id": "api.templates.verify_body.info",
-    "translation": "This email address was used to create an account with Mattermost."
+    "translation": "This email address was used to create an account with Platrum."
   },
   {
     "id": "api.templates.verify_body.button",
@@ -4833,7 +4833,7 @@
   },
   {
     "id": "api.templates.remove_expired_license.subject",
-    "translation": "Mattermost Enterprise licence has been disabled."
+    "translation": "Platrum Enterprise licence has been disabled."
   },
   {
     "id": "api.templates.remove_expired_license.body.title",
@@ -4849,7 +4849,7 @@
   },
   {
     "id": "api.templates.post_body.button",
-    "translation": "Reply in Mattermost"
+    "translation": "Reply in Platrum"
   },
   {
     "id": "api.templates.password_change_subject",
@@ -4997,7 +4997,7 @@
   },
   {
     "id": "api.templates.invite_body_footer.title",
-    "translation": "What is Mattermost?"
+    "translation": "What is Platrum?"
   },
   {
     "id": "api.templates.invite_body_footer.learn_more",
@@ -5005,7 +5005,7 @@
   },
   {
     "id": "api.templates.invite_body_footer.info",
-    "translation": "Mattermost is a flexible, open source messaging platform that enables secure team collaboration."
+    "translation": "Platrum is a flexible, open source messaging platform that enables secure team collaboration."
   },
   {
     "id": "api.templates.invite_body.title",
@@ -5013,7 +5013,7 @@
   },
   {
     "id": "api.templates.invite_body.subTitle",
-    "translation": "Start collaborating with your team on Mattermost"
+    "translation": "Start collaborating with your team on Platrum"
   },
   {
     "id": "api.templates.invite_body.button",
@@ -5045,7 +5045,7 @@
   },
   {
     "id": "api.templates.email_footer_v2",
-    "translation": "© 2021 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
+    "translation": "© 2021 Platrum, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
   },
   {
     "id": "api.templates.email_footer",
@@ -5145,11 +5145,11 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.download_mm_info",
-    "translation": "Download the Mattermost App"
+    "translation": "Download the Platrum App"
   },
   {
     "id": "api.templates.cloud_welcome_email.button",
-    "translation": "Open Mattermost"
+    "translation": "Open Platrum"
   },
   {
     "id": "api.templates.cloud_welcome_email.app_market_place",
@@ -5529,11 +5529,11 @@
   },
   {
     "id": "api.license.request_trial_license.app_error",
-    "translation": "Unable to get a trial licence, please try again or contact with support@mattermost.com."
+    "translation": "Unable to get a trial licence, please try again or contact with support@platrum.com."
   },
   {
     "id": "api.license.request-trial.bad-request.terms-not-accepted",
-    "translation": "You must accept the Mattermost Software Evaluation Agreement and Privacy Policy to request a licence."
+    "translation": "You must accept the Platrum Software Evaluation Agreement and Privacy Policy to request a licence."
   },
   {
     "id": "api.license.request-trial.bad-request",
@@ -6181,23 +6181,23 @@
   },
   {
     "id": "api.upgrade_to_enterprise_status.signature.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition. The digital signature of the downloaded binary file could not be verified."
+    "translation": "Platrum was unable to upgrade to Enterprise Edition. The digital signature of the downloaded binary file could not be verified."
   },
   {
     "id": "api.upgrade_to_enterprise_status.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition."
+    "translation": "Platrum was unable to upgrade to Enterprise Edition."
   },
   {
     "id": "api.upgrade_to_enterprise.system_not_supported.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition. This feature will only work on Linux systems with x86-64 architecture."
+    "translation": "Platrum was unable to upgrade to Enterprise Edition. This feature will only work on Linux systems with x86-64 architecture."
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition. The Mattermost system user {{.MattermostUsername}} does not have write access to the necessary binary file. A system administrator can update the file permissions by executing the following command on the server where Mattermost is installed:\n\n```\nchown {{.MattermostUsername}} '{{.Path}}'\n```\n\nAfter changing the file permissions, try to upgrade Mattermost again. When you have upgraded and restarted, remember to restore the original binary file permissions:\n\n```\nchown {{.FileUsername}} '{{.Path}}'\n```"
+    "translation": "Platrum was unable to upgrade to Enterprise Edition. The Platrum system user {{.PlatrumUsername}} does not have write access to the necessary binary file. A system administrator can update the file permissions by executing the following command on the server where Platrum is installed:\n\n```\nchown {{.PlatrumUsername}} '{{.Path}}'\n```\n\nAfter changing the file permissions, try to upgrade Platrum again. When you have upgraded and restarted, remember to restore the original binary file permissions:\n\n```\nchown {{.FileUsername}} '{{.Path}}'\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user-and-permission.app_error",
-    "translation": "Mattermost was unable to upgrade to Enterprise Edition. The Mattermost system user {{.MattermostUsername}} does not have write access to the necessary binary file. A system administrator can update the file permissions by executing the following command on the server where Mattermost is installed:\n\n```\nchown {{.MattermostUsername}} '{{.Path}}'\nchmod +w '{{.Path}}'\n```\n\nAfter changing the file permissions, try to upgrade Mattermost again. When you have upgraded and restarted, remember to restore the original binary file permissions:\n\n```\nchown {{.FileUsername}} '{{.Path}}'\nchmod -w '{{.Path}}'\n```"
+    "translation": "Platrum was unable to upgrade to Enterprise Edition. The Platrum system user {{.PlatrumUsername}} does not have write access to the necessary binary file. A system administrator can update the file permissions by executing the following command on the server where Platrum is installed:\n\n```\nchown {{.PlatrumUsername}} '{{.Path}}'\nchmod +w '{{.Path}}'\n```\n\nAfter changing the file permissions, try to upgrade Platrum again. When you have upgraded and restarted, remember to restore the original binary file permissions:\n\n```\nchown {{.FileUsername}} '{{.Path}}'\nchmod -w '{{.Path}}'\n```"
   },
   {
     "id": "api.file.list_directory.app_error",
@@ -6351,7 +6351,7 @@
   },
   {
     "id": "api.email_batching.send_batched_email_notification.button",
-    "translation": "Open Mattermost"
+    "translation": "Open Platrum"
   },
   {
     "id": "api.email_batching.add_notification_email_to_batch.disabled.app_error",
@@ -6595,7 +6595,7 @@
   },
   {
     "id": "api.command_share.invite_remote.help",
-    "translation": "Invites an external Mattermost instance to the current shared channel"
+    "translation": "Invites an external Platrum instance to the current shared channel"
   },
   {
     "id": "api.command_share.invitation_sent",
@@ -6619,7 +6619,7 @@
   },
   {
     "id": "api.command_share.desc",
-    "translation": "Shares the current channel with an external Mattermost instance."
+    "translation": "Shares the current channel with an external Platrum instance."
   },
   {
     "id": "api.command_share.could_not_uninvite.error",
@@ -6683,7 +6683,7 @@
   },
   {
     "id": "api.command_remote.desc",
-    "translation": "Invite secure connections for communication across Mattermost instances."
+    "translation": "Invite secure connections for communication across Platrum instances."
   },
   {
     "id": "api.command_remote.decode_invitation.error",
@@ -6707,7 +6707,7 @@
   },
   {
     "id": "api.command_remote.accept.help",
-    "translation": "Accept an invitation from an external Mattermost instance"
+    "translation": "Accept an invitation from an external Platrum instance"
   },
   {
     "id": "api.command_open.name",
@@ -6759,7 +6759,7 @@
   },
   {
     "id": "api.command_mute.no_channel.error",
-    "translation": "Could not find the specified channel. Please use the [channel handle](https://docs.mattermost.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
+    "translation": "Could not find the specified channel. Please use the [channel handle](https://docs.platrum.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
   },
   {
     "id": "api.command_mute.name",
@@ -6771,7 +6771,7 @@
   },
   {
     "id": "api.command_mute.error",
-    "translation": "Could not find the channel {{.Channel}}. Please use the [channel handle](https://docs.mattermost.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
+    "translation": "Could not find the channel {{.Channel}}. Please use the [channel handle](https://docs.platrum.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
   },
   {
     "id": "api.command_mute.desc",
@@ -6823,7 +6823,7 @@
   },
   {
     "id": "api.command_logout.desc",
-    "translation": "Logout of Mattermost"
+    "translation": "Logout of Platrum"
   },
   {
     "id": "api.command_leave.name",
@@ -6883,7 +6883,7 @@
   },
   {
     "id": "api.command_invite.private_channel.app_error",
-    "translation": "Could not find the channel {{.Channel}}. Please use the [channel handle](https://docs.mattermost.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
+    "translation": "Could not find the channel {{.Channel}}. Please use the [channel handle](https://docs.platrum.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
   },
   {
     "id": "api.command_invite.permission.app_error",
@@ -6919,7 +6919,7 @@
   },
   {
     "id": "api.command_invite.channel.error",
-    "translation": "Could not find the channel {{.Channel}}. Please use the [channel handle](https://docs.mattermost.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
+    "translation": "Could not find the channel {{.Channel}}. Please use the [channel handle](https://docs.platrum.com/messaging/managing-channels.html#naming-a-channel) to identify channels."
   },
   {
     "id": "api.command_invite.channel.app_error",
@@ -6931,7 +6931,7 @@
   },
   {
     "id": "api.command_help.desc",
-    "translation": "Show Mattermost help message"
+    "translation": "Show Platrum help message"
   },
   {
     "id": "api.command_groupmsg.permission.app_error",
@@ -7150,7 +7150,7 @@
   },
   {
     "id": "api.slackimport.slack_import.log",
-    "translation": "Mattermost Slack Import Log\n"
+    "translation": "Platrum Slack Import Log\n"
   },
   {
     "id": "api.slackimport.slack_add_users.unable_import",
@@ -7162,11 +7162,11 @@
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing_failed",
-    "translation": "Slack user merged with an existing Mattermost user with matching email {{.Email}} and username {{.Username}}, but was unable to add the user to their team.\n"
+    "translation": "Slack user merged with an existing Platrum user with matching email {{.Email}} and username {{.Username}}, but was unable to add the user to their team.\n"
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing",
-    "translation": "Slack user merged with an existing Mattermost user with matching email {{.Email}} and username {{.Username}}.\n"
+    "translation": "Slack user merged with an existing Platrum user with matching email {{.Email}} and username {{.Username}}.\n"
   },
   {
     "id": "api.slackimport.slack_add_users.email_pwd",
@@ -7178,7 +7178,7 @@
   },
   {
     "id": "api.slackimport.slack_add_channels.merge",
-    "translation": "The Slack channel {{.DisplayName}} already exists as an active Mattermost channel. Both channels have been merged.\n"
+    "translation": "The Slack channel {{.DisplayName}} already exists as an active Platrum channel. Both channels have been merged.\n"
   },
   {
     "id": "api.slackimport.slack_add_channels.import_failed",
@@ -7664,7 +7664,7 @@
   },
   {
     "id": "api.command.invite_people.desc",
-    "translation": "Send an email invite to your Mattermost team"
+    "translation": "Send an email invite to your Platrum team"
   },
   {
     "id": "api.command.execute_command.start.app_error",
@@ -8064,7 +8064,7 @@
   },
   {
     "id": "api.command_remote.invite_summary",
-    "translation": "Send the following AES 256-bit encrypted invitation to the external Mattermost System Admin along with the password. They will use the `{{.Command}}` slash command to accept the invitation.\n\n```\n{{.Invitation}}\n```\n\n**Ensure the secure connection can access your Mattermost instance via** {{.SiteURL}}"
+    "translation": "Send the following AES 256-bit encrypted invitation to the external Platrum System Admin along with the password. They will use the `{{.Command}}` slash command to accept the invitation.\n\n```\n{{.Invitation}}\n```\n\n**Ensure the secure connection can access your Platrum instance via** {{.SiteURL}}"
   },
   {
     "id": "api.command_remote.invite_password.hint",
@@ -8144,7 +8144,7 @@
   },
   {
     "id": "api.bot.teams_channels.add_message_mobile",
-    "translation": "Please add me to teams and channels you want me to interact in. To do this, use the browser or Mattermost Desktop App."
+    "translation": "Please add me to teams and channels you want me to interact in. To do this, use the browser or Platrum Desktop App."
   },
   {
     "id": "api.bot.create_disabled",
@@ -8180,7 +8180,7 @@
   },
   {
     "id": "api.admin.test_email.subject",
-    "translation": "Mattermost - Testing Email Settings"
+    "translation": "Platrum - Testing Email Settings"
   },
   {
     "id": "api.admin.test_email.reenter_password",
@@ -8192,7 +8192,7 @@
   },
   {
     "id": "api.admin.test_email.body",
-    "translation": "It appears your Mattermost email is setup correctly!"
+    "translation": "It appears your Platrum email is setup correctly!"
   },
   {
     "id": "api.admin.saml.set_certificate_from_metadata.missing_content_type.app_error",
@@ -8360,7 +8360,7 @@
   },
   {
     "id": "api.license.request-trial.can-start-trial.not-allowed",
-    "translation": "Failed to apply new trial licence. You have previously applied a trial license to this Mattermost instance. If you would like to extend your trial period please [contact the sales team](https://mattermost.com/contact-us/)."
+    "translation": "Failed to apply new trial licence. You have previously applied a trial license to this Platrum instance. If you would like to extend your trial period please [contact the sales team](https://platrum.com/contact-us/)."
   },
   {
     "id": "api.license.request-trial.can-start-trial.error",
@@ -8372,11 +8372,11 @@
   },
   {
     "id": "api.templates.license_up_for_renewal_title",
-    "translation": "Your Mattermost subscription is up for renewal"
+    "translation": "Your Platrum subscription is up for renewal"
   },
   {
     "id": "api.templates.license_up_for_renewal_subtitle",
-    "translation": "{{.UserName}}, your subscription is set to expire in {{.Days}} days. We hope you’re experiencing the flexible, secure team collaboration that Mattermost enables. Renew soon to ensure your team can keep enjoying these benefits."
+    "translation": "{{.UserName}}, your subscription is set to expire in {{.Days}} days. We hope you’re experiencing the flexible, secure team collaboration that Platrum enables. Renew soon to ensure your team can keep enjoying these benefits."
   },
   {
     "id": "api.templates.license_up_for_renewal_subject",
@@ -8612,7 +8612,7 @@
   },
   {
     "id": "model.oauth.is_valid.mattermost_app_id.app_error",
-    "translation": "The maximum length of MattermostAppID is 32 characters."
+    "translation": "The maximum length of PlatrumAppID is 32 characters."
   },
   {
     "id": "app.channel.get_file_count.app_error",
@@ -8628,7 +8628,7 @@
   },
   {
     "id": "api.license.request_trial_license.embargoed",
-    "translation": "We were unable to process the request due to limitations for embargoed countries. [Learn more in our documentation](https://mattermost.com/pl/limitations-for-embargoed-countries), or reach out to legal@mattermost.com for questions around export limitations."
+    "translation": "We were unable to process the request due to limitations for embargoed countries. [Learn more in our documentation](https://platrum.com/pl/limitations-for-embargoed-countries), or reach out to legal@platrum.com for questions around export limitations."
   },
   {
     "id": "api.getThreadsForUser.bad_only_params",
@@ -8684,7 +8684,7 @@
   },
   {
     "id": "api.file.cloud_upload.app_error",
-    "translation": "Uploading via mmctl to a Cloud instance is not supported. Please check the documentation here: https://docs.mattermost.com/manage/cloud-data-export.html."
+    "translation": "Uploading via mmctl to a Cloud instance is not supported. Please check the documentation here: https://docs.platrum.com/manage/cloud-data-export.html."
   },
   {
     "id": "app.usage.get_storage_usage.app_error",
@@ -8756,7 +8756,7 @@
   },
   {
     "id": "api.command_help.success",
-    "translation": "Mattermost is an open source platform for secure communication, collaboration, and orchestration of work across tools and teams.\nMattermost contains two key tools:\n\n**Channels** - Stay connected with your team via 1:1 and group messaging.\n**[Playbooks](/playbooks)** - Build and configure repeatable processes to achieve specific and predictable outcomes.\n\n[View documentation and guides]({{.HelpLink}})"
+    "translation": "Platrum is an open source platform for secure communication, collaboration, and orchestration of work across tools and teams.\nPlatrum contains two key tools:\n\n**Channels** - Stay connected with your team via 1:1 and group messaging.\n**[Playbooks](/playbooks)** - Build and configure repeatable processes to achieve specific and predictable outcomes.\n\n[View documentation and guides]({{.HelpLink}})"
   },
   {
     "id": "app.notify_admin.send_notification_post.app_error",
@@ -8980,7 +8980,7 @@
   },
   {
     "id": "api.server.cws.needs_enterprise_edition",
-    "translation": "Service only available in Mattermost Enterprise edition"
+    "translation": "Service only available in Platrum Enterprise edition"
   },
   {
     "id": "api.config.update_config.translations.app_error",
@@ -9752,7 +9752,7 @@
   },
   {
     "id": "app.channel.elasticsearch_channel_index.notify_admin.message",
-    "translation": "Your Elasticsearch channel index schema is out of date. It is recommended to regenerate your channel index.\nClick the `Rebuild Channels Index` button in [Elasticsearch section in System Console]({{.ElasticsearchSection}}) to fix the issue.\nSee Mattermost changelog for more information."
+    "translation": "Your Elasticsearch channel index schema is out of date. It is recommended to regenerate your channel index.\nClick the `Rebuild Channels Index` button in [Elasticsearch section in System Console]({{.ElasticsearchSection}}) to fix the issue.\nSee Platrum changelog for more information."
   },
   {
     "id": "model.channel_bookmark.is_valid.link_file.app_error",
@@ -9872,7 +9872,7 @@
   },
   {
     "id": "api.server.cws.disabled",
-    "translation": "Interactions with the Mattermost Customer Portal have been disabled by the system admin."
+    "translation": "Interactions with the Platrum Customer Portal have been disabled by the system admin."
   },
   {
     "id": "model.user.is_valid.invalidProperty.app_error",
@@ -9880,7 +9880,7 @@
   },
   {
     "id": "api.config.update.elasticsearch.autocomplete_cannot_be_enabled_error",
-    "translation": "Channel autocomplete cannot be enabled as channel index schema is out of date. It is recommended to regenerate your channel index. See the Mattermost changelog for more information"
+    "translation": "Channel autocomplete cannot be enabled as channel index schema is out of date. It is recommended to regenerate your channel index. See the Platrum changelog for more information"
   },
   {
     "id": "app.channel.bookmark.save.app_error",

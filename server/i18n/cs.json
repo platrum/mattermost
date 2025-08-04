@@ -109,7 +109,7 @@
   },
   {
     "id": "oauth.gitlab.tos.error",
-    "translation": "Podmínky užívání GitLabu byly změněny. Prosím přihlašte se na gitlab.com, akceptujte je a potom se zkuste přihlásit do Mattermostu znovu."
+    "translation": "Podmínky užívání GitLabu byly změněny. Prosím přihlašte se na gitlab.com, akceptujte je a potom se zkuste přihlásit do Platrumu znovu."
   },
   {
     "id": "model.utils.decode_json.app_error",
@@ -1733,7 +1733,7 @@
   },
   {
     "id": "app.bot.get_disable_bot_sysadmin_message",
-    "translation": "{{if .disableBotsSetting}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které byly nyní též zneplatněny.\n\n{{.BotNames}}{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, které byly nyní též zneplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Můžeš převzít vlastnictví každého robota tím, že to povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://docs.mattermost.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).{{else}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které jsou stále zplatněny.\n\n{{.BotNames}}\n{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, , které jsou stále zplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Silně doporučujeme převzít vlastiství nad těmito roboty tím, že je povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://docs.mattermost.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).\n\nPokud chceš, aby se účty robotů automaticky zneplatniIy po zneplatnění uživatele, nastav na hodnotu \"pravda\" položku \"Zneplatnit účty robotů po zneplatnění uživatele\" v nabídce **Konzola Systému > Integrace > Účty robotů**.{{end}}"
+    "translation": "{{if .disableBotsSetting}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které byly nyní též zneplatněny.\n\n{{.BotNames}}{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, které byly nyní též zneplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Můžeš převzít vlastnictví každého robota tím, že to povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://docs.platrum.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).{{else}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které jsou stále zplatněny.\n\n{{.BotNames}}\n{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, , které jsou stále zplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Silně doporučujeme převzít vlastiství nad těmito roboty tím, že je povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://docs.platrum.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).\n\nPokud chceš, aby se účty robotů automaticky zneplatniIy po zneplatnění uživatele, nastav na hodnotu \"pravda\" položku \"Zneplatnit účty robotů po zneplatnění uživatele\" v nabídce **Konzola Systému > Integrace > Účty robotů**.{{end}}"
   },
   {
     "id": "app.bot.createbot.internal_error",
@@ -2393,7 +2393,7 @@
   },
   {
     "id": "mattermost.bulletin.subject",
-    "translation": "Bezpečnostní zpravodaj Mattermostu"
+    "translation": "Bezpečnostní zpravodaj Platrumu"
   },
   {
     "id": "manaultesting.test_autolink.unable.app_error",
@@ -2485,7 +2485,7 @@
   },
   {
     "id": "ent.migration.migratetosaml.username_already_used_by_other_user",
-    "translation": "Uživatelské jméno již použivá jiný uživatel Mattermost."
+    "translation": "Uživatelské jméno již použivá jiný uživatel Platrum."
   },
   {
     "id": "ent.migration.migratetosaml.user_not_found_in_users_mapping_file",
@@ -2589,11 +2589,11 @@
   },
   {
     "id": "ent.ldap.syncronize.search_failure_size_exceeded.app_error",
-    "translation": "Překročen limit. Zkuste zkontrolovat [max page size](https://docs.mattermost.com/deployment/sso-ldap.html#i-see-the-log-error-ldap-result-code-4-size-limit-exceeded)."
+    "translation": "Překročen limit. Zkuste zkontrolovat [max page size](https://docs.platrum.com/deployment/sso-ldap.html#i-see-the-log-error-ldap-result-code-4-size-limit-exceeded)."
   },
   {
     "id": "ent.ldap.syncronize.search_failure.app_error",
-    "translation": "Nepodařilo se vyhletat uživatele na AD/LDAP serveru. Otestujte zda se Mattermost dokáže připojit k AD/LDAP serveru a zkuste to znova."
+    "translation": "Nepodařilo se vyhletat uživatele na AD/LDAP serveru. Otestujte zda se Platrum dokáže připojit k AD/LDAP serveru a zkuste to znova."
   },
   {
     "id": "ent.ldap.syncronize.populate_syncables",
@@ -2613,7 +2613,7 @@
   },
   {
     "id": "ent.ldap.do_login.user_filtered.app_error",
-    "translation": "Váš účet AD / LDAP nemá oprávnění používat tento Mattermost server. Požádejte správce systému, aby zkontroloval uživatelský filtr AD/LDAP."
+    "translation": "Váš účet AD / LDAP nemá oprávnění používat tento Platrum server. Požádejte správce systému, aby zkontroloval uživatelský filtr AD/LDAP."
   },
   {
     "id": "ent.ldap.do_login.unable_to_connect.app_error",
@@ -3189,7 +3189,7 @@
   },
   {
     "id": "api.slackimport.slack_import.log",
-    "translation": "Log importu ze Slacku do Mattermostu\r\n"
+    "translation": "Log importu ze Slacku do Platrumu\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.unable_import",
@@ -3201,11 +3201,11 @@
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing_failed",
-    "translation": "Slack uživatel byl propojen s existujícím Mattermost uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}, avšak nemohl být přidán do týmu.\r\n"
+    "translation": "Slack uživatel byl propojen s existujícím Platrum uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}, avšak nemohl být přidán do týmu.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing",
-    "translation": "Slack uživatel byl propojen s existujícím Mattermost uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}.\r\n"
+    "translation": "Slack uživatel byl propojen s existujícím Platrum uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.email_pwd",
@@ -3217,7 +3217,7 @@
   },
   {
     "id": "api.slackimport.slack_add_channels.merge",
-    "translation": "Slack kanál {{.DisplayName}} již existuje jako aktivní kanál Mattermostu. Oba kanály byly sloučeny.\r\n"
+    "translation": "Slack kanál {{.DisplayName}} již existuje jako aktivní kanál Platrumu. Oba kanály byly sloučeny.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_channels.import_failed",
@@ -4201,7 +4201,7 @@
   },
   {
     "id": "api.command_mute.no_channel.error",
-    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [název kanálu](https://about.mattermost.com/default-channel-handle-documentation) k identifikaci kanálů."
+    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [název kanálu](https://about.platrum.com/default-channel-handle-documentation) k identifikaci kanálů."
   },
   {
     "id": "api.command_mute.name",
@@ -4213,7 +4213,7 @@
   },
   {
     "id": "api.command_mute.error",
-    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [název kanálu](https://about.mattermost.com/default-channel-handle-documentation) k identifikaci kanálů."
+    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [název kanálu](https://about.platrum.com/default-channel-handle-documentation) k identifikaci kanálů."
   },
   {
     "id": "api.command_mute.desc",
@@ -4265,7 +4265,7 @@
   },
   {
     "id": "api.command_logout.desc",
-    "translation": "Odhlásit se z Mattermost"
+    "translation": "Odhlásit se z Platrum"
   },
   {
     "id": "api.command_leave.name",
@@ -4365,7 +4365,7 @@
   },
   {
     "id": "api.command_invite.channel.error",
-    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [channel handle](https://about.mattermost.com/default-channel-handle-documentation) k identifikaci kanálů."
+    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [channel handle](https://about.platrum.com/default-channel-handle-documentation) k identifikaci kanálů."
   },
   {
     "id": "api.command_invite.channel.app_error",
@@ -4377,7 +4377,7 @@
   },
   {
     "id": "api.command_help.desc",
-    "translation": "Otevřít stránku s nápovědou Mattermost"
+    "translation": "Otevřít stránku s nápovědou Platrum"
   },
   {
     "id": "api.command_groupmsg.permission.app_error",
@@ -4801,7 +4801,7 @@
   },
   {
     "id": "api.command.invite_people.desc",
-    "translation": "Poslat email s pozvánkou do Mattermost teamu"
+    "translation": "Poslat email s pozvánkou do Platrum teamu"
   },
   {
     "id": "api.command.execute_command.start.app_error",
@@ -5093,7 +5093,7 @@
   },
   {
     "id": "api.bot.teams_channels.add_message_mobile",
-    "translation": "Přidejte mě prosím do týmů a kanálů, ve kterých chcete abych pracoval. Pro tuto akci využijte prohlížeč nebo aplikaci Mattermost Desktop."
+    "translation": "Přidejte mě prosím do týmů a kanálů, ve kterých chcete abych pracoval. Pro tuto akci využijte prohlížeč nebo aplikaci Platrum Desktop."
   },
   {
     "id": "api.bot.create_disabled",
@@ -5125,7 +5125,7 @@
   },
   {
     "id": "api.admin.test_email.subject",
-    "translation": "Mattermost - Testování Nastavení E-Mailu"
+    "translation": "Platrum - Testování Nastavení E-Mailu"
   },
   {
     "id": "api.admin.test_email.reenter_password",
@@ -5137,7 +5137,7 @@
   },
   {
     "id": "api.admin.test_email.body",
-    "translation": "Zdá se, že váš e-mail pro Mattermost je nastaven správně!"
+    "translation": "Zdá se, že váš e-mail pro Platrum je nastaven správně!"
   },
   {
     "id": "api.admin.saml.set_certificate_from_metadata.missing_content_type.app_error",
@@ -5281,7 +5281,7 @@
   },
   {
     "id": "api.templates.remove_expired_license.subject",
-    "translation": "Licence Mattermost Enterprise byla zastavena."
+    "translation": "Licence Platrum Enterprise byla zastavena."
   },
   {
     "id": "api.templates.remove_expired_license.body.title",
@@ -5305,11 +5305,11 @@
   },
   {
     "id": "api.license.request_trial_license.app_error",
-    "translation": "Zkušební licenci nelze získat, zkuste to znovu nebo se obraťte na support@mattermost.com."
+    "translation": "Zkušební licenci nelze získat, zkuste to znovu nebo se obraťte na support@platrum.com."
   },
   {
     "id": "api.license.request-trial.bad-request.terms-not-accepted",
-    "translation": "Chcete-li požádat o licenci, musíte odsouhlasit Dohodu o vyhodnocování softwaru Mattermost a Zásady ochrany osobních údajů."
+    "translation": "Chcete-li požádat o licenci, musíte odsouhlasit Dohodu o vyhodnocování softwaru Platrum a Zásady ochrany osobních údajů."
   },
   {
     "id": "api.license.request-trial.bad-request",
@@ -6073,43 +6073,43 @@
   },
   {
     "id": "api.upgrade_to_enterprise_status.signature.app_error",
-    "translation": "Mattermost nemohl bý aktualizován na Enterprise edici. Digitální podpis staženého binárního souboru nemohl být ověřen."
+    "translation": "Platrum nemohl bý aktualizován na Enterprise edici. Digitální podpis staženého binárního souboru nemohl být ověřen."
   },
   {
     "id": "api.upgrade_to_enterprise_status.app_error",
-    "translation": "Mattermost nemohl bý aktualizován na Enterprise edici."
+    "translation": "Platrum nemohl bý aktualizován na Enterprise edici."
   },
   {
     "id": "api.upgrade_to_enterprise.system_not_supported.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Toto vylepšení funguje pouze na Linuxových systémech s architekturou x86-64."
+    "translation": "Nepodařilo se aktualizovat Platrum na Enterprise edici. Toto vylepšení funguje pouze na Linuxových systémech s architekturou x86-64."
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Systémový uživatel {{.MattermostUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícícho příkazu na serveru, kde je Mattermost instalován:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Mattermostu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
+    "translation": "Nepodařilo se aktualizovat Platrum na Enterprise edici. Systémový uživatel {{.PlatrumUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícícho příkazu na serveru, kde je Platrum instalován:\n\n```\nchown {{.PlatrumUsername}} \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Platrumu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user-and-permission.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Systémový uživatel {{.MattermostUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícícho příkazu na serveru, kde je Mattermost instalován:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Mattermostu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Nepodařilo se aktualizovat Platrum na Enterprise edici. Systémový uživatel {{.PlatrumUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícícho příkazu na serveru, kde je Platrum instalován:\n\n```\nchown {{.PlatrumUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Platrumu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-permission.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Systémový uživatel {{.MattermostUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícícho příkazu na serveru, kde je Mattermost instalován:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Mattermostu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Nepodařilo se aktualizovat Platrum na Enterprise edici. Systémový uživatel {{.PlatrumUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícícho příkazu na serveru, kde je Platrum instalován:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Platrumu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.generic_error.app_error",
-    "translation": "Mattermost nemohl bý aktualizován na Enterprise edici."
+    "translation": "Platrum nemohl bý aktualizován na Enterprise edici."
   },
   {
     "id": "api.upgrade_to_enterprise.app_error",
-    "translation": "Aktualizace na Mattermost Enterprise edici je již v běhu."
+    "translation": "Aktualizace na Platrum Enterprise edici je již v běhu."
   },
   {
     "id": "api.upgrade_to_enterprise.already-enterprise.app_error",
-    "translation": "Nelze provést aktualizaci, protože již využíváte Mattermost Enterprise edici."
+    "translation": "Nelze provést aktualizaci, protože již využíváte Platrum Enterprise edici."
   },
   {
     "id": "api.upgrade_to_enterprise.already-done.app_error",
-    "translation": "Již jste aktualizovali na Mattermost Enterprise edici. Prosím restartujte server k dokončení aktualizace."
+    "translation": "Již jste aktualizovali na Platrum Enterprise edici. Prosím restartujte server k dokončení aktualizace."
   },
   {
     "id": "api.team.add_team_member.invalid_body.app_error",
@@ -6909,7 +6909,7 @@
   },
   {
     "id": "api.command_remote.accept.help",
-    "translation": "Přijmout pozvánku z externí instance Mattermost"
+    "translation": "Přijmout pozvánku z externí instance Platrum"
   },
   {
     "id": "api.command_remote.accept_invitation",
@@ -6965,7 +6965,7 @@
   },
   {
     "id": "api.command_remote.desc",
-    "translation": "Pozvat zabezpečené připojení pro komunikaci mezi instancemi Mattermost."
+    "translation": "Pozvat zabezpečené připojení pro komunikaci mezi instancemi Platrum."
   },
   {
     "id": "api.command_marketplace.unsupported.app_error",
@@ -6989,7 +6989,7 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support",
-    "translation": "Tento prohlížeč již Mattermost nepodporuje"
+    "translation": "Tento prohlížeč již Platrum nepodporuje"
   },
   {
     "id": "web.incoming_webhook.channel_locked.app_error",
@@ -7045,7 +7045,7 @@
   },
   {
     "id": "api.command_remote.invite_summary",
-    "translation": "Externímu správci systému Mattermost odešlete následující pozvánku zašifrovanou 256bitovým algoritmem AES spolu s heslem. K přijetí pozvánky použije příkaz `{{.Command}}` s lomítkem.\n\n```\n{{.Invitation}}\n```\n\n**Zajistěte, aby zabezpečené připojení mohlo přistupovat k vaší instanci Mattermostu prostřednictvím** {{.SiteURL}}"
+    "translation": "Externímu správci systému Platrum odešlete následující pozvánku zašifrovanou 256bitovým algoritmem AES spolu s heslem. K přijetí pozvánky použije příkaz `{{.Command}}` s lomítkem.\n\n```\n{{.Invitation}}\n```\n\n**Zajistěte, aby zabezpečené připojení mohlo přistupovat k vaší instanci Platrumu prostřednictvím** {{.SiteURL}}"
   },
   {
     "id": "api.command_remote.invite_password.hint",
@@ -7077,7 +7077,7 @@
   },
   {
     "id": "api.command_help.success",
-    "translation": "Mattermost je open source platforma pro bezpečnou komunikaci, spolupráci a orchestraci práce napříč nástroji a týmy.\nMattermost obsahuje dva klíčové nástroje:\n\n**Kanály** - Zůstaňte ve spojení se svým týmem prostřednictvím zpráv 1:1 a skupinových zpráv.\n**[Playbooks](/playbooks)** - Vytvářejte a konfigurujte opakovatelné procesy k dosažení konkrétních a předvídatelných výsledků.\n\n[Zobrazit dokumentaci a průvodce]({{.HelpLink}})"
+    "translation": "Platrum je open source platforma pro bezpečnou komunikaci, spolupráci a orchestraci práce napříč nástroji a týmy.\nPlatrum obsahuje dva klíčové nástroje:\n\n**Kanály** - Zůstaňte ve spojení se svým týmem prostřednictvím zpráv 1:1 a skupinových zpráv.\n**[Playbooks](/playbooks)** - Vytvářejte a konfigurujte opakovatelné procesy k dosažení konkrétních a předvídatelných výsledků.\n\n[Zobrazit dokumentaci a průvodce]({{.HelpLink}})"
   },
   {
     "id": "api.command_custom_status.clear.app_error",
@@ -7265,7 +7265,7 @@
   },
   {
     "id": "api.command_share.desc",
-    "translation": "Nastaví sdílení aktuálního kanálu s externí Mattermost instancí."
+    "translation": "Nastaví sdílení aktuálního kanálu s externí Platrum instancí."
   },
   {
     "id": "api.command_remote.status.help",
@@ -7337,7 +7337,7 @@
   },
   {
     "id": "api.command_share.invite_remote.help",
-    "translation": "Invites an external Mattermost instance to the current shared channel"
+    "translation": "Invites an external Platrum instance to the current shared channel"
   },
   {
     "id": "api.command_share.missing_action",
