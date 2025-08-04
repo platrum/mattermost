@@ -53,7 +53,6 @@ const SearchHint = (props: Props): JSX.Element => {
                             id='search_bar.usage.search_type_question'
                             defaultMessage='What are you searching for?'
                         />
-
                     </div>
                     <div className='button-container'>
                         <button
