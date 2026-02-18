@@ -33,7 +33,7 @@ export default function ConfirmResetFailedAttemptsModal({user, onSuccess, onErro
     const title = (
         <FormattedMessage
             id='confirm_reset_failed_attempts_modal.title'
-            defaultMessage='Reset failed login attempts for {username} and unlock account'
+            defaultMessage='Reset failed login attempts for {username} and unlock the account'
             values={{
                 username: user.username,
             }}

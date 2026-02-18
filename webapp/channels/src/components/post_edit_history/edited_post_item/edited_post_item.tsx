@@ -4,6 +4,8 @@
 import classNames from 'classnames';
 import React, {memo, useCallback, useState} from 'react';
 import {defineMessages, useIntl} from 'react-intl';
+import Constants, {ModalIdentifiers} from 'utils/constants';
+import {imageURLForUser} from 'utils/utils';
 
 import IconButton from '@mattermost/compass-components/components/icon-button'; // eslint-disable-line no-restricted-imports
 import {CheckIcon} from '@mattermost/compass-icons/components';
@@ -21,9 +23,6 @@ import Timestamp, {RelativeRanges} from 'components/timestamp';
 import Tooltip from 'components/tooltip';
 import UserProfileComponent from 'components/user_profile';
 import Avatar from 'components/widgets/users/avatar';
-
-import Constants, {ModalIdentifiers} from 'utils/constants';
-import {imageURLForUser} from 'utils/utils';
 
 import RestorePostModal from '../restore_post_modal';
 
@@ -46,6 +45,10 @@ const itemMessages = defineMessages({
     ariaLabelMessage: {
         id: 'post_info.edit.aria_label',
         defaultMessage: 'Select to restore an old message.',
+    },
+    restoredMessage: {
+        id: 'post_info.edit.restored_message',
+        defaultMessage: 'Restored Message',
     },
 });
 
@@ -88,7 +91,7 @@ const EditedPostItem = ({post, isCurrent = false, postCurrentVersion, theme, act
             dialogProps: {
                 content: {
                     icon: <CheckIcon size={18}/>,
-                    message: 'Restored Message',
+                    message: formatMessage(itemMessages.restoredMessage),
                     undo: handleUndo,
                 },
             },
@@ -222,7 +225,7 @@ const EditedPostItem = ({post, isCurrent = false, postCurrentVersion, theme, act
                                 size={'sm'}
                                 icon={open ? 'chevron-down' : 'chevron-right'}
                                 compact={true}
-                                aria-label='Toggle to see an old message.'
+                                aria-label={formatMessage(itemMessages.ariaLabelMessage)}
                                 className='edit-post-history__icon__button'
                             />
                             <span className='edit-post-history__date'>

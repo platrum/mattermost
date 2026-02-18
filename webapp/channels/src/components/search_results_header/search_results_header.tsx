@@ -3,12 +3,11 @@
 
 import React from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
+import Constants, {RHSStates} from 'utils/constants';
 
 import KeyboardShortcutSequence, {KEYBOARD_SHORTCUTS} from 'components/keyboard_shortcuts/keyboard_shortcuts_sequence';
 import OverlayTrigger from 'components/overlay_trigger';
 import Tooltip from 'components/tooltip';
-
-import Constants, {RHSStates} from 'utils/constants';
 
 import type {PropsFromRedux} from './index';
 
@@ -104,7 +103,7 @@ function SearchResultsHeader(props: Props) {
                         id='searchResultsCloseButton'
                         type='button'
                         className='sidebar--right__close btn btn-icon btn-sm'
-                        aria-label='Close'
+                        aria-label={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                         onClick={props.actions.closeRightHandSide}
                     >
                         <i

@@ -2282,6 +2282,10 @@ func (a *App) JoinChannel(c request.CTX, channel *model.Channel, userID string) 
 }
 
 func (a *App) postJoinChannelMessage(c request.CTX, user *model.User, channel *model.Channel) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	message := fmt.Sprintf(i18n.T("api.channel.join_channel.post_and_forget"), user.Username)
 	postType := model.PostTypeJoinChannel
 
@@ -2308,6 +2312,10 @@ func (a *App) postJoinChannelMessage(c request.CTX, user *model.User, channel *m
 }
 
 func (a *App) postJoinTeamMessage(c request.CTX, user *model.User, channel *model.Channel) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	post := &model.Post{
 		ChannelId: channel.Id,
 		Message:   fmt.Sprintf(i18n.T("api.team.join_team.post_and_forget"), user.Username),
@@ -2404,6 +2412,10 @@ func (a *App) LeaveChannel(c request.CTX, channelID string, userID string) *mode
 }
 
 func (a *App) postLeaveChannelMessage(c request.CTX, user *model.User, channel *model.Channel) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	post := &model.Post{
 		ChannelId: channel.Id,
 		// Message here embeds `@username`, not just `username`, to ensure that mentions
@@ -2425,6 +2437,10 @@ func (a *App) postLeaveChannelMessage(c request.CTX, user *model.User, channel *
 }
 
 func (a *App) PostAddToChannelMessage(c request.CTX, user *model.User, addedUser *model.User, channel *model.Channel, postRootId string) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	message := fmt.Sprintf(i18n.T("api.channel.add_member.added"), addedUser.Username, user.Username)
 	postType := model.PostTypeAddToChannel
 
@@ -2454,6 +2470,10 @@ func (a *App) PostAddToChannelMessage(c request.CTX, user *model.User, addedUser
 }
 
 func (a *App) postAddToTeamMessage(c request.CTX, user *model.User, addedUser *model.User, channel *model.Channel, postRootId string) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	post := &model.Post{
 		ChannelId: channel.Id,
 		Message:   fmt.Sprintf(i18n.T("api.team.add_user_to_team.added"), addedUser.Username, user.Username),
@@ -2476,6 +2496,10 @@ func (a *App) postAddToTeamMessage(c request.CTX, user *model.User, addedUser *m
 }
 
 func (a *App) postRemoveFromChannelMessage(c request.CTX, removerUserId string, removedUser *model.User, channel *model.Channel) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	messageUserId := removerUserId
 	if messageUserId == "" {
 		systemBot, err := a.GetSystemBot(c)
@@ -2505,6 +2529,10 @@ func (a *App) postRemoveFromChannelMessage(c request.CTX, removerUserId string, 
 	}
 
 	return nil
+}
+
+func shouldPostMembershipChangeMessage(channel *model.Channel) bool {
+	return channel != nil && channel.Type == model.ChannelTypePrivate
 }
 
 func (a *App) removeUserFromChannel(c request.CTX, userIDToRemove string, removerUserId string, channel *model.Channel) *model.AppError {

@@ -213,7 +213,7 @@ export default class LogList extends React.PureComponent<Props, State> {
                         >
                             <FormattedMessage
                                 id='admin.logs.fullEvent'
-                                defaultMessage='Full Log event'
+                                defaultMessage='Full event log'
                             />
                         </button>
                     ),
@@ -295,7 +295,12 @@ export default class LogList extends React.PureComponent<Props, State> {
 
         const filterOptions: FilterOptions = {
             levels: {
-                name: 'Levels',
+                name: (
+                    <FormattedMessage
+                        id='admin.logs.levels'
+                        defaultMessage='Levels'
+                    />
+                ),
                 values: {
                     all: {
                         name: (

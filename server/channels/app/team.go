@@ -1280,6 +1280,10 @@ func (a *App) LeaveTeam(c request.CTX, team *model.Team, user *model.User, reque
 }
 
 func (a *App) postLeaveTeamMessage(c request.CTX, user *model.User, channel *model.Channel) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	post := &model.Post{
 		ChannelId: channel.Id,
 		Message:   fmt.Sprintf(i18n.T("api.team.leave.left"), user.Username),
@@ -1298,6 +1302,10 @@ func (a *App) postLeaveTeamMessage(c request.CTX, user *model.User, channel *mod
 }
 
 func (a *App) postRemoveFromTeamMessage(c request.CTX, user *model.User, channel *model.Channel) *model.AppError {
+	if !shouldPostMembershipChangeMessage(channel) {
+		return nil
+	}
+
 	post := &model.Post{
 		ChannelId: channel.Id,
 		Message:   fmt.Sprintf(i18n.T("api.team.remove_user_from_team.removed"), user.Username),

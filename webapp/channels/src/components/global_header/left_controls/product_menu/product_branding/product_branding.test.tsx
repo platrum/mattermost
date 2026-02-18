@@ -10,6 +10,16 @@ import {TestHelper} from 'utils/test_helper';
 
 import ProductBranding from './product_branding';
 
+jest.mock('react-intl', () => {
+    const actual = jest.requireActual('react-intl');
+    return {
+        ...actual,
+        useIntl: () => ({
+            formatMessage: (descriptor: {defaultMessage?: string}) => descriptor.defaultMessage || '',
+        }),
+    };
+});
+
 describe('components/ProductBranding', () => {
     test('should show correct icon glyph when we are on Channels', () => {
         const currentProductSpy = jest.spyOn(productUtils, 'useCurrentProduct');

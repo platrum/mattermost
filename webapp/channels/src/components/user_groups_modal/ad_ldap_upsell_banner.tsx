@@ -5,6 +5,8 @@ import moment from 'moment';
 import React, {memo, useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
+import {CloudProducts, LicenseSkus} from 'utils/constants';
+import {getBrowserTimezone} from 'utils/timezone';
 
 import type {GlobalState} from '@mattermost/types/store';
 
@@ -16,9 +18,6 @@ import {isAdmin} from 'mattermost-redux/utils/user_utils';
 
 import useOpenSalesLink from 'components/common/hooks/useOpenSalesLink';
 import StartTrialBtn from 'components/learn_more_trial_modal/start_trial_btn';
-
-import {CloudProducts, LicenseSkus} from 'utils/constants';
-import {getBrowserTimezone} from 'utils/timezone';
 
 function ADLDAPUpsellBanner() {
     const [show, setShow] = useState(true);
@@ -121,12 +120,12 @@ function ADLDAPUpsellBanner() {
                 {btn}
                 <button
                     type='button'
-                    aria-label='Close'
+                    aria-label={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                     className='banner-close'
                     onClick={() => setShow(false)}
                 >
                     <span aria-hidden='true'>{'×'}</span>
-                    <span className='sr-only'>{'Close'}</span>
+                    <span className='sr-only'>{formatMessage({id: 'generic.close', defaultMessage: 'Close'})}</span>
                 </button>
             </div>
         </div>

@@ -89,9 +89,9 @@ function TeamFilterDropdown(props: Props) {
         }
 
         if (actionMeta.action === 'clear') {
-            props.updateValues({team_ids: {name: 'Teams', value: []}}, 'teams');
+            props.updateValues({team_ids: {name: props.option.values.team_ids.name, value: []}}, 'teams');
         } else if (actionMeta.action === 'select-option' || actionMeta.action === 'remove-value') {
-            props.updateValues({team_ids: {name: 'Teams', value: selected}}, 'teams');
+            props.updateValues({team_ids: {name: props.option.values.team_ids.name, value: selected}}, 'teams');
         }
     }
 

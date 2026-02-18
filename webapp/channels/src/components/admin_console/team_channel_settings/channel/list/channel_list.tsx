@@ -4,6 +4,9 @@
 import React from 'react';
 import {FormattedMessage, defineMessages} from 'react-intl';
 import {Link} from 'react-router-dom';
+import {getHistory} from 'utils/browser_history';
+import {isArchivedChannel} from 'utils/channel_utils';
+import {Constants} from 'utils/constants';
 
 import type {ChannelWithTeamData, ChannelSearchOpts} from '@mattermost/types/channels';
 
@@ -21,10 +24,6 @@ import SharedChannelIndicator from 'components/shared_channel_indicator';
 import ArchiveIcon from 'components/widgets/icons/archive_icon';
 import GlobeIcon from 'components/widgets/icons/globe_icon';
 import LockIcon from 'components/widgets/icons/lock_icon';
-
-import {getHistory} from 'utils/browser_history';
-import {isArchivedChannel} from 'utils/channel_utils';
-import {Constants} from 'utils/constants';
 
 import './channel_list.scss';
 
@@ -323,7 +322,12 @@ export default class ChannelList extends React.PureComponent<ChannelListProps, C
 
         const filterOptions: FilterOptions = {
             teams: {
-                name: 'Teams',
+                name: (
+                    <FormattedMessage
+                        id='admin.team_settings.title'
+                        defaultMessage='Teams'
+                    />
+                ),
                 values: {
                     team_ids: {
                         name: (
@@ -339,7 +343,12 @@ export default class ChannelList extends React.PureComponent<ChannelListProps, C
                 type: TeamFilterDropdown,
             },
             management: {
-                name: 'Management',
+                name: (
+                    <FormattedMessage
+                        id='admin.channel_settings.channel_list.managementHeader'
+                        defaultMessage='Management'
+                    />
+                ),
                 values: {
                     group_constrained: {
                         name: (
@@ -363,7 +372,12 @@ export default class ChannelList extends React.PureComponent<ChannelListProps, C
                 keys: ['group_constrained', 'exclude_group_constrained'],
             },
             channels: {
-                name: 'Channels',
+                name: (
+                    <FormattedMessage
+                        id='admin.sidebar.channels'
+                        defaultMessage='Channels'
+                    />
+                ),
                 values: {
                     public: {
                         name: (

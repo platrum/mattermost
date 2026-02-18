@@ -736,7 +736,7 @@ func TestAddChannelMemberNoUserRequestor(t *testing.T) {
 	groupUserIds = append(groupUserIds, th.BasicUser.Id)
 	groupUserIds = append(groupUserIds, user.Id)
 
-	channel := th.createChannel(th.Context, th.BasicTeam, model.ChannelTypeOpen)
+	channel := th.createChannel(th.Context, th.BasicTeam, model.ChannelTypePrivate)
 
 	_, err = th.App.AddChannelMember(th.Context, user.Id, channel, ChannelMemberOpts{})
 	require.Nil(t, err, "Failed to add user to channel.")
@@ -761,6 +761,29 @@ func TestAddChannelMemberNoUserRequestor(t *testing.T) {
 		assert.Equal(t, model.PostTypeJoinChannel, post.Type)
 		assert.Equal(t, user.Id, post.UserId)
 		assert.Equal(t, user.Username, post.GetProp("username"))
+	}
+}
+
+func TestAddChannelMemberNoUserRequestorPublicChannelNoJoinPost(t *testing.T) {
+	th := Setup(t).InitBasic()
+	defer th.TearDown()
+
+	user := th.CreateUser()
+	_, err := th.App.AddTeamMember(th.Context, th.BasicTeam.Id, user.Id)
+	require.Nil(t, err)
+
+	channel := th.createChannel(th.Context, th.BasicTeam, model.ChannelTypeOpen)
+
+	_, err = th.App.AddChannelMember(th.Context, user.Id, channel, ChannelMemberOpts{})
+	require.Nil(t, err, "Failed to add user to public channel.")
+
+	postList, nErr := th.App.Srv().Store().Post().GetPosts(model.GetPostsOptions{ChannelId: channel.Id, Page: 0, PerPage: 10}, false, map[string]bool{})
+	require.NoError(t, nErr)
+
+	for _, postID := range postList.Order {
+		post := postList.Posts[postID]
+		assert.NotEqual(t, model.PostTypeJoinChannel, post.Type)
+		assert.NotEqual(t, model.PostTypeGuestJoinChannel, post.Type)
 	}
 }
 
@@ -1700,6 +1723,57 @@ func TestRemoveUserFromChannel(t *testing.T) {
 	// Should allow a bot to be removed from a group synced channel
 	err = th.App.RemoveUserFromChannel(th.Context, botUser.Id, th.SystemAdminUser.Id, privateChannel)
 	require.Nil(t, err)
+}
+
+func TestPublicChannelMembershipChangesDoNotCreateSystemPosts(t *testing.T) {
+	th := Setup(t).InitBasic()
+	defer th.TearDown()
+
+	user := th.CreateUser()
+	_, err := th.App.AddTeamMember(th.Context, th.BasicTeam.Id, user.Id)
+	require.Nil(t, err)
+
+	t.Run("leave public channel does not create leave post", func(t *testing.T) {
+		channel := th.createChannel(th.Context, th.BasicTeam, model.ChannelTypeOpen)
+		_, err = th.App.AddUserToChannel(th.Context, user, channel, false)
+		require.Nil(t, err)
+
+		err = th.App.LeaveChannel(th.Context, channel.Id, user.Id)
+		require.Nil(t, err)
+
+		postList, nErr := th.App.Srv().Store().Post().GetPosts(
+			model.GetPostsOptions{ChannelId: channel.Id, Page: 0, PerPage: 50},
+			false,
+			map[string]bool{},
+		)
+		require.NoError(t, nErr)
+
+		for _, postID := range postList.Order {
+			post := postList.Posts[postID]
+			assert.NotEqual(t, model.PostTypeLeaveChannel, post.Type)
+		}
+	})
+
+	t.Run("remove from public channel does not create remove post", func(t *testing.T) {
+		channel := th.createChannel(th.Context, th.BasicTeam, model.ChannelTypeOpen)
+		_, err = th.App.AddUserToChannel(th.Context, user, channel, false)
+		require.Nil(t, err)
+
+		err = th.App.RemoveUserFromChannel(th.Context, user.Id, th.SystemAdminUser.Id, channel)
+		require.Nil(t, err)
+
+		postList, nErr := th.App.Srv().Store().Post().GetPosts(
+			model.GetPostsOptions{ChannelId: channel.Id, Page: 0, PerPage: 50},
+			false,
+			map[string]bool{},
+		)
+		require.NoError(t, nErr)
+
+		for _, postID := range postList.Order {
+			post := postList.Posts[postID]
+			assert.NotEqual(t, model.PostTypeRemoveFromChannel, post.Type)
+		}
+	})
 }
 
 func TestPatchChannelModerationsForChannel(t *testing.T) {

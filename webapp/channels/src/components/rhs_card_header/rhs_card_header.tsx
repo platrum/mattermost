@@ -3,14 +3,13 @@
 
 import React from 'react';
 import {FormattedMessage, injectIntl, type IntlShape} from 'react-intl';
+import Constants, {RHSStates} from 'utils/constants';
 
 import KeyboardShortcutSequence, {
     KEYBOARD_SHORTCUTS,
 } from 'components/keyboard_shortcuts/keyboard_shortcuts_sequence';
 import OverlayTrigger from 'components/overlay_trigger';
 import Tooltip from 'components/tooltip';
-
-import Constants, {RHSStates} from 'utils/constants';
 
 import type {RhsState} from 'types/store/rhs';
 
@@ -166,7 +165,9 @@ class RhsCardHeader extends React.PureComponent<Props> {
                         <button
                             type='button'
                             className='sidebar--right__expand btn btn-icon btn-sm'
-                            aria-label='Expand'
+                            aria-label={this.props.intl.formatMessage(
+                                this.props.isExpanded ? {id: 'rhs_header.collapseSidebarTooltip', defaultMessage: 'Collapse the right sidebar'} : {id: 'rhs_header.expandSidebarTooltip', defaultMessage: 'Expand the right sidebar'},
+                            )}
                             onClick={this.props.actions.toggleRhsExpanded}
                         >
                             <i
@@ -187,7 +188,7 @@ class RhsCardHeader extends React.PureComponent<Props> {
                         <button
                             type='button'
                             className='sidebar--right__close btn btn-icon btn-sm'
-                            aria-label='Close'
+                            aria-label={this.props.intl.formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                             onClick={this.props.actions.closeRightHandSide}
                         >
                             <i

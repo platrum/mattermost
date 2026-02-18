@@ -4,6 +4,7 @@
 import React from 'react';
 import type {MessageDescriptor} from 'react-intl';
 import {FormattedMessage, defineMessage, defineMessages} from 'react-intl';
+import {DocLinks, JobStatuses, JobTypes} from 'utils/constants';
 
 import type {AdminConfig} from '@mattermost/types/config';
 import type {Job, JobType} from '@mattermost/types/jobs';
@@ -11,8 +12,6 @@ import type {Job, JobType} from '@mattermost/types/jobs';
 import {elasticsearchPurgeIndexes, elasticsearchTest, rebuildChannelsIndex} from 'actions/admin_actions.jsx';
 
 import ExternalLink from 'components/external_link';
-
-import {DocLinks, JobStatuses, JobTypes} from 'utils/constants';
 
 import AdminSettings from './admin_settings';
 import type {BaseProps, BaseState} from './admin_settings';
@@ -270,7 +269,7 @@ export default class ElasticsearchSettings extends AdminSettings<Props, State> {
                     label={
                         <FormattedMessage {...messages.backendTitle}/>
                     }
-                    placeholder={defineMessage({id: 'admin.elasticsearch.backendExample', defaultMessage: 'E.g.: "elasticsearch"'})}
+                    placeholder={defineMessage({id: 'admin.elasticsearch.backendExample', defaultMessage: 'E.g. "elasticsearch"'})}
                     helpText={
                         <FormattedMessage
                             id='admin.elasticsearch.backendDescription'

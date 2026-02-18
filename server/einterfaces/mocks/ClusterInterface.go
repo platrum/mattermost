@@ -287,9 +287,7 @@ func (_m *ClusterInterface) WebConnCountForUser(userID string) (int, *model.AppE
 	return r0, r1
 }
 
-// NewClusterInterface creates a new instance of ClusterInterface. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
-// The first argument is typically a *testing.T value.
-func NewClusterInterface(t interface {
+type mockConstructorTestingTNewClusterInterface interface {
 	mock.TestingT
 	Cleanup(func())
 }

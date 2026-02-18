@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import {Modal} from 'react-bootstrap';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
+import {CloudLinks, ModalIdentifiers, LicenseSkus, TELEMETRY_CATEGORIES, RecurringIntervals} from 'utils/constants';
 
 import type {GlobalState} from '@mattermost/types/store';
 
@@ -22,8 +23,6 @@ import PlanLabel from 'components/common/plan_label';
 import ExternalLink from 'components/external_link';
 import StartTrialBtn from 'components/learn_more_trial_modal/start_trial_btn';
 import CheckMarkSvg from 'components/widgets/icons/check_mark_icon';
-
-import {CloudLinks, ModalIdentifiers, LicenseSkus, TELEMETRY_CATEGORIES, RecurringIntervals} from 'utils/constants';
 
 import Card, {ButtonCustomiserClasses} from './card';
 import ContactSalesCTA from './contact_sales_cta';
@@ -151,8 +150,8 @@ function SelfHostedContent(props: ContentProps) {
                 <button
                     id='closeIcon'
                     className='close'
-                    aria-label='Close'
-                    title='Close'
+                    aria-label={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
+                    title={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                     onClick={() => {
                         trackEvent('self_hosted_pricing', 'close_pricing_modal');
                         props.onHide();

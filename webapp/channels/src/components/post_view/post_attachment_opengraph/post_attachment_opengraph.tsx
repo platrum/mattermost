@@ -4,6 +4,9 @@
 import classNames from 'classnames';
 import React, {memo, useRef} from 'react';
 import {useIntl} from 'react-intl';
+import Constants, {PostTypes} from 'utils/constants';
+import {isSystemMessage} from 'utils/post_utils';
+import {makeUrlSafe} from 'utils/url';
 
 import {CloseIcon, MenuDownIcon, MenuRightIcon} from '@mattermost/compass-icons/components';
 import type {
@@ -18,10 +21,6 @@ import ExternalImage from 'components/external_image';
 import ExternalLink from 'components/external_link';
 import OverlayTrigger from 'components/overlay_trigger';
 import Tooltip from 'components/tooltip';
-
-import Constants, {PostTypes} from 'utils/constants';
-import {isSystemMessage} from 'utils/post_utils';
-import {makeUrlSafe} from 'utils/url';
 
 import {getNearestPoint} from './get_nearest_point';
 
@@ -144,7 +143,7 @@ const PostAttachmentOpenGraph = ({openGraphData, post, actions, link, isInPermal
                     <button
                         type='button'
                         className='remove-button style--none'
-                        aria-label='Remove'
+                        aria-label={formatMessage({id: 'generic.remove', defaultMessage: 'Remove'})}
                         onClick={handleRemovePreview}
                         data-testid='removeLinkPreviewButton'
                     >

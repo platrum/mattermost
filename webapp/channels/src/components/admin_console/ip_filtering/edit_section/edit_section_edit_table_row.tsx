@@ -52,7 +52,7 @@ const EditTableRow = ({
                         >
                             <div
                                 className='edit'
-                                aria-label='Edit'
+                                aria-label={formatMessage({id: 'admin.ip_filtering.edit', defaultMessage: 'Edit'})}
                                 role='button'
                                 onClick={() => setEditFilter(allowedIPRange)}
                             >
@@ -65,7 +65,7 @@ const EditTableRow = ({
                         >
                             <div
                                 className='delete'
-                                aria-label='Delete'
+                                aria-label={formatMessage({id: 'admin.ip_filtering.delete', defaultMessage: 'Delete'})}
                                 role='button'
                                 onClick={() => handleConfirmDeleteFilter(allowedIPRange)}
                             >
