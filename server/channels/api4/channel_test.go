@@ -3736,11 +3736,20 @@ func TestRemoveChannelMember(t *testing.T) {
 		require.Nil(t, appErr)
 		_, appErr = th.App.AddUserToChannel(th.Context, th.SystemAdminUser, th.BasicChannel2, false)
 		require.Nil(t, appErr)
+		privateChannel := th.CreatePrivateChannel()
+		_, appErr = th.App.AddUserToChannel(th.Context, th.SystemAdminUser, privateChannel, false)
+		require.Nil(t, appErr)
+		_, appErr = th.App.AddUserToChannel(th.Context, th.BasicUser2, privateChannel, false)
+		require.Nil(t, appErr)
+		_, appErr = th.App.AddUserToChannel(th.Context, th.BasicUser, privateChannel, false)
+		require.Nil(t, appErr)
 		props := map[string]string{}
 		props[model.DesktopNotifyProp] = model.ChannelNotifyAll
 		_, err = th.SystemAdminClient.UpdateChannelNotifyProps(context.Background(), th.BasicChannel.Id, th.SystemAdminUser.Id, props)
 		require.NoError(t, err)
 		_, err = th.SystemAdminClient.UpdateChannelNotifyProps(context.Background(), th.BasicChannel2.Id, th.SystemAdminUser.Id, props)
+		require.NoError(t, err)
+		_, err = th.SystemAdminClient.UpdateChannelNotifyProps(context.Background(), privateChannel.Id, th.SystemAdminUser.Id, props)
 		require.NoError(t, err)
 
 		wsClient, err2 := th.CreateWebSocketSystemAdminClient()
@@ -3782,23 +3791,18 @@ func TestRemoveChannelMember(t *testing.T) {
 		_, err2 = client.RemoveUserFromChannel(context.Background(), th.BasicChannel.Id, th.BasicUser2.Id)
 		require.NoError(t, err2)
 
+		_, err2 = th.BasicUser2Client.RemoveUserFromChannel(context.Background(), privateChannel.Id, th.BasicUser2.Id)
+		require.NoError(t, err2)
 		requirePost(&model.Post{
 			Message:   fmt.Sprintf("@%s left the channel.", th.BasicUser2.Username),
-			ChannelId: th.BasicChannel.Id,
+			ChannelId: privateChannel.Id,
 		})
 
-		_, err2 = client.RemoveUserFromChannel(context.Background(), th.BasicChannel2.Id, th.BasicUser.Id)
+		_, err2 = th.SystemAdminClient.RemoveUserFromChannel(context.Background(), privateChannel.Id, th.BasicUser.Id)
 		require.NoError(t, err2)
 		requirePost(&model.Post{
 			Message:   fmt.Sprintf("@%s removed from the channel.", th.BasicUser.Username),
-			ChannelId: th.BasicChannel2.Id,
-		})
-
-		_, err2 = th.SystemAdminClient.RemoveUserFromChannel(context.Background(), th.BasicChannel.Id, th.BasicUser.Id)
-		require.NoError(t, err2)
-		requirePost(&model.Post{
-			Message:   fmt.Sprintf("@%s removed from the channel.", th.BasicUser.Username),
-			ChannelId: th.BasicChannel.Id,
+			ChannelId: privateChannel.Id,
 		})
 
 		closeWsClient.Do(func() {

@@ -2,9 +2,8 @@
 // See LICENSE.txt for license information.
 
 import React, {useCallback, useEffect} from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
-
 import Constants from 'utils/constants';
 import {isKeyPressed} from 'utils/keyboard';
 
@@ -69,6 +68,7 @@ export interface Props {
 }
 
 const ActionBar = ({className, channelType, membersCount, canManageMembers, editing, actions}: Props) => {
+    const {formatMessage} = useIntl();
     const showManageButton = channelType !== Constants.GM_CHANNEL && membersCount > 1;
 
     const handleShortcut = useCallback((e) => {
@@ -133,7 +133,7 @@ const ActionBar = ({className, channelType, membersCount, canManageMembers, edit
                             >
                                 <ButtonIcon
                                     className='icon-account-plus-outline'
-                                    title='Add Icon'
+                                    title={formatMessage({id: 'generic_icons.add', defaultMessage: 'Add Icon'})}
                                 />
                                 <FormattedMessage
                                     id='channel_members_rhs.action_bar.add_button'

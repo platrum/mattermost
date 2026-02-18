@@ -5,6 +5,8 @@ import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
+import {isArchivedChannel} from 'utils/channel_utils';
+import {Constants} from 'utils/constants';
 
 import type {ChannelSearchOpts, ChannelWithTeamData} from '@mattermost/types/channels';
 
@@ -17,9 +19,6 @@ import TeamFilterDropdown from 'components/admin_console/filter/team_filter_drop
 import ArchiveIcon from 'components/widgets/icons/archive_icon';
 import GlobeIcon from 'components/widgets/icons/globe_icon';
 import LockIcon from 'components/widgets/icons/lock_icon';
-
-import {isArchivedChannel} from 'utils/channel_utils';
-import {Constants} from 'utils/constants';
 
 import './channel_list.scss';
 
@@ -294,7 +293,12 @@ export default class ChannelList extends React.PureComponent<Props, State> {
         const {startCount, endCount, total} = this.getPaginationProps();
         const filterOptions: FilterOptions = {
             teams: {
-                name: 'Teams',
+                name: (
+                    <FormattedMessage
+                        id='admin.team_settings.title'
+                        defaultMessage='Teams'
+                    />
+                ),
                 values: {
                     team_ids: {
                         name: (
@@ -310,7 +314,12 @@ export default class ChannelList extends React.PureComponent<Props, State> {
                 type: TeamFilterDropdown,
             },
             channels: {
-                name: 'Channels',
+                name: (
+                    <FormattedMessage
+                        id='admin.sidebar.channels'
+                        defaultMessage='Channels'
+                    />
+                ),
                 values: {
                     public: {
                         name: (
@@ -371,4 +380,3 @@ export default class ChannelList extends React.PureComponent<Props, State> {
         );
     }
 }
-

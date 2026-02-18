@@ -3,14 +3,13 @@
 
 import React, {memo} from 'react';
 import {useIntl} from 'react-intl';
+import Constants from 'utils/constants';
 
 import {ChevronDownIcon, ChevronUpIcon, FormatLetterCaseIcon} from '@mattermost/compass-icons/components';
 
 import KeyboardShortcutSequence, {KEYBOARD_SHORTCUTS} from 'components/keyboard_shortcuts/keyboard_shortcuts_sequence';
 import OverlayTrigger from 'components/overlay_trigger';
 import Tooltip from 'components/tooltip';
-
-import Constants from 'utils/constants';
 
 import {IconContainer} from './formatting_bar/formatting_icon';
 
@@ -24,7 +23,7 @@ const ToggleFormattingBar = (props: ToggleFormattingBarProps): JSX.Element => {
     const {onClick, active, disabled} = props;
     const {formatMessage} = useIntl();
     const buttonAriaLabel = formatMessage({id: 'accessibility.button.formatting', defaultMessage: 'formatting'});
-    const iconAriaLabel = formatMessage({id: 'generic_icons.format_letter_case', defaultMessage: 'Format letter Case Icon'});
+    const iconAriaLabel = formatMessage({id: 'generic_icons.format_letter_case', defaultMessage: 'Format Letter Case icon'});
 
     const tooltip = active ? (
         <Tooltip id='toggleFormattingBarButtonTooltip_active'>

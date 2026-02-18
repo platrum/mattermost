@@ -3,6 +3,8 @@
 
 import React from 'react';
 import {FormattedMessage, injectIntl, type WrappedComponentProps} from 'react-intl';
+import {getHistory} from 'utils/browser_history';
+import Constants, {RHSStates} from 'utils/constants';
 
 import type {Channel} from '@mattermost/types/channels';
 
@@ -14,9 +16,6 @@ import FollowButton from 'components/threading/common/follow_button';
 import Tooltip from 'components/tooltip';
 import CRTThreadsPaneTutorialTip
     from 'components/tours/crt_tour/crt_threads_pane_tutorial_tip';
-
-import {getHistory} from 'utils/browser_history';
-import Constants, {RHSStates} from 'utils/constants';
 
 import type {RhsState} from 'types/store/rhs';
 
@@ -207,7 +206,9 @@ class RhsHeaderPost extends React.PureComponent<Props> {
                         <button
                             type='button'
                             className='sidebar--right__expand btn btn-icon btn-sm'
-                            aria-label='Expand'
+                            aria-label={formatMessage(
+                                this.props.isExpanded ? {id: 'rhs_header.collapseSidebarTooltip', defaultMessage: 'Collapse the right sidebar'} : {id: 'rhs_header.expandSidebarTooltip', defaultMessage: 'Expand the right sidebar'},
+                            )}
                             onClick={this.props.toggleRhsExpanded}
                         >
                             <i
@@ -230,7 +231,7 @@ class RhsHeaderPost extends React.PureComponent<Props> {
                             id='rhsCloseButton'
                             type='button'
                             className='sidebar--right__close btn btn-icon btn-sm'
-                            aria-label='Close'
+                            aria-label={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                             onClick={this.props.closeRightHandSide}
                         >
                             <i

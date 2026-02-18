@@ -1,7 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import webSocketClient from 'client/web_websocket_client';
 import React from 'react';
+import type {TextFormattingOptions} from 'utils/text_formatting';
+import * as Utils from 'utils/utils';
 
 import {isAppBinding, type AppBinding} from '@mattermost/types/apps';
 import {isMessageAttachmentArray} from '@mattermost/types/message_attachments';
@@ -16,9 +19,6 @@ import PostAttachmentOpenGraph from 'components/post_view/post_attachment_opengr
 import PostImage from 'components/post_view/post_image';
 import PostMessagePreview from 'components/post_view/post_message_preview';
 import YoutubeVideo from 'components/youtube_video';
-
-import webSocketClient from 'client/web_websocket_client';
-import type {TextFormattingOptions} from 'utils/text_formatting';
 
 import type {PostWillRenderEmbedPluginComponent} from 'types/store/plugins';
 
@@ -143,7 +143,7 @@ export default class PostBodyAdditionalContent extends React.PureComponent<Props
                 key='toggle'
                 className={`style--none post__embed-visibility color--link ${prependToggle ? 'pull-left' : ''}`}
                 data-expanded={this.props.isEmbedVisible}
-                aria-label='Toggle Embed Visibility'
+                aria-label={Utils.localizeMessage('post.embed.toggleVisibility', 'Toggle Embed Visibility')}
                 onClick={this.toggleEmbedVisibility}
             />
         );

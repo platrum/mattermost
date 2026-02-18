@@ -3,6 +3,8 @@
 
 import classNames from 'classnames';
 import React from 'react';
+import {Constants} from 'utils/constants';
+import * as Utils from 'utils/utils';
 
 import type {MarketplaceLabel} from '@mattermost/types/marketplace';
 
@@ -11,8 +13,6 @@ import OverlayTrigger from 'components/overlay_trigger';
 import Tooltip from 'components/tooltip';
 import PluginIcon from 'components/widgets/icons/plugin_icon';
 import Tag from 'components/widgets/tag/tag';
-
-import {Constants} from 'utils/constants';
 
 // Label renders a tag showing a name and a description in a tooltip.
 // If a URL is provided, clicking on the tag will open the URL in a new tab.
@@ -176,7 +176,7 @@ export default class MarketplaceItem extends React.PureComponent <MarketplaceIte
                     </ExternalLink>
                     {labelComponents}
                     <ExternalLink
-                        aria-label="Plugin's website"
+                        aria-label={Utils.localizeMessage('marketplace_modal.plugin_website', "Plugin's website")}
                         className='style--none more-modal__row--link'
                         href={this.props.homepageUrl}
                         location='marketplace_item'
@@ -196,7 +196,7 @@ export default class MarketplaceItem extends React.PureComponent <MarketplaceIte
                     </span>
                     {labelComponents}
                     <span
-                        aria-label="Plugin\'s website"
+                        aria-label={Utils.localizeMessage('marketplace_modal.plugin_website', "Plugin's website")}
                         className='style--none'
                     >
                         {description}

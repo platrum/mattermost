@@ -5,6 +5,8 @@ import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {useIntl} from 'react-intl';
 import {useSelector} from 'react-redux';
+import {CloudProducts, LicenseSkus, MattermostFeatures, TELEMETRY_CATEGORIES, RecurringIntervals} from 'utils/constants';
+import {findOnlyYearlyProducts, findProductBySku} from 'utils/products';
 
 import {
     getCloudSubscription as selectCloudSubscription,
@@ -21,9 +23,6 @@ import useOpenSalesLink from 'components/common/hooks/useOpenSalesLink';
 import PlanLabel from 'components/common/plan_label';
 import {useNotifyAdmin} from 'components/notify_admin_cta/notify_admin_cta';
 import CheckMarkSvg from 'components/widgets/icons/check_mark_icon';
-
-import {CloudProducts, LicenseSkus, MattermostFeatures, TELEMETRY_CATEGORIES, RecurringIntervals} from 'utils/constants';
-import {findOnlyYearlyProducts, findProductBySku} from 'utils/products';
 
 import Card, {BlankCard, ButtonCustomiserClasses} from './card';
 import ContactSalesCTA from './contact_sales_cta';
@@ -153,8 +152,8 @@ function Content(props: ContentProps) {
                 <button
                     id='closeIcon'
                     className='close'
-                    aria-label='Close'
-                    title='Close'
+                    aria-label={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
+                    title={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                     onClick={props.onHide}
                 >
                     <span aria-hidden='true'>{'×'}</span>

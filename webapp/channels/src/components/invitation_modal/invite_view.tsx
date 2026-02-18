@@ -6,6 +6,9 @@ import React, {useEffect, useMemo} from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage, defineMessages, useIntl} from 'react-intl';
 import {useSelector} from 'react-redux';
+import {Constants} from 'utils/constants';
+import {getSiteURL} from 'utils/url';
+import {getTrackFlowRole, getRoleForTrackFlow, getSourceForTrackFlow} from 'utils/utils';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {Team} from '@mattermost/types/teams';
@@ -18,10 +21,6 @@ import {trackEvent} from 'actions/telemetry_actions';
 import useCopyText from 'components/common/hooks/useCopyText';
 import {getAnalyticsCategory} from 'components/onboarding_tasks';
 import UsersEmailsInput from 'components/widgets/inputs/users_emails_input';
-
-import {Constants} from 'utils/constants';
-import {getSiteURL} from 'utils/url';
-import {getTrackFlowRole, getRoleForTrackFlow, getSourceForTrackFlow} from 'utils/utils';
 
 import AddToChannels, {defaultCustomMessage, defaultInviteChannels} from './add_to_channels';
 import type {CustomMessageProps, InviteChannels} from './add_to_channels';
@@ -203,8 +202,8 @@ export default function InviteView(props: Props) {
                 <button
                     id='closeIcon'
                     className='icon icon-close close'
-                    aria-label='Close'
-                    title='Close'
+                    aria-label={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
+                    title={formatMessage({id: 'generic.close', defaultMessage: 'Close'})}
                     onClick={props.onClose}
                 />
             </Modal.Header>

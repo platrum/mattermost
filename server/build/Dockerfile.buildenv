@@ -1,4 +1,4 @@
-FROM golang:1.21.8-bullseye@sha256:81d98548f08e22a59c5c0be814acc0997f3dfd3313487adcf4e1d3d962af3a43
+FROM golang:1.24.5-bullseye@sha256:88c33e5a1a21e634efa217af98ca427bbb7f29c4ac6f53506caaaa83c0c89727
 
 RUN apt-get update && apt-get install -y make git apt-transport-https ca-certificates curl software-properties-common build-essential zip xmlsec1 jq pgloader
 

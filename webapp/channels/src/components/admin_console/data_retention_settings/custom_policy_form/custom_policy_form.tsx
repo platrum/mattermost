@@ -3,6 +3,9 @@
 
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
+import {getHistory} from 'utils/browser_history';
+import {ItemStatus} from 'utils/constants';
+import * as Utils from 'utils/utils';
 
 import type {ChannelWithTeamData} from '@mattermost/types/channels';
 import type {
@@ -27,10 +30,6 @@ import TeamSelectorModal from 'components/team_selector_modal';
 import AdminHeader from 'components/widgets/admin_console/admin_header';
 import DropdownInputHybrid from 'components/widgets/inputs/dropdown_input_hybrid';
 import Input from 'components/widgets/inputs/input/input';
-
-import {getHistory} from 'utils/browser_history';
-import {ItemStatus} from 'utils/constants';
-import * as Utils from 'utils/utils';
 
 import './custom_policy_form.scss';
 
@@ -352,7 +351,7 @@ export default class CustomPolicyForm extends React.PureComponent<Props, State> 
                                 >
                                     <Input
                                         name='policyName'
-                                        aria-label='Policy name'
+                                        aria-label={Utils.localizeMessage('admin.data_retention.custom_policy.form.input', 'Policy name')}
                                         type='text'
                                         value={this.state.policyName}
                                         onChange={(e) => {

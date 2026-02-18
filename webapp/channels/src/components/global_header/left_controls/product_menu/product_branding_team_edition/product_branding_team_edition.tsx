@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
+import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 
 import Logo from 'components/common/svg_images_components/logo_dark_blue_svg';
@@ -39,13 +40,15 @@ const Badge = styled.div`
 `;
 
 const ProductBrandingTeamEdition = (): JSX.Element => {
+    const {formatMessage} = useIntl();
+
     return (
         <ProductBrandingTeamEditionContainer tabIndex={0}>
             <StyledLogo
                 width={116}
                 height={20}
             />
-            <Badge>{'FREE EDITION'}</Badge>
+            <Badge>{formatMessage({id: 'global_header.teamEditionBadge', defaultMessage: 'FREE EDITION'})}</Badge>
         </ProductBrandingTeamEditionContainer>
     );
 };

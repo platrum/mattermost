@@ -4,12 +4,12 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
+import {isValidPassword} from 'utils/password';
+import * as Utils from 'utils/utils';
 
 import type {UserProfile} from '@mattermost/types/users';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
-
-import {isValidPassword} from 'utils/password';
 
 interface PasswordConfig {
     minimumLength: number;
@@ -154,7 +154,7 @@ export default class ResetPasswordModal extends React.PureComponent<Props, State
                     <div className={urlClassCurrentPass}>
                         <span
                             data-toggle='tooltip'
-                            title='Current Password'
+                            title={Utils.localizeMessage('admin.reset_password.curentPassword', 'Current Password')}
                             className='input-group-addon password__group-addon'
                         >
                             <FormattedMessage
@@ -201,7 +201,7 @@ export default class ResetPasswordModal extends React.PureComponent<Props, State
                                 <div className={urlClass}>
                                     <span
                                         data-toggle='tooltip'
-                                        title='New Password'
+                                        title={Utils.localizeMessage('admin.reset_password.newPassword', 'New Password')}
                                         className='input-group-addon password__group-addon'
                                     >
                                         <FormattedMessage

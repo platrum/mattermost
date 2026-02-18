@@ -4,6 +4,7 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
+import * as Utils from 'utils/utils';
 
 import type {UserProfile} from '@mattermost/types/users';
 
@@ -166,7 +167,7 @@ export default class ResetEmailModal extends React.PureComponent<Props, State> {
                                 >
                                     <span
                                         data-toggle='tooltip'
-                                        title='New Email'
+                                        title={Utils.localizeMessage('admin.reset_email.newEmail', 'New Email')}
                                         className='input-group-addon email__group-addon'
                                     >
                                         <FormattedMessage
@@ -190,7 +191,7 @@ export default class ResetEmailModal extends React.PureComponent<Props, State> {
                                     >
                                         <span
                                             data-toggle='tooltip'
-                                            title='Current Password'
+                                            title={Utils.localizeMessage('admin.reset_email.currentPassword', 'Current Password')}
                                             className='input-group-addon email__group-addon'
                                         >
                                             <FormattedMessage

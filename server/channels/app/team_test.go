@@ -1068,6 +1068,48 @@ func TestLeaveTeamPanic(t *testing.T) {
 	}, "unexpected panic from LeaveTeam")
 }
 
+func TestJoinAndLeaveTeamDoNotPostSystemMessagesInDefaultPublicChannel(t *testing.T) {
+	th := Setup(t).InitBasic()
+	defer th.TearDown()
+
+	original := *th.App.Config().ServiceSettings.ExperimentalEnableDefaultChannelLeaveJoinMessages
+	th.App.UpdateConfig(func(cfg *model.Config) {
+		*cfg.ServiceSettings.ExperimentalEnableDefaultChannelLeaveJoinMessages = true
+	})
+	defer th.App.UpdateConfig(func(cfg *model.Config) {
+		*cfg.ServiceSettings.ExperimentalEnableDefaultChannelLeaveJoinMessages = original
+	})
+
+	defaultChannel, err := th.App.GetChannelByName(th.Context, model.DefaultChannelName, th.BasicTeam.Id, false)
+	require.Nil(t, err)
+
+	user := th.CreateUser()
+	_, appErr := th.App.JoinUserToTeam(th.Context, th.BasicTeam, user, "")
+	require.Nil(t, appErr)
+
+	appErr = th.App.LeaveTeam(th.Context, th.BasicTeam, user, user.Id)
+	require.Nil(t, appErr)
+
+	postList, nErr := th.App.Srv().Store().Post().GetPosts(
+		model.GetPostsOptions{ChannelId: defaultChannel.Id, Page: 0, PerPage: 200},
+		false,
+		map[string]bool{},
+	)
+	require.NoError(t, nErr)
+
+	for _, postID := range postList.Order {
+		post := postList.Posts[postID]
+		if post.UserId != user.Id {
+			continue
+		}
+
+		assert.NotEqual(t, model.PostTypeJoinTeam, post.Type)
+		assert.NotEqual(t, model.PostTypeLeaveTeam, post.Type)
+		assert.NotEqual(t, model.PostTypeAddToTeam, post.Type)
+		assert.NotEqual(t, model.PostTypeRemoveFromTeam, post.Type)
+	}
+}
+
 func TestAppUpdateTeamScheme(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()

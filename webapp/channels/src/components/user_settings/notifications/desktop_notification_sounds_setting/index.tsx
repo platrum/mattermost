@@ -4,15 +4,9 @@
 import type {ChangeEvent, ReactNode} from 'react';
 import React, {memo, useEffect, useRef, Fragment, useMemo, useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
+import type {IntlShape} from 'react-intl';
 import type {ValueType} from 'react-select';
 import ReactSelect from 'react-select';
-
-import type {UserNotifyProps} from '@mattermost/types/users';
-
-import SettingItemMax from 'components/setting_item_max';
-import SettingItemMin from 'components/setting_item_min';
-import type SettingItemMinComponent from 'components/setting_item_min';
-
 import {UserSettingsNotificationSections} from 'utils/constants';
 import {
     callsNotificationSounds,
@@ -21,6 +15,12 @@ import {
     tryNotificationSound,
     tryNotificationRing,
 } from 'utils/notification_sounds';
+
+import type {UserNotifyProps} from '@mattermost/types/users';
+
+import SettingItemMax from 'components/setting_item_max';
+import SettingItemMin from 'components/setting_item_min';
+import type SettingItemMinComponent from 'components/setting_item_min';
 
 import type {Props as UserSettingsNotificationsProps} from '../user_settings_notifications';
 
@@ -248,7 +248,7 @@ function DesktopNotificationSoundsSettings({
                     defaultMessage='Desktop notification sounds'
                 />
             }
-            describe={getCollapsedText(isCallsRingingEnabled, desktopSound, desktopNotificationSound, callsDesktopSound, callsNotificationSound)}
+            describe={getCollapsedText(intl, isCallsRingingEnabled, desktopSound, desktopNotificationSound, callsDesktopSound, callsNotificationSound)}
             section={UserSettingsNotificationSections.DESKTOP_NOTIFICATION_SOUND}
             updateSection={handleChangeForMinSection}
         />
@@ -318,7 +318,7 @@ const optionsOfMessageNotificationSoundsSelect: SelectOption[] = notificationSou
             label: (
                 <FormattedMessage
                     id='user.settings.notifications.desktopNotificationSound.soundUpstairs'
-                    defaultMessage='Upstairs'
+                    defaultMessage='Up'
                 />
             ),
         };
@@ -400,6 +400,7 @@ function getValueOfIncomingCallSoundsSelect(soundName?: string) {
 }
 
 function getCollapsedText(
+    intl: IntlShape,
     isCallsRingingEnabled: UserSettingsNotificationsProps['isCallsRingingEnabled'],
     desktopSound: UserNotifyProps['desktop_sound'],
     desktopNotificationSound: UserNotifyProps['desktop_notification_sound'],
@@ -427,6 +428,9 @@ function getCollapsedText(
         }
     }
 
+    const localizedDesktopSound = getLocalizedMessageNotificationSoundName(intl, desktopNotificationSound);
+    const localizedCallSound = getLocalizedIncomingCallSoundName(intl, callsNotificationSound);
+
     if (hasDesktopSound !== null && hasCallsSound !== null) {
         if (hasDesktopSound && hasCallsSound) {
             return (
@@ -434,8 +438,8 @@ function getCollapsedText(
                     id='user.settings.notifications.desktopNotificationSound.hasDesktopAndCallsSound'
                     defaultMessage='"{desktopSound}" for messages, "{callsSound}" for calls'
                     values={{
-                        desktopSound: desktopNotificationSound,
-                        callsSound: callsNotificationSound,
+                        desktopSound: localizedDesktopSound,
+                        callsSound: localizedCallSound,
                     }}
                 />
             );
@@ -444,7 +448,7 @@ function getCollapsedText(
                 <FormattedMessage
                     id='user.settings.notifications.desktopNotificationSound.noDesktopAndhasCallsSound'
                     defaultMessage='No sound for messages, "{callsSound}" for calls'
-                    values={{callsSound: callsNotificationSound}}
+                    values={{callsSound: localizedCallSound}}
                 />
             );
         } else if (hasDesktopSound && !hasCallsSound) {
@@ -452,7 +456,7 @@ function getCollapsedText(
                 <FormattedMessage
                     id='user.settings.notifications.desktopNotificationSound.hasDesktopAndNoCallsSound'
                     defaultMessage='"{desktopSound}" for messages, no sound for calls'
-                    values={{desktopSound: desktopNotificationSound}}
+                    values={{desktopSound: localizedDesktopSound}}
                 />
             );
         }
@@ -469,7 +473,7 @@ function getCollapsedText(
                 <FormattedMessage
                     id='user.settings.notifications.desktopNotificationSound.hasDesktopSound'
                     defaultMessage='"{desktopSound}" for messages'
-                    values={{desktopSound: desktopNotificationSound}}
+                    values={{desktopSound: localizedDesktopSound}}
                 />
             );
         }
@@ -488,6 +492,70 @@ function getCollapsedText(
             defaultMessage='Configure desktop notification sounds'
         />
     );
+}
+
+function getLocalizedMessageNotificationSoundName(intl: IntlShape, soundName?: string): string {
+    switch (soundName) {
+    case 'Bing':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundBing',
+            defaultMessage: 'Bing',
+        });
+    case 'Crackle':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundCrackle',
+            defaultMessage: 'Crackle',
+        });
+    case 'Down':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundDown',
+            defaultMessage: 'Down',
+        });
+    case 'Hello':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundHello',
+            defaultMessage: 'Hello',
+        });
+    case 'Ripple':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundRipple',
+            defaultMessage: 'Ripple',
+        });
+    case 'Upstairs':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundUpstairs',
+            defaultMessage: 'Up',
+        });
+    default:
+        return soundName || '';
+    }
+}
+
+function getLocalizedIncomingCallSoundName(intl: IntlShape, soundName?: string): string {
+    switch (soundName) {
+    case 'Dynamic':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundDynamic',
+            defaultMessage: 'Dynamic',
+        });
+    case 'Calm':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundCalm',
+            defaultMessage: 'Calm',
+        });
+    case 'Urgent':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundUrgent',
+            defaultMessage: 'Urgent',
+        });
+    case 'Cheerful':
+        return intl.formatMessage({
+            id: 'user.settings.notifications.desktopNotificationSound.soundCheerful',
+            defaultMessage: 'Cheerful',
+        });
+    default:
+        return soundName || '';
+    }
 }
 
 export default memo(DesktopNotificationSoundsSettings);

@@ -7,6 +7,8 @@ import {useSelector} from 'react-redux';
 import {components} from 'react-select';
 import type {IndicatorProps, OptionProps, SingleValueProps, ValueType, OptionTypeBase} from 'react-select';
 import AsyncSelect from 'react-select/async';
+import Constants from 'utils/constants';
+import * as Utils from 'utils/utils';
 
 import {
     ArchiveOutlineIcon, ChevronDownIcon,
@@ -28,9 +30,6 @@ import type {ProviderResult} from 'components/suggestion/provider';
 import SwitchChannelProvider from 'components/suggestion/switch_channel_provider';
 import BotTag from 'components/widgets/tag/bot_tag';
 import GuestTag from 'components/widgets/tag/guest_tag';
-
-import Constants from 'utils/constants';
-import * as Utils from 'utils/utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -300,8 +299,8 @@ function ForwardPostChannelSelect({onSelect, value, currentBodyHeight, validChan
             defaultOptions={defaultOptions.current}
             components={{DropdownIndicator, Option, SingleValue}}
             styles={baseStyles}
-            legend='Forward to'
-            placeholder='Select channel or people'
+            legend={formatMessage({id: 'forward_post_modal.select.legend', defaultMessage: 'Forward to'})}
+            placeholder={formatMessage({id: 'forward_post_modal.select.placeholder', defaultMessage: 'Select channel or people'})}
             className='forward-post__select'
             data-testid='forward-post-select'
         />
