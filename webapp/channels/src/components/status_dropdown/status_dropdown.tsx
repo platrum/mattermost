@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import moment from 'moment-timezone';
 import React from 'react';
 import type {ReactNode} from 'react';
-import {injectIntl, FormattedDate, FormattedMessage, FormattedTime, defineMessage, defineMessages} from 'react-intl';
+import {injectIntl, FormattedDate, FormattedMessage, defineMessage, defineMessages} from 'react-intl';
 import type {IntlShape, MessageDescriptor} from 'react-intl';
 
 import StatusIcon from '@mattermost/compass-components/components/status-icon'; // eslint-disable-line no-restricted-imports
@@ -35,6 +35,7 @@ import type {TAvatarSizeToken} from 'components/widgets/users/avatar/avatar';
 import WithTooltip from 'components/with_tooltip';
 
 import {ModalIdentifiers, UserStatuses} from 'utils/constants';
+import {formatLocalizedTime} from 'utils/i18n';
 import {getBrowserTimezone, getCurrentDateTimeForTimezone, getCurrentMomentForTimezone} from 'utils/timezone';
 
 import type {ModalData} from 'types/actions';
@@ -119,6 +120,14 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
         {id: 'tomorrow', label: defineMessage({id: 'status_dropdown.dnd_sub_menu_item.tomorrow', defaultMessage: 'Tomorrow'})},
         {id: 'custom', label: defineMessage({id: 'status_dropdown.dnd_sub_menu_item.custom', defaultMessage: 'Choose date and time'})},
     ];
+
+    isRussianLocale = () => {
+        return this.props.intl.locale.toLowerCase().startsWith('ru');
+    };
+
+    getClockFormatForLocale = () => {
+        return this.props.isMilitaryTime ? 'HH:mm' : 'h:mm A';
+    };
     static defaultProps = {
         userId: '',
         profilePicture: '',
@@ -399,7 +408,7 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
                 <FormattedMessage
                     id='custom_status.expiry.until'
                     defaultMessage='Until {time}'
-                    values={{time: endTime.format('h:mm A')}}
+                    values={{time: endTime.locale(this.props.intl.locale).format(this.getClockFormatForLocale())}}
                 />
             );
             break;
@@ -408,7 +417,7 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
                 <FormattedMessage
                     id='custom_status.expiry.until_tomorrow'
                     defaultMessage='Until Tomorrow {time}'
-                    values={{time: endTime.format('h:mm A')}}
+                    values={{time: endTime.locale(this.props.intl.locale).format(this.getClockFormatForLocale())}}
                 />
             );
             break;
@@ -417,7 +426,7 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
                 <FormattedMessage
                     id='custom_status.expiry.until'
                     defaultMessage='Until {time}'
-                    values={{time: endTime.format('lll')}}
+                    values={{time: endTime.locale(this.props.intl.locale).format('lll')}}
                 />
             );
         }
@@ -466,12 +475,13 @@ export class StatusDropdown extends React.PureComponent<Props, State> {
                                     timeZone={this.props.timezone}
                                 />
                                 {', '}
-                                <FormattedTime
-                                    value={tomorrow}
-                                    timeStyle='short'
-                                    hour12={!this.props.isMilitaryTime}
-                                    timeZone={this.props.timezone}
-                                />
+                                {formatLocalizedTime(this.props.intl, tomorrow, {
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                    hour12: !this.props.isMilitaryTime,
+                                    dayPeriod: this.isRussianLocale() && !this.props.isMilitaryTime ? 'short' : undefined,
+                                    timeZone: this.props.timezone,
+                                } as any)}
                             </span>
                         </>
                     );

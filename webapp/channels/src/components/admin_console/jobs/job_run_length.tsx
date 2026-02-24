@@ -7,6 +7,7 @@ import {useIntl} from 'react-intl';
 import type {Job} from '@mattermost/types/jobs';
 
 import {JobStatuses} from 'utils/constants';
+import {formatLocalizedTime} from 'utils/i18n';
 
 const JobRunLength = React.memo(({job}: {job: Job}): JSX.Element => {
     const intl = useIntl();
@@ -27,7 +28,7 @@ const JobRunLength = React.memo(({job}: {job: Job}): JSX.Element => {
                 month: 'short',
                 day: '2-digit',
             }) + ' - ' +
-            intl.formatTime(new Date(job.last_activity_at), {
+            formatLocalizedTime(intl, new Date(job.last_activity_at), {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',

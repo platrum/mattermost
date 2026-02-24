@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import isEmpty from 'lodash/isEmpty';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import React, {useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
@@ -11,7 +11,7 @@ import type {GlobalState} from '@mattermost/types/store';
 
 import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/common';
-import {get as getPreference} from 'mattermost-redux/selectors/entities/preferences';
+import {get as getPreference, getBool} from 'mattermost-redux/selectors/entities/preferences';
 
 import AlertBanner from 'components/alert_banner';
 import useOpenSalesLink from 'components/common/hooks/useOpenSalesLink';
@@ -29,10 +29,13 @@ export interface Props {
 const CloudTrialBanner = ({trialEndDate}: Props): JSX.Element | null => {
     const endDate = new Date(trialEndDate);
     const DISMISSED_DAYS = 10;
-    const {formatMessage} = useIntl();
+    const {formatMessage, locale} = useIntl();
+    const isRussianLocale = locale.toLowerCase().startsWith('ru');
     const [openSalesLink] = useOpenSalesLink();
     const dispatch = useDispatch();
     const user = useSelector(getCurrentUser);
+    const isMilitaryTime = useSelector((state: GlobalState) =>
+        getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false));
     const storedDismissedEndDate = useSelector((state: GlobalState) => getPreference(state, Preferences.CLOUD_TRIAL_BANNER, CloudBanners.UPGRADE_FROM_TRIAL));
 
     let shouldShowBanner = true;
@@ -51,6 +54,16 @@ const CloudTrialBanner = ({trialEndDate}: Props): JSX.Element | null => {
     if (trialEndDate === 0 || !showBanner) {
         return null;
     }
+
+    const browserTimezone = getBrowserTimezone();
+    const endOfDay = moment(endDate).tz(browserTimezone).locale(locale).endOf('day');
+    const endOfDayText = (new Intl.DateTimeFormat(locale, {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: !isMilitaryTime,
+        dayPeriod: isRussianLocale && !isMilitaryTime ? 'short' : undefined,
+        timeZone: browserTimezone,
+    } as any)).format(endOfDay.toDate()) + ` ${endOfDay.format('z')}`;
 
     const onDismissBanner = () => {
         setShowBanner(false);
@@ -80,8 +93,8 @@ const CloudTrialBanner = ({trialEndDate}: Props): JSX.Element | null => {
                     id='admin.subscription.cloudTrialCard.description'
                     defaultMessage='Your trial ends on {date} {time}. Upgrade to one of our paid plans with no limits.'
                     values={{
-                        date: moment(endDate).format('MMM D, YYYY '),
-                        time: moment(endDate).endOf('day').format('h:mm a ') + moment().tz(getBrowserTimezone()).format('z'),
+                        date: moment(endDate).locale(locale).format('MMM D, YYYY '),
+                        time: endOfDayText,
                     }}
                 />
             )}

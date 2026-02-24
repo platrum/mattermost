@@ -5,7 +5,7 @@
 
 import React from 'react';
 import type {IntlShape} from 'react-intl';
-import {FormattedDate, FormattedMessage, FormattedTime, injectIntl} from 'react-intl';
+import {FormattedDate, FormattedMessage, injectIntl} from 'react-intl';
 import {Link} from 'react-router-dom';
 
 import type {OAuthApp} from '@mattermost/types/integrations';
@@ -23,6 +23,7 @@ import ToggleModalButton from 'components/toggle_modal_button';
 
 import icon50 from 'images/icon50x50.png';
 import Constants from 'utils/constants';
+import {formatLocalizedTime} from 'utils/i18n';
 import {isValidPassword} from 'utils/password';
 
 import MfaSection from './mfa_section';
@@ -451,12 +452,12 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                             />
                         ),
                         time: (
-                            <FormattedTime
-                                value={d}
-                                hour12={!this.props.militaryTime}
-                                hour='2-digit'
-                                minute='2-digit'
-                            />
+                            formatLocalizedTime(this.props.intl, d, {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: !this.props.militaryTime,
+                                dayPeriod: this.props.intl.locale.toLowerCase().startsWith('ru') && !this.props.militaryTime ? 'short' : undefined,
+                            } as any)
                         ),
                     }}
                 />

@@ -13,11 +13,13 @@ import OverlayTrigger from 'components/overlay_trigger';
 import Tooltip from 'components/tooltip';
 
 import {isSameDay, isWithinLastWeek, isYesterday} from 'utils/datetime';
+import {formatLocalizedTime} from 'utils/i18n';
 
 import type {Props} from './index';
 
 const PostEditedIndicator = ({postId, isMilitaryTime, timeZone, editedAt = 0, postOwner, post, canEdit, actions}: Props): JSX.Element | null => {
-    const {formatMessage, formatDate, formatTime} = useIntl();
+    const intl = useIntl();
+    const {formatMessage, formatDate} = intl;
 
     if (!postId || editedAt === 0) {
         return null;
@@ -41,7 +43,7 @@ const PostEditedIndicator = ({postId, isMilitaryTime, timeZone, editedAt = 0, po
         date = formatDate(editedDate, {month: 'long', day: 'numeric'});
     }
 
-    const time = formatTime(editedDate, {hour: 'numeric', minute: '2-digit', hour12: !isMilitaryTime});
+    const time = formatLocalizedTime(intl, editedDate, {hour: 'numeric', minute: '2-digit', hour12: !isMilitaryTime});
 
     const editedText = formatMessage({
         id: 'post_message_view.edited',

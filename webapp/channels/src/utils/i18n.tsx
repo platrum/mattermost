@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {MessageDescriptor} from 'react-intl';
+import type {IntlShape, MessageDescriptor} from 'react-intl';
 
 export function isMessageDescriptor(descriptor: unknown): descriptor is MessageDescriptor {
     return Boolean(descriptor && (descriptor as MessageDescriptor).id);
@@ -14,6 +14,24 @@ export function getMonthLong(locale: string): 'short' | 'long' {
     }
 
     return 'long';
+}
+
+export function localizeRussianMeridiem(locale: string, text: string): string {
+    if (!locale.toLowerCase().startsWith('ru')) {
+        return text;
+    }
+
+    return text.
+        replace(/\bAM\b/i, 'утра').
+        replace(/\bPM\b/i, 'вечера');
+}
+
+export function formatLocalizedTime(
+    intl: IntlShape,
+    value: Parameters<IntlShape['formatTime']>[0],
+    options?: Parameters<IntlShape['formatTime']>[1],
+): string {
+    return localizeRussianMeridiem(intl.locale, intl.formatTime(value, options));
 }
 
 /**

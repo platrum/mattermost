@@ -82,6 +82,7 @@ export const searchableStrings = [
 
 class DataRetentionSettings extends React.PureComponent<Props, State> {
     inputRef: RefObject<ReactSelect<OptionType>>;
+    jobTimesByLocale: Record<string, OptionType[]> = {};
     constructor(props: Props) {
         super(props);
         this.inputRef = createRef();
@@ -441,13 +442,26 @@ class DataRetentionSettings extends React.PureComponent<Props, State> {
         this.inputRef.current?.blur();
     };
 
+    isRussianLocale = (): boolean => {
+        return this.props.intl.locale.toLowerCase().startsWith('ru');
+    };
+
     getJobStartTime = (): JSX.Element | null => {
         const {DataRetentionSettings} = this.props.config;
         const timeArray = DataRetentionSettings?.DeletionJobStartTime?.split(':');
         if (!timeArray) {
             return null;
         }
-        let hour = parseInt(timeArray[0], 10);
+        const hour24 = parseInt(timeArray[0], 10);
+        if (Number.isNaN(hour24)) {
+            return null;
+        }
+
+        if (this.isRussianLocale()) {
+            return <>{`${hour24.toString().padStart(2, '0')}:${timeArray[1]} (UTC)`}</>;
+        }
+
+        let hour = hour24;
         if (hour < 12) {
             if (hour === 0) {
                 hour = 12;
@@ -475,35 +489,37 @@ class DataRetentionSettings extends React.PureComponent<Props, State> {
             />
         );
     };
-    getJobTimeOptions = () => {
+    getJobTimes = (): OptionType[] => {
+        const localeKey = this.props.intl.locale.toLowerCase();
+        const cachedOptions = this.jobTimesByLocale[localeKey];
+        if (cachedOptions) {
+            return cachedOptions;
+        }
+
         const options: OptionType[] = [];
-        return () => {
-            if (options.length > 0) {
-                return options;
-            }
-            const minuteIntervals = ['00', '15', '30', '45'];
-            for (let h = 0; h < 24; h++) {
-                let hourLabel = h;
-                let hourValue = `${h}`;
-                const timeOfDay = h >= 12 ? 'pm' : 'am';
-                if (hourLabel < 10) {
-                    hourValue = `0${hourValue}`;
+        const minuteIntervals = ['00', '15', '30', '45'];
+        for (let h = 0; h < 24; h++) {
+            const hourValue = `${h}`.padStart(2, '0');
+            for (let i = 0; i < minuteIntervals.length; i++) {
+                if (this.isRussianLocale()) {
+                    options.push({label: `${hourValue}:${minuteIntervals[i]}`, value: `${hourValue}:${minuteIntervals[i]}`});
+                    continue;
                 }
+
+                let hourLabel = h;
+                const timeOfDay = h >= 12 ? 'pm' : 'am';
                 if (hourLabel > 12) {
                     hourLabel -= 12;
                 }
                 if (hourLabel === 0) {
                     hourLabel = 12;
                 }
-                for (let i = 0; i < minuteIntervals.length; i++) {
-                    options.push({label: `${hourLabel}:${minuteIntervals[i]}${timeOfDay}`, value: `${hourValue}:${minuteIntervals[i]}`});
-                }
+                options.push({label: `${hourLabel}:${minuteIntervals[i]}${timeOfDay}`, value: `${hourValue}:${minuteIntervals[i]}`});
             }
-
-            return options;
-        };
+        }
+        this.jobTimesByLocale[localeKey] = options;
+        return options;
     };
-    getJobTimes = this.getJobTimeOptions();
 
     render = () => {
         const {DataRetentionSettings} = this.props.config;

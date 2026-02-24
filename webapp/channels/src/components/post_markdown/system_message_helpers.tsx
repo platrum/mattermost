@@ -3,7 +3,7 @@
 
 import React from 'react';
 import type {ReactNode} from 'react';
-import {FormattedDate, FormattedMessage, FormattedTime, defineMessages} from 'react-intl';
+import {FormattedDate, FormattedMessage, defineMessages} from 'react-intl';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {Post} from '@mattermost/types/posts';
@@ -423,10 +423,10 @@ export function isAddMemberProps(v: unknown): v is AddMemberProps {
     return true;
 }
 
-export function renderSystemMessage(post: Post, currentTeamName: string, channel: Channel, hideGuestTags: boolean, isUserCanManageMembers?: boolean, isMilitaryTime?: boolean, timezone?: string): ReactNode {
+export function renderSystemMessage(post: Post, currentTeamName: string, channel: Channel, hideGuestTags: boolean, isUserCanManageMembers?: boolean, isMilitaryTime?: boolean, timezone?: string, locale?: string): ReactNode {
     const isEphemeral = isPostEphemeral(post);
     if (isEphemeral && post.props?.type === Posts.POST_TYPES.REMINDER) {
-        return renderReminderACKMessage(post, currentTeamName, Boolean(isMilitaryTime), timezone);
+        return renderReminderACKMessage(post, currentTeamName, Boolean(isMilitaryTime), timezone, locale);
     }
     if (isAddMemberProps(post.props?.add_channel_member)) {
         if (channel && (channel.type === General.PRIVATE_CHANNEL || channel.type === General.OPEN_CHANNEL) &&
@@ -473,7 +473,7 @@ export function renderSystemMessage(post: Post, currentTeamName: string, channel
     return null;
 }
 
-function renderReminderACKMessage(post: Post, currentTeamName: string, isMilitaryTime: boolean, timezone?: string): ReactNode {
+function renderReminderACKMessage(post: Post, currentTeamName: string, isMilitaryTime: boolean, timezone?: string, locale?: string): ReactNode {
     const username = renderUsername(post.props.username);
     const teamUrl = `${getSiteURL()}/${post.props.team_name || currentTeamName}`;
     const link = `${teamUrl}/pl/${post.props.post_id}`;
@@ -482,11 +482,16 @@ function renderReminderACKMessage(post: Post, currentTeamName: string, isMilitar
     const localTime = new Date(targetTime * 1000);
 
     const reminderTime = (
-        <FormattedTime
-            value={localTime}
-            hour12={!isMilitaryTime}
-            timeZone={timezone}
-        />);
+        <>
+            {(new Intl.DateTimeFormat(locale, {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: !isMilitaryTime,
+                dayPeriod: locale?.toLowerCase().startsWith('ru') && !isMilitaryTime ? 'short' : undefined,
+                timeZone: timezone,
+            } as any)).format(localTime)}
+        </>
+    );
     const reminderDate = (
         <FormattedDate
             value={localTime}

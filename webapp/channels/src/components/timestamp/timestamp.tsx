@@ -20,6 +20,7 @@ import {isValidElementType} from 'react-is';
 import type {RequireOnlyOne} from '@mattermost/types/utilities';
 
 import {isSameYear, isWithin, isEqual, getDiff} from 'utils/datetime';
+import {localizeRussianMeridiem} from 'utils/i18n';
 import {resolve} from 'utils/resolvable';
 import type {Resolvable} from 'utils/resolvable';
 
@@ -33,6 +34,7 @@ export const supportsHourCycle = Boolean(((new Intl.DateTimeFormat('en-US', {hou
 
 export type DateTimeOptions = FormatDateOptions & {
     hourCycle?: string;
+    dayPeriod?: string;
 }
 
 function is12HourTime(hourCycle: DateTimeOptions['hourCycle'], hour12?: DateTimeOptions['hour12']) {
@@ -231,7 +233,7 @@ class Timestamp extends PureComponent<Props, State> {
 
             return {
                 date: dateFormat && Timestamp.momentDate(momentValue, {...dateFormat}),
-                time: timeFormat && Timestamp.momentTime(momentValue, {hourCycle, hour12, ...timeFormat}),
+                time: timeFormat && Timestamp.momentTime(momentValue, this.props.intl.locale, {hourCycle, hour12, ...timeFormat}),
             };
         }
     }
@@ -258,13 +260,26 @@ class Timestamp extends PureComponent<Props, State> {
 
     formatDateTime(value: Date, format: DateTimeOptions): string {
         const {timeZone, intl: {locale}} = this.props;
+        const resolvedFormat = {...format};
 
-        return (new Intl.DateTimeFormat(locale, {timeZone, ...format} as any)).format(value); // TODO remove any when React-Intl is next updated
+        if (
+            locale.toLowerCase().startsWith('ru') &&
+            resolvedFormat.hour &&
+            resolvedFormat.minute &&
+            is12HourTime(resolvedFormat.hourCycle, resolvedFormat.hour12)
+        ) {
+            resolvedFormat.dayPeriod = 'short';
+        }
+
+        const formatted = (new Intl.DateTimeFormat(locale, {timeZone, ...resolvedFormat} as any)).format(value); // TODO remove any when React-Intl is next updated
+        return localizeRussianMeridiem(locale, formatted);
     }
 
-    static momentTime(value: Moment, {hour, minute, hourCycle, hour12}: DateTimeOptions): string | undefined {
+    static momentTime(value: Moment, locale: string, {hour, minute, hourCycle, hour12}: DateTimeOptions): string | undefined {
         if (hour && minute) {
-            return value.format(is12HourTime(hourCycle, hour12) ? 'h:mm A' : 'HH:mm');
+            const localizedValue = value.clone().locale(locale);
+            const formatted = localizedValue.format(is12HourTime(hourCycle, hour12) ? 'h:mm A' : 'HH:mm');
+            return localizeRussianMeridiem(locale, formatted);
         }
         return undefined;
     }

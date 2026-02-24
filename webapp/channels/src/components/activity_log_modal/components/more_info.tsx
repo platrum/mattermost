@@ -2,9 +2,11 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {FormattedDate, FormattedMessage, FormattedTime} from 'react-intl';
+import {FormattedDate, FormattedMessage} from 'react-intl';
 
 import type {Session} from '@mattermost/types/sessions';
+
+import LocalizedFormattedTime from 'components/localized_formatted_time/localized_formatted_time';
 
 import {getMonthLong} from 'utils/i18n';
 
@@ -37,7 +39,7 @@ export default function MoreInfo(props: Props) {
                                 />
                             ),
                             time: (
-                                <FormattedTime
+                                <LocalizedFormattedTime
                                     value={firstAccessTime}
                                     hour='2-digit'
                                     minute='2-digit'

@@ -4,7 +4,7 @@
 import classNames from 'classnames';
 import React, {useEffect, useState} from 'react';
 import type {RefObject} from 'react';
-import {FormattedDate, FormattedMessage, FormattedNumber, FormattedTime, defineMessages, useIntl} from 'react-intl';
+import {FormattedDate, FormattedMessage, FormattedNumber, defineMessages, useIntl} from 'react-intl';
 
 import type {ClientLicense} from '@mattermost/types/config';
 
@@ -12,6 +12,7 @@ import {Client4} from 'mattermost-redux/client';
 
 import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
 import useOpenSalesLink from 'components/common/hooks/useOpenSalesLink';
+import LocalizedFormattedTime from 'components/localized_formatted_time/localized_formatted_time';
 import Tag from 'components/widgets/tag/tag';
 
 import {FileTypes} from 'utils/constants';
@@ -259,7 +260,7 @@ const renderLicenseContent = (
         <>
             <FormattedDate value={new Date(parseInt(license.IssuedAt, 10))}/>
             {' '}
-            <FormattedTime value={new Date(parseInt(license.IssuedAt, 10))}/>
+            <LocalizedFormattedTime value={new Date(parseInt(license.IssuedAt, 10))}/>
         </>
     );
 

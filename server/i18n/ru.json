@@ -1929,7 +1929,7 @@
   },
   {
     "id": "api.templates.welcome_body.app_download_info",
-    "translation": "Для удобства, Вы можете скачать приложения для PC, Mac, iOS and Android."
+    "translation": "Для удобства Вы можете скачать приложения для PC, Mac, iOS и Android."
   },
   {
     "id": "api.templates.welcome_body.button",
@@ -3717,7 +3717,7 @@
   },
   {
     "id": "model.config.is_valid.display.custom_url_schemes.app_error",
-    "translation": "The custom URL scheme {{.Scheme}} is invalid. Custom URL schemes must start with a letter and contain only letters, numbers and hyphen (-)."
+    "translation": "Пользовательская URL-схема {{.Scheme}} недопустима. Пользовательские URL-схемы должны начинаться с буквы и содержать только буквы, цифры, знак плюса (+), точку (.) и дефис (-)."
   },
   {
     "id": "model.config.is_valid.elastic_search.aggregate_posts_after_days.app_error",
@@ -3725,7 +3725,7 @@
   },
   {
     "id": "model.config.is_valid.elastic_search.connection_url.app_error",
-    "translation": "Elastic Search ConnectionUrl setting must be provided when Elastic Search indexing is enabled."
+    "translation": "Параметр Elasticsearch ConnectionUrl должен быть указан, когда включена индексация Elasticsearch."
   },
   {
     "id": "model.config.is_valid.elastic_search.enable_searching.app_error",
@@ -3777,7 +3777,7 @@
   },
   {
     "id": "model.config.is_valid.image_proxy_type.app_error",
-    "translation": "Неверный тип изображения прокси. Должно быть 'local' или'atmos/camo'."
+    "translation": "Неверный тип изображения прокси. Должно быть 'local' или 'atmos/camo'."
   },
   {
     "id": "model.config.is_valid.ldap_basedn",
@@ -4517,7 +4517,7 @@
   },
   {
     "id": "model.user.is_valid.username.app_error",
-    "translation": "Username must begin with a letter and contain between 3 and 22 characters including numbers, lowercase letters, and the symbols \".\", \"-\", and \"_\"."
+    "translation": "Имя пользователя должно начинаться с буквы и содержать от 3 до 22 символов в нижнем регистре, включая цифры, буквы и символы \".\", \"-\" и \"_\"."
   },
   {
     "id": "model.user_access_token.is_valid.description.app_error",
@@ -7721,7 +7721,7 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.add_apps_sub_info",
-    "translation": "Оптимизируйте свою работу с такими инструментами, как Github, Jira and Zoom. Просмотрите все интеграции, которые есть у нас в нашем"
+    "translation": "Оптимизируйте свою работу с такими инструментами, как GitHub, Jira и Zoom. Просмотрите все доступные интеграции в нашем"
   },
   {
     "id": "api.templates.cloud_welcome_email.add_apps_info",
@@ -10066,5 +10066,153 @@
   {
     "id": "api.user.update_password.password_hash.app_error",
     "translation": "Произошла внутренняя ошибка при сохранении пароля."
+  },
+  {
+    "id": "api.channel.bookmark.create_channel_bookmark.deleted_channel.forbidden.app_error",
+    "translation": "Не удалось создать закладку канала."
+  },
+  {
+    "id": "api.channel.bookmark.delete_channel_bookmark.deleted_channel.forbidden.app_error",
+    "translation": "Не удалось удалить закладку канала."
+  },
+  {
+    "id": "api.channel.bookmark.update_channel_bookmark.deleted_channel.forbidden.app_error",
+    "translation": "Не удалось обновить закладку канала."
+  },
+  {
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.deleted_channel.forbidden.app_error",
+    "translation": "Не удалось обновить порядок сортировки закладки канала."
+  },
+  {
+    "id": "api.channel.update_channel_member_roles.unset_user_scheme.app_error",
+    "translation": "Недопустимое обновление участника канала: у участника канала всегда есть пользовательская схема."
+  },
+  {
+    "id": "api.command.execute_command.deleted.error",
+    "translation": "Невозможно выполнить команду в удалённом канале."
+  },
+  {
+    "id": "api.context.get_session.app_error",
+    "translation": "Сессия не найдена."
+  },
+  {
+    "id": "api.get_site_url_error",
+    "translation": "Не удалось получить URL сайта экземпляра."
+  },
+  {
+    "id": "api.remote_cluster.accept_invitation_error",
+    "translation": "Не удалось принять приглашение удалённого кластера."
+  },
+  {
+    "id": "api.remote_cluster.base64_decode_error",
+    "translation": "Не удалось декодировать строку base64."
+  },
+  {
+    "id": "api.remote_cluster.cluster_not_deleted",
+    "translation": "Удалённый кластер не был удалён."
+  },
+  {
+    "id": "api.remote_cluster.encrypt_invite_error",
+    "translation": "Не удалось зашифровать приглашение удалённого кластера с использованием указанного пароля."
+  },
+  {
+    "id": "api.remote_cluster.get.not_found",
+    "translation": "Удалённый кластер не найден."
+  },
+  {
+    "id": "api.remote_cluster.import_not_allowed.app_error",
+    "translation": "Импорт удалённого кластера не разрешён."
+  },
+  {
+    "id": "api.remote_cluster.invite_decrypt_error",
+    "translation": "Не удалось расшифровать приглашение удалённого кластера с использованием указанного пароля."
+  },
+  {
+    "id": "api.team.update_team_member_roles.unset_user_scheme.app_error",
+    "translation": "Недопустимое обновление участника команды: у участника команды всегда есть пользовательская схема."
+  },
+  {
+    "id": "api.upload.invalid_type_for_shared_channel.app_error",
+    "translation": "Не удалось загрузить файл. Канал загрузки не является общим с удалённым сервером."
+  },
+  {
+    "id": "api.user.check_user_login_attempts.too_many_ldap.app_error",
+    "translation": "Ваша учётная запись заблокирована из-за слишком большого количества неудачных попыток ввода пароля. Пожалуйста, обратитесь к системному администратору."
+  },
+  {
+    "id": "api.user.login_with_desktop_token.not_oauth_or_saml_user.app_error",
+    "translation": "Пользователь не является пользователем OAuth или SAML."
+  },
+  {
+    "id": "api.user.reset_password_failed_attempts.ldap_and_email_only.app_error",
+    "translation": "Сервис аутентификации пользователя должен быть LDAP или Email."
+  },
+  {
+    "id": "api.user.reset_password_failed_attempts.permissions.app_error",
+    "translation": "У вас нет прав на обновление этого ресурса."
+  },
+  {
+    "id": "api.user.view_archived_channels.list_channel_bookmarks_for_channel.app_error",
+    "translation": "Невозможно получить закладки для архивированного канала."
+  },
+  {
+    "id": "app.import.custom_status.error",
+    "translation": "Не удалось установить пользовательский статус."
+  },
+  {
+    "id": "app.import.validate_attachment_import_data.invalid_path.error",
+    "translation": "Не удалось проверить данные импорта вложения. Неверный путь: \"{{.Path}}\""
+  },
+  {
+    "id": "app.import.validate_direct_post_import_data.attachment.error",
+    "translation": "Не удалось проверить данные вложений прямого сообщения."
+  },
+  {
+    "id": "app.import.validate_emoji_import_data.invalid_image_path.error",
+    "translation": "Поле изображения эмодзи импорта содержит недопустимый путь: \"{{.Path}}\""
+  },
+  {
+    "id": "app.import.validate_post_import_data.attachment.error",
+    "translation": "Не удалось проверить данные вложений публикации."
+  },
+  {
+    "id": "app.import.validate_reply_import_data.attachment.error",
+    "translation": "Не удалось проверить данные вложений ответа."
+  },
+  {
+    "id": "app.import.validate_user_import_data.invalid_image_path.error",
+    "translation": "Недопустимый путь к изображению профиля пользователя: \"{{.Path}}\""
+  },
+  {
+    "id": "app.limits.get_server_limits.post_count.store_error",
+    "translation": "Не удалось получить количество сообщений."
+  },
+  {
+    "id": "app.user.reset_password_failed_attempts.app_error",
+    "translation": "Не удалось сбросить счётчик попыток входа."
+  },
+  {
+    "id": "ent.ldap.do_login.invalid_id",
+    "translation": "Недопустимый AD/LDAP ID."
+  },
+  {
+    "id": "ent.ldap.get_user_by_auth.app_error",
+    "translation": "Не удалось получить пользователя."
+  },
+  {
+    "id": "ent.ldap_groups.invalid_ldap_id",
+    "translation": "Недопустимый AD/LDAP ID."
+  },
+  {
+    "id": "model.config.is_valid.elastic_search.invalid_backend.app_error",
+    "translation": "Недопустимый backend поиска. Допустимые значения: elasticsearch или opensearch."
+  },
+  {
+    "id": "model.config.is_valid.ldap_max_login_attempts.app_error",
+    "translation": "Недопустимое максимальное количество попыток входа для настроек LDAP. Значение должно быть положительным числом."
+  },
+  {
+    "id": "model.link_metadata.is_valid.url_length.app_error",
+    "translation": "Длина URL метаданных ссылки составляет {{ .Length }} символов, что превышает максимальный предел в {{ .MaxLength }} символов."
   }
 ]

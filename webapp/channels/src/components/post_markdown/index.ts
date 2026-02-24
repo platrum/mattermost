@@ -18,6 +18,7 @@ import {getBool} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentTimezone} from 'mattermost-redux/selectors/entities/timezone';
 import {getCurrentUserMentionKeys, getHighlightWithoutNotificationKeys} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentLocale} from 'selectors/i18n';
 
 import {canManageMembers} from 'utils/channel_utils';
 import {Preferences} from 'utils/constants';
@@ -79,6 +80,7 @@ function makeMapStateToProps() {
             highlightKeys: getHighlightWithoutNotificationKeys(state),
             isMilitaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),
             timezone: getCurrentTimezone(state),
+            locale: getCurrentLocale(state),
             hideGuestTags: getConfig(state).HideGuestTags === 'true',
             isEnterpriseOrCloudOrSKUStarterFree: isEnterpriseOrCloudOrSKUStarterFree(license, subscriptionProduct, isEnterpriseReady),
             isEnterpriseReady,

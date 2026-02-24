@@ -3,11 +3,13 @@
 
 import React from 'react';
 import type {MessageDescriptor} from 'react-intl';
-import {FormattedDate, FormattedMessage, FormattedTime, defineMessages} from 'react-intl';
+import {FormattedDate, FormattedMessage, defineMessages} from 'react-intl';
 
 import type {Session} from '@mattermost/types/sessions';
 
 import {General} from 'mattermost-redux/constants';
+
+import LocalizedFormattedTime from 'components/localized_formatted_time/localized_formatted_time';
 
 import {getMonthLong} from 'utils/i18n';
 
@@ -200,7 +202,7 @@ export default class ActivityLog extends React.PureComponent<Props, State> {
                                         />
                                     ),
                                     time: (
-                                        <FormattedTime
+                                        <LocalizedFormattedTime
                                             value={lastAccessTime}
                                             hour='2-digit'
                                             minute='2-digit'

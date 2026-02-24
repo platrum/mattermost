@@ -2,9 +2,11 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {FormattedTime, FormattedDate} from 'react-intl';
+import {FormattedDate} from 'react-intl';
 
 import type {JobStatus} from '@mattermost/types/jobs';
+
+import LocalizedFormattedTime from 'components/localized_formatted_time/localized_formatted_time';
 
 import {JobStatuses} from 'utils/constants';
 
@@ -31,7 +33,7 @@ const JobFinishAt = React.memo(({status, millis}: Props): JSX.Element => {
                 year='numeric'
             />
             {' - '}
-            <FormattedTime
+            <LocalizedFormattedTime
                 value={date}
                 hour='2-digit'
                 minute='2-digit'

@@ -43,6 +43,7 @@ import {formatWithRenderer} from 'utils/markdown';
 import MentionableRenderer from 'utils/markdown/mentionable_renderer';
 import {allAtMentions} from 'utils/text_formatting';
 import {isMobile} from 'utils/user_agent';
+import {formatLocalizedTime} from 'utils/i18n';
 
 import type {GlobalState} from 'types/store';
 
@@ -488,7 +489,7 @@ export function usePostAriaLabel(post: Post | undefined) {
 }
 
 export function createAriaLabelForPost(post: Post, author: string, isFlagged: boolean, reactions: Record<string, Reaction> | undefined, intl: IntlShape, emojiMap: EmojiMap, mentions: Record<string, UserProfile>, teammateNameDisplaySetting: string): string {
-    const {formatMessage, formatTime, formatDate} = intl;
+    const {formatMessage, formatDate} = intl;
 
     let message = post.state === Posts.POST_DELETED ? formatMessage({
         id: 'post_body.deleted',
@@ -524,7 +525,7 @@ export function createAriaLabelForPost(post: Post, author: string, isFlagged: bo
         },
         {
             authorName: author,
-            time: formatTime(post.create_at),
+            time: formatLocalizedTime(intl, post.create_at),
             date: formatDate(post.create_at, {weekday: 'long', month: 'long', day: 'numeric'}),
             message,
         });
@@ -535,7 +536,7 @@ export function createAriaLabelForPost(post: Post, author: string, isFlagged: bo
         },
         {
             authorName: author,
-            time: formatTime(post.create_at),
+            time: formatLocalizedTime(intl, post.create_at),
             date: formatDate(post.create_at, {weekday: 'long', month: 'long', day: 'numeric'}),
             message,
         });

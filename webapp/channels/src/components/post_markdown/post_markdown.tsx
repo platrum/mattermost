@@ -71,7 +71,8 @@ export default class PostMarkdown extends React.PureComponent<Props> {
                 this.props.hideGuestTags,
                 this.props.isUserCanManageMembers,
                 this.props.isMilitaryTime,
-                this.props.timezone) : null;
+                this.props.timezone,
+                this.props.locale) : null;
             if (renderedSystemMessage) {
                 return <div>{renderedSystemMessage}</div>;
             }

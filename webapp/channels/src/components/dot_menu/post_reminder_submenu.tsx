@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React, {memo} from 'react';
-import {FormattedMessage, FormattedDate, FormattedTime, useIntl} from 'react-intl';
+import {FormattedMessage, FormattedDate, useIntl} from 'react-intl';
 import {useDispatch} from 'react-redux';
 
 import {ChevronRightIcon, ClockOutlineIcon} from '@mattermost/compass-icons/components';
@@ -17,6 +17,7 @@ import PostReminderCustomTimePicker from 'components/post_reminder_custom_time_p
 
 import {ModalIdentifiers} from 'utils/constants';
 import {toUTCUnix} from 'utils/datetime';
+import {formatLocalizedTime} from 'utils/i18n';
 import {getCurrentMomentForTimezone} from 'utils/timezone';
 
 type Props = {
@@ -35,7 +36,9 @@ const PostReminders = {
 } as const;
 
 function PostReminderSubmenu(props: Props) {
-    const {formatMessage} = useIntl();
+    const intl = useIntl();
+    const {formatMessage, locale} = intl;
+    const isRussianLocale = locale.toLowerCase().startsWith('ru');
     const dispatch = useDispatch();
 
     function handlePostReminderMenuClick(id: string) {
@@ -122,12 +125,13 @@ function PostReminderSubmenu(props: Props) {
                         timeZone={props.timezone}
                     />
                     {', '}
-                    <FormattedTime
-                        value={tomorrow}
-                        timeStyle='short'
-                        hour12={!props.isMilitaryTime}
-                        timeZone={props.timezone}
-                    />
+                    {formatLocalizedTime(intl, tomorrow, {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: !props.isMilitaryTime,
+                        dayPeriod: isRussianLocale && !props.isMilitaryTime ? 'short' : undefined,
+                        timeZone: props.timezone,
+                    } as any)}
                 </span>
             );
         }

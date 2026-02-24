@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {FormattedDate, FormattedMessage, FormattedTime, type IntlShape, injectIntl} from 'react-intl';
+import {FormattedDate, FormattedMessage, type IntlShape, injectIntl} from 'react-intl';
 
 import type {Compliance} from '@mattermost/types/compliance';
 import type {UserProfile} from '@mattermost/types/users';
@@ -11,6 +11,7 @@ import {Client4} from 'mattermost-redux/client';
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
 import LoadingScreen from 'components/loading_screen';
+import LocalizedFormattedTime from 'components/localized_formatted_time/localized_formatted_time';
 import ReloadIcon from 'components/widgets/icons/fa_reload_icon';
 
 type Props = {
@@ -146,7 +147,7 @@ class ComplianceReports extends React.PureComponent<Props, State> {
                     year='numeric'
                 />
                 {' - '}
-                <FormattedTime
+                <LocalizedFormattedTime
                     value={date}
                     hour='2-digit'
                     minute='2-digit'
