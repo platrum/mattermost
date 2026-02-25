@@ -381,7 +381,7 @@
   },
   {
     "id": "api.command.team_mismatch.app_error",
-    "translation": "Невозможно обновить команды(commands) среди команд(teams)."
+    "translation": "Невозможно обновить пользовательские команды, относящиеся к разным проектам."
   },
   {
     "id": "api.command_away.desc",
@@ -1649,7 +1649,7 @@
   },
   {
     "id": "api.team.is_team_creation_allowed.domain.app_error",
-    "translation": "E-mail должен принадлежать реальному домену (например @example.com). Пожалуйста, обратитесь к системному администратору за дополнительной информацией."
+    "translation": "Email должен принадлежать реальному домену (например @example.com). Пожалуйста, обратитесь к системному администратору за дополнительной информацией."
   },
   {
     "id": "api.team.join_team.post_and_forget",
@@ -1657,7 +1657,7 @@
   },
   {
     "id": "api.team.join_user_to_team.allowed_domains.app_error",
-    "translation": "E-mail должен принадлежать реальному домену (например @example.com). Пожалуйста, обратитесь к системному администратору за дополнительной информацией."
+    "translation": "Email должен принадлежать реальному домену (например @example.com). Пожалуйста, обратитесь к системному администратору за дополнительной информацией."
   },
   {
     "id": "api.team.leave.left",
@@ -1929,7 +1929,7 @@
   },
   {
     "id": "api.templates.welcome_body.app_download_info",
-    "translation": "Для удобства, Вы можете скачать приложения для PC, Mac, iOS and Android."
+    "translation": "Для удобства вы можете скачать приложения для ПК, Mac, iOS и Android."
   },
   {
     "id": "api.templates.welcome_body.button",
@@ -2773,7 +2773,7 @@
   },
   {
     "id": "app.import.validate_user_import_data.email_length.error",
-    "translation": "E-Mail пользователя имеет неверную длину."
+    "translation": "Email пользователя имеет неверную длину."
   },
   {
     "id": "app.import.validate_user_import_data.email_missing.error",
@@ -3717,7 +3717,7 @@
   },
   {
     "id": "model.config.is_valid.display.custom_url_schemes.app_error",
-    "translation": "The custom URL scheme {{.Scheme}} is invalid. Custom URL schemes must start with a letter and contain only letters, numbers and hyphen (-)."
+    "translation": "Пользовательская схема URL {{.Scheme}} недействительна. Пользовательские схемы URL должны начинаться с буквы и содержать только буквы, цифры и дефис (-)."
   },
   {
     "id": "model.config.is_valid.elastic_search.aggregate_posts_after_days.app_error",
@@ -3725,7 +3725,7 @@
   },
   {
     "id": "model.config.is_valid.elastic_search.connection_url.app_error",
-    "translation": "Elastic Search ConnectionUrl setting must be provided when Elastic Search indexing is enabled."
+    "translation": "Параметр Elasticsearch ConnectionUrl должен быть задан, когда индексирование Elasticsearch включено."
   },
   {
     "id": "model.config.is_valid.elastic_search.enable_searching.app_error",
@@ -3777,7 +3777,7 @@
   },
   {
     "id": "model.config.is_valid.image_proxy_type.app_error",
-    "translation": "Неверный тип изображения прокси. Должно быть 'local' или'atmos/camo'."
+    "translation": "Неверный тип прокси для изображений. Должно быть 'local' или 'atmos/camo'."
   },
   {
     "id": "model.config.is_valid.ldap_basedn",
@@ -4517,7 +4517,7 @@
   },
   {
     "id": "model.user.is_valid.username.app_error",
-    "translation": "Username must begin with a letter and contain between 3 and 22 characters including numbers, lowercase letters, and the symbols \".\", \"-\", and \"_\"."
+    "translation": "Имя пользователя должно начинаться с буквы и содержать от 3 до 22 символов, включая цифры, строчные буквы и символы \".\", \"-\" и \"_\"."
   },
   {
     "id": "model.user_access_token.is_valid.description.app_error",
@@ -7721,7 +7721,7 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.add_apps_sub_info",
-    "translation": "Оптимизируйте свою работу с такими инструментами, как Github, Jira and Zoom. Просмотрите все интеграции, которые есть у нас в нашем"
+    "translation": "Оптимизируйте свою работу с такими инструментами, как GitHub, Jira и Zoom. Просмотрите все интеграции, доступные на нашей платформе."
   },
   {
     "id": "api.templates.cloud_welcome_email.add_apps_info",
