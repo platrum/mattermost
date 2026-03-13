@@ -2,12 +2,11 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
+import {useIntl} from 'react-intl';
 
 import {Preferences} from 'mattermost-redux/constants';
 import type {Theme, ThemeKey} from 'mattermost-redux/selectors/entities/preferences';
 import {changeOpacity} from 'mattermost-redux/utils/theme_utils';
-
-import {toTitleCase} from 'utils/utils';
 
 import ThemeThumbnail from '../theme_thumbnail';
 
@@ -18,8 +17,16 @@ type Props = {
 }
 
 const PremadeThemeChooser = ({theme, updateTheme, allowedThemes = []}: Props) => {
+    const intl = useIntl();
     const premadeThemes = [];
     const hasAllowedThemes = allowedThemes.length > 1 || (allowedThemes[0] && allowedThemes[0].trim().length > 0);
+    const themeNameMessages: Record<ThemeKey, {id: string; defaultMessage: string}> = {
+        denim: {id: 'admin.experimental.defaultTheme.options.denim', defaultMessage: 'Denim'},
+        sapphire: {id: 'admin.experimental.defaultTheme.options.sapphire', defaultMessage: 'Sapphire'},
+        quartz: {id: 'admin.experimental.defaultTheme.options.quartz', defaultMessage: 'Quartz'},
+        indigo: {id: 'admin.experimental.defaultTheme.options.indigo', defaultMessage: 'Indigo'},
+        onyx: {id: 'admin.experimental.defaultTheme.options.onyx', defaultMessage: 'Onyx'},
+    };
 
     for (const k in Preferences.THEMES) {
         if (Preferences.THEMES.hasOwnProperty(k)) {
@@ -28,6 +35,7 @@ const PremadeThemeChooser = ({theme, updateTheme, allowedThemes = []}: Props) =>
             }
 
             const premadeTheme: Theme = Object.assign({}, Preferences.THEMES[k as ThemeKey]);
+            const themeName = intl.formatMessage(themeNameMessages[k as ThemeKey]);
 
             let activeClass = '';
             if (premadeTheme.type === theme.type) {
@@ -47,7 +55,7 @@ const PremadeThemeChooser = ({theme, updateTheme, allowedThemes = []}: Props) =>
                         <label>
                             <ThemeThumbnail
                                 themeKey={k}
-                                themeName={premadeTheme.type}
+                                themeName={themeName}
                                 sidebarBg={premadeTheme.sidebarBg}
                                 sidebarText={changeOpacity(premadeTheme.sidebarText, 0.48)}
                                 sidebarUnreadText={premadeTheme.sidebarUnreadText}
@@ -59,7 +67,7 @@ const PremadeThemeChooser = ({theme, updateTheme, allowedThemes = []}: Props) =>
                                 newMessageSeparator={premadeTheme.newMessageSeparator}
                                 buttonBg={premadeTheme.buttonBg}
                             />
-                            <div className='theme-label'>{toTitleCase(premadeTheme.type || '')}</div>
+                            <div className='theme-label'>{themeName}</div>
                         </label>
                     </div>
                 </div>,

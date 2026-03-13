@@ -23,6 +23,7 @@ import {
     fileSizeToString,
     getFileType,
     loadImage,
+    localizeMessage,
 } from 'utils/utils';
 
 import ArchivedTooltip from './archived_tooltip';
@@ -258,7 +259,7 @@ export default function FileAttachment(props: Props) {
                 </OverlayTrigger>
                 <Menu
                     id={`file_dropdown_${props.fileInfo.id}`}
-                    ariaLabel={'file menu'}
+                    ariaLabel={localizeMessage('search_results.files_filter_menu.menu', 'File menu')}
                     openLeft={true}
                     openUp={openUp}
                 >

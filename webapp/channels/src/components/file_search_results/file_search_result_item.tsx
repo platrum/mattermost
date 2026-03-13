@@ -166,7 +166,7 @@ export default class FileSearchResultItem extends React.PureComponent<Props, Sta
                                     <i className='icon icon-dots-vertical'/>
                                 </a>
                                 <Menu
-                                    ariaLabel={'file menu'}
+                                    ariaLabel={localizeMessage('search_results.files_filter_menu.menu', 'File menu')}
                                     openLeft={true}
                                 >
                                     <Menu.ItemAction

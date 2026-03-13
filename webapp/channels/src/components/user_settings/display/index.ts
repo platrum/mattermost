@@ -31,6 +31,7 @@ import {Preferences} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
+import {localizeTimezoneLabel} from './manage_timezones/timezone_translations';
 import type {OwnProps} from './user_settings_display';
 import UserSettingsDisplay from './user_settings_display';
 
@@ -41,7 +42,6 @@ export function makeMapStateToProps() {
         const userTimezone = props.adminMode ? getTimezoneForUserProfile(props.user) : getCurrentTimezoneFull(state);
         const automaticTimezoneNotSet = userTimezone && userTimezone.useAutomaticTimezone && !userTimezone.automaticTimezone;
         const shouldAutoUpdateTimezone = !userTimezone || automaticTimezoneNotSet;
-        const timezoneLabel = props.adminMode ? generateCurrentTimezoneLabel(getUserCurrentTimezone(userTimezone)) : getCurrentTimezoneLabel(state);
         const allowCustomThemes = config.AllowCustomThemes === 'true';
         const enableLinkPreviews = config.EnableLinkPreviews === 'true';
         const enableThemeSelection = config.EnableThemeSelection === 'true';
@@ -61,6 +61,9 @@ export function makeMapStateToProps() {
         if (!isLanguageAvailable(state, userLocale)) {
             userLocale = config.DefaultClientLocale as string;
         }
+
+        const rawTimezoneLabel = props.adminMode ? generateCurrentTimezoneLabel(getUserCurrentTimezone(userTimezone)) : getCurrentTimezoneLabel(state);
+        const timezoneLabel = localizeTimezoneLabel(rawTimezoneLabel, userLocale);
 
         return {
             lockTeammateNameDisplay,
