@@ -10,11 +10,12 @@ import type {Timezone} from 'timezones.json';
 import type {UserProfile} from '@mattermost/types/users';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
-import {getTimezoneLabel} from 'mattermost-redux/utils/timezone_utils';
 
 import SettingItemMax from 'components/setting_item_max';
 
 import {getBrowserTimezone} from 'utils/timezone';
+
+import {getLocalizedTimezoneLabel, localizeTimezoneLabel} from './timezone_translations';
 
 type Actions = {
     updateMe: (user: UserProfile) => Promise<ActionResult>;
@@ -24,6 +25,7 @@ type Actions = {
 type Props = {
     user: UserProfile;
     updateSection: (section: string) => void;
+    locale: string;
     useAutomaticTimezone: boolean;
     automaticTimezone: string;
     manualTimezone: string;
@@ -56,9 +58,35 @@ export default class ManageTimezones extends React.PureComponent<Props, State> {
             manualTimezone: props.manualTimezone,
             isSaving: false,
             openMenu: false,
-            selectedOption: {label: props.timezoneLabel, value: props.useAutomaticTimezone ? props.automaticTimezone : props.manualTimezone},
+            selectedOption: {
+                label: this.getSelectedOptionLabel(props.useAutomaticTimezone ? props.automaticTimezone : props.manualTimezone),
+                value: props.useAutomaticTimezone ? props.automaticTimezone : props.manualTimezone,
+            },
         };
     }
+
+    componentDidUpdate(prevProps: Props) {
+        if (
+            prevProps.locale !== this.props.locale ||
+            prevProps.timezones !== this.props.timezones ||
+            prevProps.timezoneLabel !== this.props.timezoneLabel
+        ) {
+            const label = this.getSelectedOptionLabel(this.state.selectedOption.value);
+            if (label !== this.state.selectedOption.label) {
+                this.setState((state) => ({
+                    selectedOption: {
+                        ...state.selectedOption,
+                        label,
+                    },
+                }));
+            }
+        }
+    }
+
+    getSelectedOptionLabel = (timezone: string) => {
+        return getLocalizedTimezoneLabel(this.props.timezones, timezone, this.props.locale) ||
+            localizeTimezoneLabel(this.props.timezoneLabel, this.props.locale);
+    };
 
     onChange = (selectedOption: ValueType<SelectedOption>) => {
         if (selectedOption && 'value' in selectedOption) {
@@ -139,10 +167,10 @@ export default class ManageTimezones extends React.PureComponent<Props, State> {
 
         if (useAutomaticTimezone) {
             automaticTimezone = getBrowserTimezone();
-            timezoneLabel = getTimezoneLabel(this.props.timezones, automaticTimezone);
+            timezoneLabel = this.getSelectedOptionLabel(automaticTimezone);
             selectedOptionValue = automaticTimezone;
         } else {
-            timezoneLabel = getTimezoneLabel(this.props.timezones, getBrowserTimezone());
+            timezoneLabel = this.getSelectedOptionLabel(getBrowserTimezone());
             selectedOptionValue = getBrowserTimezone();
             this.setState({
                 manualTimezone: getBrowserTimezone(),
@@ -166,7 +194,7 @@ export default class ManageTimezones extends React.PureComponent<Props, State> {
         const timeOptions = this.props.timezones.map((timeObject) => {
             return {
                 value: timeObject.utc[0],
-                label: timeObject.text,
+                label: localizeTimezoneLabel(timeObject.text, this.props.locale),
             };
         });
         let serverError;
@@ -256,4 +284,3 @@ export default class ManageTimezones extends React.PureComponent<Props, State> {
         );
     }
 }
-

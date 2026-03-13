@@ -1333,7 +1333,7 @@
   },
   {
     "id": "api.post.disabled_all",
-    "translation": "Упоминание @all было отключено, поскольку количество пользователей на канале превышает {{.Users}}."
+    "translation": "Упоминание @all было отключено, поскольку количество пользователей в канале превышает {{.Users}}."
   },
   {
     "id": "api.post.disabled_channel",
@@ -1341,7 +1341,7 @@
   },
   {
     "id": "api.post.disabled_here",
-    "translation": "Упоминание @here было отключено, поскольку количество пользователей на канале превышает {{.Users}}."
+    "translation": "Упоминание @here было отключено, поскольку количество пользователей в канале превышает {{.Users}}."
   },
   {
     "id": "api.post.do_action.action_id.app_error",
@@ -9813,7 +9813,7 @@
   },
   {
     "id": "api.command_share.invite_remote_to_channel.error",
-    "translation": "Невозможно приглашение на канал: {{.Error}}"
+    "translation": "Невозможно приглашение в канал: {{.Error}}"
   },
   {
     "id": "app.channel.bookmark.delete.app_error",

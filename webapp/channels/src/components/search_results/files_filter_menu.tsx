@@ -3,6 +3,7 @@
 
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
+import {localizeMessage} from 'utils/utils';
 
 import {FilterVariantIcon} from '@mattermost/compass-icons/components';
 
@@ -55,54 +56,94 @@ export default function FilesFilterMenu(props: Props): JSX.Element {
                     </IconContainer>
                 </OverlayTrigger>
                 <Menu
-                    ariaLabel={'file menu'}
+                    ariaLabel={localizeMessage('search_results.files_filter_menu.menu', 'File menu')}
                     openLeft={true}
                 >
                     <Menu.ItemAction
-                        ariaLabel={'All file types'}
-                        text={'All file types'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.all', 'All file types')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.all'
+                                defaultMessage='All file types'
+                            />
+                        }
                         onClick={() => props.onFilter('all')}
                         icon={props.selectedFilter === 'all' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Documents'}
-                        text={'Documents'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.documents', 'Documents')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.documents'
+                                defaultMessage='Documents'
+                            />
+                        }
                         onClick={() => props.onFilter('documents')}
                         icon={props.selectedFilter === 'documents' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Spreadsheets'}
-                        text={'Spreadsheets'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.spreadsheets', 'Spreadsheets')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.spreadsheets'
+                                defaultMessage='Spreadsheets'
+                            />
+                        }
                         onClick={() => props.onFilter('spreadsheets')}
                         icon={props.selectedFilter === 'spreadsheets' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Presentations'}
-                        text={'Presentations'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.presentations', 'Presentations')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.presentations'
+                                defaultMessage='Presentations'
+                            />
+                        }
                         onClick={() => props.onFilter('presentations')}
                         icon={props.selectedFilter === 'presentations' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Code'}
-                        text={'Code'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.code', 'Code')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.code'
+                                defaultMessage='Code'
+                            />
+                        }
                         onClick={() => props.onFilter('code')}
                         icon={props.selectedFilter === 'code' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Images'}
-                        text={'Images'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.images', 'Images')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.images'
+                                defaultMessage='Images'
+                            />
+                        }
                         onClick={() => props.onFilter('images')}
                         icon={props.selectedFilter === 'images' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Audio'}
-                        text={'Audio'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.audio', 'Audio')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.audio'
+                                defaultMessage='Audio'
+                            />
+                        }
                         onClick={() => props.onFilter('audio')}
                         icon={props.selectedFilter === 'audio' ? <i className='icon icon-check'/> : null}
                     />
                     <Menu.ItemAction
-                        ariaLabel={'Videos'}
-                        text={'Videos'}
+                        ariaLabel={localizeMessage('search_results.files_filter_menu.videos', 'Videos')}
+                        text={
+                            <FormattedMessage
+                                id='search_results.files_filter_menu.videos'
+                                defaultMessage='Videos'
+                            />
+                        }
                         onClick={() => props.onFilter('video')}
                         icon={props.selectedFilter === 'video' ? <i className='icon icon-check'/> : null}
                     />
